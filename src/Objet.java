@@ -10,5 +10,7 @@ public abstract class Objet {
     
     public Objet (Vec2f pos, float n, Color c){
 		this.position = pos;
+		this.indice = n;
+		this.couleur = c;
 	}
 }
