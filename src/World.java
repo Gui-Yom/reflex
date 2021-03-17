@@ -38,6 +38,8 @@ public class World {
             if (intersection != null) {
                 // Reflected ray gets the same treatment through the power of recursion
                 computeRay(intersection, Utils.reflect(direction, mirror.normal), parentRay, mirror);
+                // TODO mettre les indices de réfraction des objets
+                computeRay(intersection, Utils.refraction(direction, mirror.normal, 1.0f / 1.5f), parentRay, mirror);
                 end = intersection;
                 break;
             }

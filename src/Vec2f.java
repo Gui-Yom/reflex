@@ -1,5 +1,7 @@
 import java.util.Objects;
 
+import static java.lang.Math.acos;
+
 /**
  * A vector in 2D space with float components.
  */
@@ -79,7 +81,7 @@ public class Vec2f implements Cloneable {
     }
 
     public float angle(Vec2f other) {
-        return (float) Math.acos(dot(other) / (length() * other.length()));
+        return (float) acos(dot(other) / (length() * other.length()));
     }
 
     public Vec2f x() {
