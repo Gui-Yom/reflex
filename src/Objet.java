@@ -4,13 +4,20 @@ import java.awt.Graphics;
 public abstract class Objet {
     protected Vec2f position;
     protected float indice;
-    protected Color couleur;
-    protected Vec2f normale;
+    protected Color couleurObjet;
+    protected float angleDeg = 0;
     
     
-    public Objet (Vec2f pos, float n, Color c){
+    public Objet (Vec2f pos, float n){
 		this.position = pos;
 		this.indice = n;
-		this.couleur = c;
 	}
+	public Objet (Vec2f pos, float n, Color c){
+		this.position = pos;
+		this.indice = n;
+		this.couleurObjet = c;
+	}
+	
+	
+	
 }
