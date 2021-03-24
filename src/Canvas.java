@@ -5,11 +5,11 @@ import java.awt.geom.Rectangle2D;
 
 public class Canvas extends JPanel {
 
-    World world;
+    Simulation simulation;
 
-    public Canvas(World world) {
+    public Canvas(Simulation simulation) {
         super(true);
-        this.world = world;
+        this.simulation = simulation;
     }
 
     @Override
@@ -23,13 +23,13 @@ public class Canvas extends JPanel {
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
         g2d.setStroke(new BasicStroke(2));
-        for (Laser laser : world.lasers) {
+        for (Laser laser : simulation.lasers) {
             traceLaser(g2d, laser);
         }
-        for (Ray ray : world.rays) {
+        for (Ray ray : simulation.rays) {
             traceRay(g2d, ray);
         }
-        for (Mirror mirror : world.mirrors) {
+        for (Mirror mirror : simulation.mirrors) {
             traceMirror(g2d, mirror);
         }
     }

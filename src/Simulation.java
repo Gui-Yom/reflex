@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class World {
+public class Simulation {
 
     // Means big number
     private static final float INFINITY = 999999;
@@ -16,6 +16,7 @@ public class World {
      */
     void compute() {
         rays.clear();
+        System.out.println("Start compute");
         // Ray sources
         for (Laser laser : lasers) {
             computeRay(laser.origin, laser.direction, ParentRay.fromLaser(laser), null);
@@ -36,10 +37,16 @@ public class World {
             final Vec2f intersection = Utils.segmentIntersect(mirror.position, mirrorEnd, origin, end);
             //System.out.printf("intersection: %s%n", intersection);
             if (intersection != null) {
-                // Reflected ray gets the same treatment through the power of recursion
-                computeRay(intersection, Utils.reflect(direction, mirror.normal), parentRay, mirror);
+                // We calculate the reflected and refracted rays with a recursion
+                // Spawn the reflected ray
+                Vec2f reflected = Utils.reflect(direction.normalize(), mirror.normal);
+                System.out.println("Reflected : " + reflected);
+                computeRay(intersection, reflected, parentRay, mirror);
                 // TODO mettre les indices de réfraction des objets
-                computeRay(intersection, Utils.refraction(direction, mirror.normal, 1.0f / 1.5f), parentRay, mirror);
+                // Spawn the refracted ray
+                //Vec2f refracted = Utils.refract(direction, mirror.normal, 1.0f, 1.5f);
+                //System.out.println("Refracted : " + reflected);
+                //computeRay(intersection, refracted, parentRay, mirror);
                 end = intersection;
                 break;
             }

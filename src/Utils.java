@@ -102,31 +102,30 @@ public final class Utils {
      * @return the reflected vector
      */
     public static Vec2f reflect(Vec2f i, Vec2f n) {
-        return i.minus(n.scale(2).scale(i.dot(n)));
+        return i.minus(n.scale(2 * i.dot(n)));
     }
 
     /**
-     * Calcule le vecteur réfracté
-     *
-     * @param i   vecteur incident
-     * @param n   vecteur normal à la surface
-     * @param eta le rapport des indices de réfractions n1 / n2
-     * @return le vecteur réfracté unitaire
+     * @param i  incident vector, normalized
+     * @param n  normal vector, normalized
+     * @param n1
+     * @param n2
+     * @return the refracted vector
      */
-    public static Vec2f refraction(Vec2f i, Vec2f n, float eta) {
-        float i1 = i.angle(n);
+    public static Vec2f refract(Vec2f i, Vec2f n, float n1, float n2) {
+        float i1 = n.orientedAngle(i);
+        System.out.println("i1: " + i1);
         // n1 sin(i1) = n2 sin(i2)
-        float i2 = (float) asin(eta * sin(i1));
+        float i2 = (float) asin(n1 / n2 * sin(i1));
         float sens = i.dot(n);
         float angle;
         if (sens > 0) {
             angle = -i2;
         } else {
-            angle = (float) (-i2 + PI);
+            angle = (float) (PI + i2);
         }
-        Vec2f refracte = n.polar();
-        refracte.y += angle;
-        refracte = refracte.cartesian();
-        return refracte.normalize();
+        Vec2f r = n.polar();
+        r.y += angle;
+        return r.cartesian().normalize();
     }
 }
