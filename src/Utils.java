@@ -112,7 +112,7 @@ public final class Utils {
      * @param n2
      * @return the refracted vector
      */
-    public static Vec2f refract(Vec2f i, Vec2f n, float n1, float n2) {
+    public static Vec2f refract2(Vec2f i, Vec2f n, float n1, float n2) {
         float i1 = n.orientedAngle(i);
         System.out.println("i1: " + i1);
         // n1 sin(i1) = n2 sin(i2)
@@ -122,10 +122,26 @@ public final class Utils {
         if (sens > 0) {
             angle = -i2;
         } else {
-            angle = (float) (PI + i2);
+            angle = (float) (PI - i2);
         }
         Vec2f r = n.polar();
         r.y += angle;
         return r.cartesian().normalize();
+    }
+
+    /**
+     * @param i  incident vector, normalized
+     * @param n  normal vector, normalized
+     * @param n1
+     * @param n2
+     * @return the refracted vector
+     */
+    public static Vec2f refract(Vec2f i, Vec2f n, float n1, float n2) {
+        float dot = i.dot(n);
+        if (dot < 0) dot = -dot;
+        else n = n.negate();
+        float eta = n1 / n2;
+        float k = 1 - eta * eta * (1 - dot * dot);
+        return k < 0 ? null : i.scale(eta).plus(n.scale(eta * dot - (float) sqrt(k)));
     }
 }

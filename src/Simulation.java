@@ -44,9 +44,11 @@ public class Simulation {
                 computeRay(intersection, reflected, parentRay, mirror);
                 // TODO mettre les indices de réfraction des objets
                 // Spawn the refracted ray
-                //Vec2f refracted = Utils.refract(direction, mirror.normal, 1.0f, 1.5f);
-                //System.out.println("Refracted : " + reflected);
-                //computeRay(intersection, refracted, parentRay, mirror);
+                Vec2f refracted = Utils.refract(direction.normalize(), mirror.normal, 1.0f, 1.5f);
+                System.out.println("Refracted : " + refracted);
+                if (refracted != null) {
+                    computeRay(intersection, refracted, parentRay, mirror);
+                }
                 end = intersection;
                 break;
             }
