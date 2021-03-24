@@ -15,11 +15,11 @@ public class Main {
         Simulation w = new Simulation();
         w.lasers.add(new Laser(new Vec2f(100, 400), Vec2f.fromPolar(1, (float) (-Math.PI / 5)), 720));
         Mirror m = new Mirror(new Vec2f(400, 100), 100, 0);
-        w.mirrors.add(m);
+        w.objets.add(m);
         Mirror m2 = new Mirror(new Vec2f(300, 400), 100, 0f);
-        w.mirrors.add(m2);
+        w.objets.add(m2);
         Mirror m3 = new Mirror(new Vec2f(200, 150), 100, (float) -Math.PI / 4);
-        w.mirrors.add(m3);
+        w.objets.add(m3);
         w.compute();
 
         Canvas c = new Canvas(w);

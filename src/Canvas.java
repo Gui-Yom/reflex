@@ -29,8 +29,10 @@ public class Canvas extends JPanel {
         for (Ray ray : simulation.rays) {
             traceRay(g2d, ray);
         }
-        for (Mirror mirror : simulation.mirrors) {
-            traceMirror(g2d, mirror);
+        for (Objet objet : simulation.objets) {
+            if (objet instanceof Mirror) {
+                traceMirror(g2d, (Mirror) objet);
+            }
         }
     }
 

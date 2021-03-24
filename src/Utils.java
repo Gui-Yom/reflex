@@ -1,6 +1,7 @@
 import java.awt.Color;
 
-import static java.lang.Math.*;
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
 
 public final class Utils {
     private static final double Gamma = 0.80;
@@ -103,30 +104,6 @@ public final class Utils {
      */
     public static Vec2f reflect(Vec2f i, Vec2f n) {
         return i.minus(n.scale(2 * i.dot(n)));
-    }
-
-    /**
-     * @param i  incident vector, normalized
-     * @param n  normal vector, normalized
-     * @param n1
-     * @param n2
-     * @return the refracted vector
-     */
-    public static Vec2f refract2(Vec2f i, Vec2f n, float n1, float n2) {
-        float i1 = n.orientedAngle(i);
-        System.out.println("i1: " + i1);
-        // n1 sin(i1) = n2 sin(i2)
-        float i2 = (float) asin(n1 / n2 * sin(i1));
-        float sens = i.dot(n);
-        float angle;
-        if (sens > 0) {
-            angle = -i2;
-        } else {
-            angle = (float) (PI - i2);
-        }
-        Vec2f r = n.polar();
-        r.y += angle;
-        return r.cartesian().normalize();
     }
 
     /**
