@@ -10,18 +10,15 @@ public class demiSphere extends Objet {
 		super(pos, n);
 		R = r;
 		
-		Arretes = new ArrayList<Segment>();
 		Aretes = new ArrayList<Segment>();
 		Vec2f a = new Vec2f(position.x, position.y-R);
 		Vec2f b = new Vec2f(position.x, position.y+R);
 		Segment diam = new Segment(a, b);
-		Arretes.add(diam);
 		Aretes.add(diam);
 		ArrayList<Vec2f>pAs = pArc(position, R);
 		pAs.add(0, b);
 		pAs.add(a);
 		for (int i=0; i<pAs.size()-1; i++){
-			Arretes.add(new Segment(pAs.get(i), pAs.get(i+1)));
 			Aretes.add(new Segment(pAs.get(i), pAs.get(i+1)));
 		}
 	}
