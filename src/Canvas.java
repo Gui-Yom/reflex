@@ -32,6 +32,8 @@ public class Canvas extends JPanel {
         for (Objet objet : simulation.objets) {
             if (objet instanceof Mirror) {
                 traceMirror(g2d, (Mirror) objet);
+            } else if (objet instanceof Carre) {
+                traceCarre(g2d, (Carre) objet);
             }
         }
     }
@@ -52,5 +54,10 @@ public class Canvas extends JPanel {
         g.draw(new Line2D.Float(m.position.x, m.position.y, (float) (m.position.x + m.width * Math.cos(m.angle)), (float) (m.position.y + m.width * Math.sin(m.angle))));
         g.setColor(Color.ORANGE);
         g.draw(new Line2D.Float(m.position.x, m.position.y, m.position.x + m.normal.x * 10, m.position.y + m.normal.y * 10));
+    }
+
+    void traceCarre(Graphics2D g, Carre c) {
+        g.setColor(c.couleurObjet);
+        g.draw(new Rectangle2D.Float(c.position.x, c.position.y, 10, 10));
     }
 }

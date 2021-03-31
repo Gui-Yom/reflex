@@ -24,4 +24,14 @@ public class Mirror extends Objet {
 
         return intersection == null ? null : new Intersection(intersection, normal, indice, false);
     }
+
+    @Override
+    public String toString() {
+        return "Mirror{" +
+                   "width=" + width +
+                   ", angle=" + angle +
+                   ", normal=" + normal +
+                   ", position=" + position +
+                   '}';
+    }
 }

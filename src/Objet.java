@@ -22,8 +22,6 @@ public abstract class Objet {
 	}
 	
 	//public abstract void dessine (Graphics g);
-	
-
 
     public abstract Intersection intersect(Vec2f origin, Vec2f end);
 
