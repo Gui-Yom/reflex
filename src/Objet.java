@@ -10,6 +10,7 @@ public abstract class Objet {
 
     protected float angleHoriz = 0;
     protected ArrayList<Segment> Arretes;
+    protected ArrayList<Segment> Aretes;
     
     public Objet (Vec2f pos, float n){
 		this.position = pos;
