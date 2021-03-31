@@ -11,13 +11,18 @@ public class demiSphere extends Objet {
 		R = r;
 		
 		Arretes = new ArrayList<Segment>();
+		Aretes = new ArrayList<Segment>();
 		Vec2f a = new Vec2f(position.x, position.y-R);
 		Vec2f b = new Vec2f(position.x, position.y+R);
 		Segment diam = new Segment(a, b);
 		Arretes.add(diam);
+		Aretes.add(diam);
 		ArrayList<Vec2f>pAs = pArc(position, R);
+		pAs.add(0, b);
+		pAs.add(a);
 		for (int i=0; i<pAs.size()-1; i++){
 			Arretes.add(new Segment(pAs.get(i), pAs.get(i+1)));
+			Aretes.add(new Segment(pAs.get(i), pAs.get(i+1)));
 		}
 	}
 		
@@ -35,6 +40,16 @@ public class demiSphere extends Objet {
 			pA.add(p);
 		}
 		return pA;
+	}
+	
+	public Intersection intersect(Vec2f origin, Vec2f end){
+		for (Segment seg : Aretes){
+			Vec2f testintersect = Utils.segmentIntersect(seg.pointA, seg.pointB, origin, end);
+			if (testintersect!= null){
+				return new Intersection(testintersect, seg.normale, indice, true);
+			}
+		}
+		return null;		
 	}
 			
 		
