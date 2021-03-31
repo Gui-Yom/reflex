@@ -2,6 +2,9 @@ public class Segment {
 	protected Vec2f pointA;
 	protected Vec2f pointB;
 	protected Vec2f normale;
+	public Vec2f pointA;
+	public Vec2f pointB;
+	public Vec2f normale;
 	
 	public Segment (Vec2f a, Vec2f b){
 		this.pointA = a;
