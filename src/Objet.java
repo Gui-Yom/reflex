@@ -9,7 +9,6 @@ public abstract class Objet {
     protected Color couleurObjet;
 
     protected float angleHoriz = 0;
-    protected ArrayList<Segment> Arretes;
     protected ArrayList<Segment> Aretes;
     
     public Objet (Vec2f pos, float n){
