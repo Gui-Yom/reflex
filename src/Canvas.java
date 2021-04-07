@@ -34,6 +34,8 @@ public class Canvas extends JPanel {
                 traceMirror(g2d, (Mirror) objet);
             } else if (objet instanceof Carre) {
                 traceCarre(g2d, (Carre) objet);
+            } else if (objet instanceof lamesP) {
+                ((lamesP) objet).dessine(g2d);
             }
         }
     }
