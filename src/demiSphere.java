@@ -11,8 +11,8 @@ public class demiSphere extends Objet {
 		R = r;
 		
 		Aretes = new ArrayList<Segment>();
-		Vec2f a = new Vec2f(position.x, position.y-R);
-		Vec2f b = new Vec2f(position.x, position.y+R);
+		Vec2f a = new Vec2f(position.x - (float) (R*Math.cos(Math.PI/2+ angleHoriz)), position.y-(float) (R*Math.sin(Math.PI/2+ angleHoriz)));
+		Vec2f b = new Vec2f(position.x + (float) (R*Math.cos(Math.PI/2+ angleHoriz)), position.y+ (float) (R*Math.sin(Math.PI/2+ angleHoriz)));
 		Segment diam = new Segment(a, b);
 		Aretes.add(diam);
 		ArrayList<Vec2f>pAs = pArc(position, R);
@@ -30,7 +30,7 @@ public class demiSphere extends Objet {
 	public ArrayList<Vec2f> pArc (Vec2f centre, float r){
 		ArrayList<Vec2f> pA = new ArrayList<Vec2f>();
 		for (int i=0; i<1001; i++){
-			float alpha = (float) (i*Math.PI/1000 -Math.PI/2);
+			float alpha = (float) (i*Math.PI/1000 -Math.PI/2) + angleHoriz;
 			float X = (float) (r*Math.cos(alpha));
 			float Y = (float) (r*Math.sin(alpha));
 			Vec2f p = new Vec2f(X, Y);
