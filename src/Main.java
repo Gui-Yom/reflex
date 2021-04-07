@@ -32,7 +32,7 @@ public class Main {
 
         frame.add(canvas);
 
-        AtomicReference<Mirror> selected = new AtomicReference<>();
+        AtomicReference<Objet> selected = new AtomicReference<>();
 
         canvas.addMouseListener(new MouseInputAdapter() {
             @Override
@@ -49,7 +49,35 @@ public class Main {
                                 && clicked.y <= max(a.y, b.y) + bias && clicked.y >= min(a.y, b.y) - bias) {
                             // On vient de cliquer sur un miroir
                             selected.set(m);
-                            System.out.println("Touché !");
+                            System.out.println("Touché miroir !");
+                            break;
+                        } else {
+                            selected.set(null);
+                        }
+                    } else if (o instanceof Carre) {
+                        Carre c = (Carre) o;
+                        Vec2f a = c.position;
+                        Vec2f b = c.position.plus(new Vec2f(c.length, c.length));
+                        float bias = 6f;
+                        if (clicked.x <= max(a.x, b.x) + bias && clicked.x >= min(a.x, b.x) - bias
+                                && clicked.y <= max(a.y, b.y) + bias && clicked.y >= min(a.y, b.y) - bias) {
+                            // On vient de cliquer sur un miroir
+                            selected.set(c);
+                            System.out.println("Touché carré !");
+                            break;
+                        } else {
+                            selected.set(null);
+                        }
+                    } else if (o instanceof lamesP) {
+                        lamesP l = (lamesP) o;
+                        Vec2f a = l.position;
+                        Vec2f b = l.position.plus(new Vec2f(l.largeur, l.longueur));
+                        float bias = 6f;
+                        if (clicked.x <= max(a.x, b.x) + bias && clicked.x >= min(a.x, b.x) - bias
+                                && clicked.y <= max(a.y, b.y) + bias && clicked.y >= min(a.y, b.y) - bias) {
+                            // On vient de cliquer sur un miroir
+                            selected.set(l);
+                            System.out.println("Touché lameP !");
                             break;
                         } else {
                             selected.set(null);
@@ -60,11 +88,17 @@ public class Main {
         });
 
         frame.addMouseWheelListener(e -> {
-            Mirror m = selected.get();
-            if (m != null) {
-                m.angle += e.getWheelRotation() * Math.PI / 128;
-                m.recalcNormal();
-                redessiner();
+            Objet o = selected.get();
+            if (o != null) {
+                if (o instanceof Mirror) {
+                    Mirror m = (Mirror) o;
+                    m.angle += e.getWheelRotation() * Math.PI / 128;
+                    m.recalcNormal();
+                    redessiner();
+                } else if (o instanceof Carre) {
+                    Carre c = (Carre) o;
+                    // TODO changer angle du carré
+                }
             }
         });
 
@@ -73,46 +107,42 @@ public class Main {
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_1:
-                        // Charger la configuration 1
-                        // On vide les listes d'objets
+                        clear();
                         configuration1();
                         redessiner();
                         break;
                     case KeyEvent.VK_2:
-                        // Charger la configuration 2
-                        sim.objets.clear();
-                        sim.lasers.clear();
-
-                        // On ajoute nos objets
-                        sim.lasers.add(new Laser(new Vec2f(100, 400), Vec2f.fromPolar(1, (float) (-Math.PI / 5)), 720));
-
-                        sim.objets.add(new Mirror(new Vec2f(400, 100), 100, 0));
-                        sim.objets.add(new Carre(new Vec2f(500, 60), 1.0f, Color.BLACK));
-
+                        clear();
+                        configuration2();
                         redessiner();
                         break;
                     case KeyEvent.VK_UP:
-                        Mirror m = selected.get();
-                        if (m != null)
-                            m.position = new Vec2f(m.position.x, m.position.y - 1);
+                        Objet o = selected.get();
+                        if (o != null)
+                            o.position = new Vec2f(o.position.x, o.position.y - 1);
                         redessiner();
                         break;
                     case KeyEvent.VK_DOWN:
-                        m = selected.get();
-                        if (m != null)
-                            m.position = new Vec2f(m.position.x, m.position.y + 1);
+                        o = selected.get();
+                        if (o != null)
+                            o.position = new Vec2f(o.position.x, o.position.y + 1);
                         redessiner();
                         break;
                     case KeyEvent.VK_RIGHT:
-                        m = selected.get();
-                        if (m != null)
-                            m.position = new Vec2f(m.position.x + 1, m.position.y);
+                        o = selected.get();
+                        if (o != null)
+                            o.position = new Vec2f(o.position.x + 1, o.position.y);
                         redessiner();
                         break;
                     case KeyEvent.VK_LEFT:
-                        m = selected.get();
-                        if (m != null)
-                            m.position = new Vec2f(m.position.x - 1, m.position.y);
+                        o = selected.get();
+                        if (o != null)
+                            o.position = new Vec2f(o.position.x - 1, o.position.y);
+                        redessiner();
+                        break;
+                    case KeyEvent.VK_ENTER:
+                        //sim.objets.add(new Carre(new Vec2f(50, 50), 10, Constants.REFRAC_GLASS, Color.BLACK));
+                        sim.objets.add(new lamesP(new Vec2f(50, 50), 1, 100, 50));
                         redessiner();
                         break;
                     case KeyEvent.VK_ESCAPE:
@@ -126,13 +156,8 @@ public class Main {
     }
 
     static void configuration1() {
-        sim.objets.clear();
-        sim.lasers.clear();
-
         // On ajoute nos objets
         sim.lasers.add(new Laser(new Vec2f(100, 400), Vec2f.fromPolar(1, (float) (-Math.PI / 5)), 720));
-
-        sim.objets.add(new Carre(new Vec2f(0, 0), 1.0f, Color.BLUE));
 
         Mirror m = new Mirror(new Vec2f(400, 100), 100, 0);
         sim.objets.add(m);
@@ -140,10 +165,23 @@ public class Main {
         sim.objets.add(m2);
         Mirror m3 = new Mirror(new Vec2f(200, 150), 100, (float) -Math.PI / 4);
         sim.objets.add(m3);
+        //demiSphere d = new demiSphere(new Vec2f(50, 50), Constants.REFRAC_GLASS, 5f);
+    }
+
+    static void configuration2() {
+        sim.lasers.add(new Laser(new Vec2f(100, 400), Vec2f.fromPolar(1, (float) (-Math.PI / 5)), 720));
+
+        sim.objets.add(new Mirror(new Vec2f(400, 100), 100, 0));
+        sim.objets.add(new Carre(new Vec2f(500, 60), 10, 1.0f, Color.BLACK));
     }
 
     static void redessiner() {
         sim.compute();
         canvas.repaint();
+    }
+
+    static void clear() {
+        sim.objets.clear();
+        sim.lasers.clear();
     }
 }
