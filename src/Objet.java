@@ -38,4 +38,8 @@ public abstract class Objet {
             this.canTransmit = canTransmit;
         }
     }
+    
+    public void angleSet(float ang){
+		this.angleHoriz = ang;
+	}
 }
