@@ -49,6 +49,7 @@ public class Simulation {
             // TODO mettre les indices de réfraction des objets
             // Spawn the refracted ray
             if (intersection.canTransmit) {
+                // TODO inverser les indices de réfraction dans le cas où on sort de l'objet
                 Vec2f refracted = Utils.refract(direction.normalize(), intersection.normal, 1.0f, intersection.n);
                 System.out.println("Refracted : " + refracted);
                 if (refracted != null) {
