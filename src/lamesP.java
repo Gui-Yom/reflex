@@ -13,10 +13,10 @@ public class lamesP extends Objet {
 		this.longueur=lon;
 		this.largeur=larg;
 		ArrayList<Vec2f> p = new ArrayList<Vec2f>();
-		Vec2f A = new Vec2f(position.x-largeur, position.y-longueur);
-		Vec2f B = new Vec2f(position.x-largeur, position.y+longueur);
-		Vec2f C = new Vec2f(position.x+largeur, position.y+longueur);
-		Vec2f D = new Vec2f(position.x+largeur, position.y-longueur);
+		Vec2f A = new Vec2f(position.x-(float) (largeur*Math.cos(Math.PI/2+ angleHoriz)), position.y-(float) (longueur*Math.sin(Math.PI/2+ angleHoriz)));
+		Vec2f B = new Vec2f(position.x-(float) (largeur*Math.cos(Math.PI/2+ angleHoriz)), position.y+(float) (longueur*Math.sin(Math.PI/2+ angleHoriz)));
+		Vec2f C = new Vec2f(position.x+(float) (largeur*Math.cos(Math.PI/2+ angleHoriz)), position.y+(float) (longueur*Math.sin(Math.PI/2+ angleHoriz)));
+		Vec2f D = new Vec2f(position.x+(float) (largeur*Math.cos(Math.PI/2+ angleHoriz)), position.y-(float) (longueur*Math.sin(Math.PI/2+ angleHoriz)));
 		p.add(A);
 		p.add(B);
 		p.add(C);
