@@ -1,7 +1,7 @@
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.*;
 
 public class lamesP extends Objet {
 	
@@ -40,7 +40,7 @@ public class lamesP extends Objet {
 	}
 	
 	
-	public void dessine (Graphics g){
+	public void dessine (Graphics2D g){
 		g.setColor(couleurObjet);
 		g.draw(new Rectangle2D.Float(position.x, position.y, largeur, longueur));
 	}
