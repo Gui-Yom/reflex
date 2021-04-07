@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.awt.geom.*;
 
 public class demiSphere extends Objet {
 	
@@ -49,7 +50,12 @@ public class demiSphere extends Objet {
 		return null;		
 	}
 			
-		
-	
+	public void dessine (Graphics g){
+		g.setColor(couleurObjet);
+		AffineTransform afftran = new AffineTransform();
+		afftran.rotate(angleHoriz);
+		g.setTransform(afftran);
+		g.draw(new Arc2D.Float(position.x, position.y, R, R, 270, Math.PI*R, CHORD));
+	}
 }
 
