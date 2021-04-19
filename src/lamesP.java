@@ -1,7 +1,6 @@
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-
 public class lamesP extends Objet {
 
     float longueur;
@@ -38,7 +37,11 @@ public class lamesP extends Objet {
 
     public void dessine(Graphics2D g) {
         g.setColor(couleurObjet);
-        g.draw(new Rectangle2D.Float(position.x, position.y, largeur, longueur));
+        g.draw(new Rectangle2D.Float(position.x,position.y,largeur,longueur));
+        double centerX=position.x+largeur/2;
+        double centerY=position.y+longueur/2;
+        g.translate(centerX, centerY);
+        g.rotate(angleHoriz);
     }
 
 }
