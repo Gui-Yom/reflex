@@ -169,8 +169,8 @@ public class Main{
         sim.objets.add(m2);
         Mirror m3 = new Mirror(new Vec2f(200, 150), 100, (float) -Math.PI / 4);
         sim.objets.add(m3);
-        //lamesP lame=new lamesP(new Vec2f(200f,300f),1.5f,800f,700f);
-        //sim.objets.add(lame);
+        lamesP lame=new lamesP(new Vec2f(200f,300f),1.5f,100f,200f);
+        sim.objets.add(lame);
         //demiSphere d = new demiSphere(new Vec2f(50, 50), Constants.REFRAC_GLASS, 5f);
     }
 
