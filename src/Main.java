@@ -1,10 +1,9 @@
-import javax.swing.JFrame;
+import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicReference;
-import javax.swing.JButton;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -21,17 +20,20 @@ public class Main{
         frame.setSize(800, 600);
         
         frame.setLayout(new BorderLayout());
-        //JButton Reinitialiser=new JButton("Reinitialiser");
         
         sim = new Simulation();
         canvas = new Canvas(sim);
-        frame.add(canvas,BorderLayout.CENTER);
-        JButton fLame= new JButton("Faces a lames paralleles");
-        JButton dSphere= new JButton ("Demi-sphere");
-        JButton Miroir= new JButton("Miroir");
-        frame.add(fLame,BorderLayout.WEST);
-        frame.add(dSphere,BorderLayout.WEST);
-        frame.add(Miroir,BorderLayout.WEST);
+        frame.add(canvas);
+        JPanel menu= new JPanel();
+        frame.add(menu,BorderLayout.WEST);
+        JButton Reinitialiser=new JButton("Reinitialiser");
+        JButton dSphere=new JButton("Demi-sphere");
+        JButton Miroir=new JButton("Miroir");
+        JButton fLame=new JButton("Face a lames paralleles");
+        menu.add(Reinitialiser);
+        menu.add(dSphere);
+        menu.add(Miroir);
+        menu.add(fLame);
         configuration1();
         sim.compute();
         
@@ -167,8 +169,8 @@ public class Main{
         sim.objets.add(m2);
         Mirror m3 = new Mirror(new Vec2f(200, 150), 100, (float) -Math.PI / 4);
         sim.objets.add(m3);
-        lamesP lame=new lamesP(new Vec2f(100f,120f),1.5f,150f,200f);
-        sim.objets.add(lame);
+        //lamesP lame=new lamesP(new Vec2f(200f,300f),1.5f,800f,700f);
+        //sim.objets.add(lame);
         //demiSphere d = new demiSphere(new Vec2f(50, 50), Constants.REFRAC_GLASS, 5f);
     }
 
