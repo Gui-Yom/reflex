@@ -1,6 +1,14 @@
+package reflex;
+
+import reflex.objets.Laser;
+import reflex.objets.Objet;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Calcule les
+ */
 public class Simulation {
 
     // Means big number
@@ -16,23 +24,21 @@ public class Simulation {
     void compute() {
         rays.clear();
         System.out.println("Start compute");
-        // Ray sources
+        // reflex.Ray sources
         for (Laser laser : lasers) {
-            computeRay(laser.origin, laser.direction, ParentRay.fromLaser(laser));
+            computeRay(laser.getOrigin(), laser.getDirection(), ParentRay.fromLaser(laser));
         }
     }
 
     void computeRay(Vec2f origin, Vec2f direction, ParentRay parentRay) {
         //System.out.printf("ray: %s, %s%n", origin, direction);
         Vec2f end = direction.scale(INFINITY).plus(origin);
-        Objet.Intersection intersection = null;
+        Intersection intersection = null;
         float distance = INFINITY;
         // World objects
         for (Objet objet : objets) {
-            Objet.Intersection i = objet.intersect(origin, end);
-            if (i == null) {
-                continue;
-            } else {
+            Intersection i = objet.intersect(origin, end);
+            if (i != null) {
                 float d_ = i.point.minus(origin).length();
                 if (d_ > 0.0001 && d_ < distance) {
                     intersection = i;
@@ -46,9 +52,9 @@ public class Simulation {
             Vec2f reflected = Utils.reflect(direction.normalize(), intersection.normal);
             //System.out.println("Reflected : " + reflected);
             computeRay(intersection.point, reflected, parentRay);
-            // TODO mettre les indices de réfraction des objets
+            // TODO mettre les indices de réfraction des reflex.objets
             // Spawn the refracted ray
-            if (intersection.canTransmit) {
+            if (intersection.canTransmit()) {
                 // TODO inverser les indices de réfraction dans le cas où on sort de l'objet
                 Vec2f refracted = Utils.refract(direction.normalize(), intersection.normal, 1.0f, intersection.n);
                 //System.out.println("Refracted : " + refracted);
@@ -76,7 +82,7 @@ public class Simulation {
         }
 
         static ParentRay fromLaser(Laser laser) {
-            return new ParentRay(laser.intensity, laser.wavelength);
+            return new ParentRay(laser.getIntensity(), laser.getWavelength());
         }
     }
 }

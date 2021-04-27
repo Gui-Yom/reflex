@@ -1,3 +1,5 @@
+package reflex;
+
 public class Segment {
     public Vec2f pointA;
     public Vec2f pointB;

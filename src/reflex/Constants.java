@@ -1,3 +1,5 @@
+package reflex;
+
 public class Constants {
     /**
      * The speed of light in m/s

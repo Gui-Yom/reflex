@@ -1,17 +1,24 @@
+package reflex.objets;
+
+import reflex.Intersection;
+import reflex.Utils;
+import reflex.Vec2f;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class Mirror extends Objet {
 
     float width;
-    float angle;
     Vec2f normal;
 
     public Mirror(Vec2f position, float width, float angle) {
-        super(position, 1.5f);
+        super(position, angle, -1f, Color.BLACK);
         this.width = width;
-        this.angle = angle;
         recalc();
     }
 
@@ -35,12 +42,20 @@ public class Mirror extends Objet {
         final Vec2f intersection = Utils.segmentIntersect(position, mirrorEnd, origin, end);
         //System.out.printf("intersection: %s%n", intersection);
 
-        return intersection == null ? null : new Intersection(intersection, normal, indice, false);
+        return intersection == null ? null : new Intersection(intersection, normal, indice);
+    }
+
+    @Override
+    public boolean isClickedOn(Vec2f click) {
+        Vec2f a = position;
+        Vec2f b = position.plus(Vec2f.fromPolar(width, angle));
+        return (click.x <= max(a.x, b.x) + clickedBias && click.x >= min(a.x, b.x) - clickedBias
+                    && click.y <= max(a.y, b.y) + clickedBias && click.y >= min(a.y, b.y) - clickedBias);
     }
 
     @Override
     public String toString() {
-        return "Mirror{" +
+        return "reflex.objets.Mirror{" +
                    "width=" + width +
                    ", angle=" + angle +
                    ", normal=" + normal +
