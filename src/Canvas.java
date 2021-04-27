@@ -30,13 +30,9 @@ public class Canvas extends JPanel {
             traceRay(g2d, ray);
         }
         for (Objet objet : simulation.objets) {
-            if (objet instanceof Mirror) {
-                traceMirror(g2d, (Mirror) objet);
-            } else if (objet instanceof Carre) {
-                traceCarre(g2d, (Carre) objet);
-            } else if (objet instanceof lamesP) {
-                ((lamesP) objet).dessine(g2d);
-            }
+            var saved = g2d.getTransform();
+            objet.draw(g2d);
+            g2d.setTransform(saved);
         }
     }
 
@@ -49,17 +45,5 @@ public class Canvas extends JPanel {
     void traceRay(Graphics2D g, Ray ray) {
         g.setColor(Utils.waveLengthToRGB(ray.wavelength));
         g.draw(new Line2D.Float(ray.start.x, ray.start.y, ray.end.x, ray.end.y));
-    }
-
-    void traceMirror(Graphics2D g, Mirror m) {
-        g.setColor(Color.BLACK);
-        g.draw(new Line2D.Float(m.position.x, m.position.y, (float) (m.position.x + m.width * Math.cos(m.angle)), (float) (m.position.y + m.width * Math.sin(m.angle))));
-        g.setColor(Color.ORANGE);
-        g.draw(new Line2D.Float(m.position.x, m.position.y, m.position.x + m.normal.x * 10, m.position.y + m.normal.y * 10));
-    }
-
-    void traceCarre(Graphics2D g, Carre c) {
-        g.setColor(c.couleurObjet);
-        g.draw(new Rectangle2D.Float(c.position.x, c.position.y, 10, 10));
     }
 }

@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 
@@ -21,13 +22,15 @@ public abstract class Objet {
         this.Aretes = new ArrayList<>();
     }
 
-    //public abstract void dessine (Graphics g);
+    public abstract void draw(Graphics2D g);
 
     public abstract Intersection intersect(Vec2f origin, Vec2f end);
 
-    public void angleSet(float ang) {
+    public void setAngle(float ang) {
         this.angleHoriz = ang;
     }
+
+    public abstract void recalc();
 
     public static class Intersection {
         Vec2f point;

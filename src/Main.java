@@ -1,13 +1,15 @@
-import javax.swing.*;
+import javax.swing.JFrame;
 import javax.swing.event.MouseInputAdapter;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.concurrent.atomic.AtomicReference;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class Main{
+public class Main {
 
     private static JFrame frame;
     private static Simulation sim;
@@ -15,29 +17,38 @@ public class Main{
 
     public static void main(String[] args) {
 
+        System.setProperty("sun.java2d.opengl", "true");
+
         frame = new JFrame("Reflex");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
-        
-        frame.setLayout(new BorderLayout());
-        
+
+        //frame.setLayout(new BorderLayout());
+
         sim = new Simulation();
         canvas = new Canvas(sim);
+        //frame.add(canvas, BorderLayout.CENTER);
+
         frame.add(canvas);
-        JPanel menu= new JPanel();
-        frame.add(menu,BorderLayout.WEST);
-        JButton Reinitialiser=new JButton("Reinitialiser");
-        JButton dSphere=new JButton("Demi-sphere");
-        JButton Miroir=new JButton("Miroir");
-        JButton fLame=new JButton("Face a lames paralleles");
-        menu.add(Reinitialiser);
+        /*
+        JPanel menu = new JPanel();
+        frame.add(menu, BorderLayout.NORTH);
+        menu.setLayout(new FlowLayout());
+
+        JButton reinit = new JButton("Reinitialiser");
+        menu.add(reinit);
+        JButton dSphere = new JButton("Demi-sphere");
         menu.add(dSphere);
-        menu.add(Miroir);
-        menu.add(fLame);
+        JButton miroir = new JButton("Miroir");
+        menu.add(miroir);
+        JButton fLame = new JButton("Face a lames paralleles");
+        menu.add(fLame);*/
+
         configuration1();
         sim.compute();
-        
+
         AtomicReference<Objet> selected = new AtomicReference<>();
+
         canvas.addMouseListener(new MouseInputAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -72,8 +83,8 @@ public class Main{
                         } else {
                             selected.set(null);
                         }
-                    } else if (o instanceof lamesP) {
-                        lamesP l = (lamesP) o;
+                    } else if (o instanceof LamesParalleles) {
+                        LamesParalleles l = (LamesParalleles) o;
                         Vec2f a = l.position;
                         Vec2f b = l.position.plus(new Vec2f(l.largeur, l.longueur));
                         float bias = 6f;
@@ -94,15 +105,9 @@ public class Main{
         frame.addMouseWheelListener(e -> {
             Objet o = selected.get();
             if (o != null) {
-                if (o instanceof Mirror) {
-                    Mirror m = (Mirror) o;
-                    m.angle += e.getWheelRotation() * Math.PI / 128;
-                    m.recalcNormal();
-                    redessiner();
-                } else if (o instanceof Carre) {
-                    Carre c = (Carre) o;
-                    // TODO changer angle du carré
-                }
+                o.setAngle(o.angleHoriz += e.getWheelRotation() * Math.PI / 128);
+                o.recalc();
+                redessiner();
             }
         });
 
@@ -146,7 +151,7 @@ public class Main{
                         break;
                     case KeyEvent.VK_ENTER:
                         sim.objets.add(new Carre(new Vec2f(50, 50), 10, Constants.REFRAC_GLASS, Color.BLACK));
-                        sim.objets.add(new lamesP(new Vec2f(50, 50), 1, 100, 50));
+                        sim.objets.add(new LamesParalleles(new Vec2f(50, 50), 1, 100, 50));
                         redessiner();
                         break;
                     case KeyEvent.VK_ESCAPE:
@@ -169,7 +174,7 @@ public class Main{
         sim.objets.add(m2);
         Mirror m3 = new Mirror(new Vec2f(200, 150), 100, (float) -Math.PI / 4);
         sim.objets.add(m3);
-        lamesP lame=new lamesP(new Vec2f(200f,300f),1.5f,100f,200f);
+        LamesParalleles lame = new LamesParalleles(new Vec2f(200f, 300f), 1.5f, 100f, 200f);
         sim.objets.add(lame);
         //demiSphere d = new demiSphere(new Vec2f(50, 50), Constants.REFRAC_GLASS, 5f);
     }

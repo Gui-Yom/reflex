@@ -44,14 +44,14 @@ public class Simulation {
             // We calculate the reflected and refracted rays with a recursion
             // Spawn the reflected ray
             Vec2f reflected = Utils.reflect(direction.normalize(), intersection.normal);
-            System.out.println("Reflected : " + reflected);
+            //System.out.println("Reflected : " + reflected);
             computeRay(intersection.point, reflected, parentRay);
             // TODO mettre les indices de réfraction des objets
             // Spawn the refracted ray
             if (intersection.canTransmit) {
                 // TODO inverser les indices de réfraction dans le cas où on sort de l'objet
                 Vec2f refracted = Utils.refract(direction.normalize(), intersection.normal, 1.0f, intersection.n);
-                System.out.println("Refracted : " + refracted);
+                //System.out.println("Refracted : " + refracted);
                 if (refracted != null) {
                     computeRay(intersection.point, refracted, parentRay);
                 }

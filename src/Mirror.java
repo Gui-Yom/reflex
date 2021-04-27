@@ -1,3 +1,7 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
+
 public class Mirror extends Objet {
 
     float width;
@@ -8,11 +12,20 @@ public class Mirror extends Objet {
         super(position, 1.5f);
         this.width = width;
         this.angle = angle;
-        recalcNormal();
+        recalc();
     }
 
-    public void recalcNormal() {
+    @Override
+    public void recalc() {
         this.normal = Vec2f.fromPolar(1, (float) (angle + Math.PI / 2)).normalize();
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        g.setColor(Color.BLACK);
+        g.draw(new Line2D.Float(position.x, position.y, (float) (position.x + width * Math.cos(angle)), (float) (position.y + width * Math.sin(angle))));
+        g.setColor(Color.ORANGE);
+        g.draw(new Line2D.Float(position.x, position.y, position.x + normal.x * 10, position.y + normal.y * 10));
     }
 
     @Override

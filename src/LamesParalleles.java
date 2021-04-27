@@ -1,12 +1,13 @@
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-public class lamesP extends Objet {
+
+public class LamesParalleles extends Objet {
 
     float longueur;
     float largeur;
 
-    public lamesP(Vec2f pos, float n, float lon, float larg) {
+    public LamesParalleles(Vec2f pos, float n, float lon, float larg) {
         super(pos, n);
         this.longueur = lon;
         this.largeur = larg;
@@ -35,14 +36,19 @@ public class lamesP extends Objet {
         return null;
     }
 
-    public void dessine(Graphics2D g) {
-        g.setColor(couleurObjet);
-        g.draw(new Rectangle2D.Float(position.x,position.y,largeur,longueur));
-        double centerX=position.x+largeur/2;
-        double centerY=position.y+longueur/2;
-        g.translate(centerX, centerY);
-        g.rotate(angleHoriz);
+    @Override
+    public void recalc() {
+
     }
 
+    @Override
+    public void draw(Graphics2D g) {
+        g.setColor(couleurObjet);
+        double centerX = position.x + largeur / 2;
+        double centerY = position.y + longueur / 2;
+        g.translate(centerX, centerY);
+        g.rotate(angleHoriz);
+        g.draw(new Rectangle2D.Float(-largeur / 2, -longueur / 2, largeur, longueur));
+    }
 }
 
