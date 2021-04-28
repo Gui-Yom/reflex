@@ -10,9 +10,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
 public class LamesP extends Objet {
 
     protected ArrayList<Segment> aretes;
@@ -59,8 +56,7 @@ public class LamesP extends Objet {
         Vec2f a = getPosition();
         Vec2f b = getPosition().plus(new Vec2f(largeur, longueur));
         // TODO use angle to rotate bounding box
-        return click.x <= max(a.x, b.x) + CLICKED_BIAS && click.x >= min(a.x, b.x) - CLICKED_BIAS
-                   && click.y <= max(a.y, b.y) + CLICKED_BIAS && click.y >= min(a.y, b.y) - CLICKED_BIAS;
+        return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
     }
 
     @Override

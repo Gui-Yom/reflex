@@ -2,8 +2,7 @@ package reflex;
 
 import java.awt.Color;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 
 public final class Utils {
     private static final double Gamma = 0.80;
@@ -94,6 +93,17 @@ public final class Utils {
             float t = a / b;
             return new Vec2f(p1.x + t * (p2.x - p1.x), p1.y + t * (p2.y - p1.y));
         }
+    }
+
+    /**
+     * @param a
+     * @param b
+     * @param click
+     * @return true if click is inside the rectangle ab
+     */
+    public static boolean testBoundingBox(Vec2f a, Vec2f b, Vec2f click, float bias) {
+        return click.x <= max(a.x, b.x) + bias && click.x >= min(a.x, b.x) - bias
+                   && click.y <= max(a.y, b.y) + bias && click.y >= min(a.y, b.y) - bias;
     }
 
     /**

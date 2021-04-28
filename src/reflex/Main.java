@@ -1,9 +1,6 @@
 package reflex;
 
-import reflex.objets.LamesP;
-import reflex.objets.Laser;
-import reflex.objets.Mirror;
-import reflex.objets.Objet;
+import reflex.objets.*;
 
 import javax.swing.JFrame;
 import javax.swing.event.MouseInputAdapter;
@@ -155,7 +152,7 @@ public class Main {
 
     static void configuration1() {
         // On ajoute nos reflex.objets
-        sim.objets.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 720));
+        sim.objets.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 632));
 
         Mirror m = new Mirror(new Vec2f(400, 100), 100, 0);
         sim.objets.add(m);
@@ -169,9 +166,11 @@ public class Main {
     }
 
     static void configuration2() {
-        sim.objets.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 720));
+        sim.objets.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 632));
 
         sim.objets.add(new Mirror(new Vec2f(400, 100), 100, 0));
+
+        sim.objets.add(new DemiSphere(new Vec2f(500, 400), 0, Constants.REFRAC_GLASS, 100));
     }
 
     static void recalculer() {

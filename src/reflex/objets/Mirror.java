@@ -4,13 +4,9 @@ import reflex.Intersection;
 import reflex.Utils;
 import reflex.Vec2f;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
-
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 
 public class Mirror extends Objet {
 
@@ -40,10 +36,9 @@ public class Mirror extends Objet {
 
     @Override
     public boolean isClickedOn(Vec2f click) {
-        Vec2f a = position;
-        Vec2f b = position.plus(Vec2f.fromPolar(width, angle));
-        return (click.x <= max(a.x, b.x) + CLICKED_BIAS && click.x >= min(a.x, b.x) - CLICKED_BIAS
-                    && click.y <= max(a.y, b.y) + CLICKED_BIAS && click.y >= min(a.y, b.y) - CLICKED_BIAS);
+        Vec2f a = getPosition();
+        Vec2f b = getPosition().plus(Vec2f.fromPolar(width, angle));
+        return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
     }
 
     @Override

@@ -7,9 +7,6 @@ import reflex.Vec2f;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
 public class Laser extends Objet {
 
     Vec2f direction;
@@ -35,6 +32,7 @@ public class Laser extends Objet {
     @Override
     public void recalc() {
         direction = Vec2f.fromPolar(1, angle);
+        color = Utils.waveLengthToRGB(wavelength);
     }
 
     @Override
@@ -48,10 +46,10 @@ public class Laser extends Objet {
 
     @Override
     public boolean isClickedOn(Vec2f click) {
-        Vec2f a = getPosition().minus(new Vec2f(-5, -5));
-        Vec2f b = getPosition().plus(new Vec2f(5, 5));
-        return click.x <= max(a.x, b.x) + CLICKED_BIAS && click.x >= min(a.x, b.x) - CLICKED_BIAS
-                   && click.y <= max(a.y, b.y) + CLICKED_BIAS && click.y >= min(a.y, b.y) - CLICKED_BIAS;
+        Vec2f extent = new Vec2f(5, 5);
+        Vec2f a = getPosition().minus(extent);
+        Vec2f b = getPosition().plus(extent);
+        return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
     }
 
     @Override
