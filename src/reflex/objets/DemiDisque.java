@@ -11,38 +11,32 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-public class DemiSphere extends Objet {
+public class DemiDisque extends Objet {
 
     protected ArrayList<Segment> aretes;
     private float radius;
 
-    public DemiSphere(Vec2f pos, float angle, float n, float radius, Color c) {
+    /*
+    This object position is the center of the circle
+     */
+
+    public DemiDisque(Vec2f pos, float angle, float n, float radius, Color c) {
         super(pos, angle, n, c);
 
         this.radius = radius;
-
-        aretes = new ArrayList<>();
-        Vec2f a = new Vec2f(position.x - (float) (this.radius * Math.cos(Math.PI / 2 + angle)), position.y - (float) (this.radius * Math.sin(Math.PI / 2 + angle)));
-        Vec2f b = new Vec2f(position.x + (float) (this.radius * Math.cos(Math.PI / 2 + angle)), position.y + (float) (this.radius * Math.sin(Math.PI / 2 + angle)));
-        Segment diam = new Segment(a, b);
-        aretes.add(diam);
-        ArrayList<Vec2f> pAs = pArc(position, this.radius);
-        pAs.add(0, b);
-        pAs.add(a);
-        for (int i = 0; i < pAs.size() - 1; i++) {
-            aretes.add(new Segment(pAs.get(i), pAs.get(i + 1)));
-        }
+        recalc();
     }
 
 
-    public DemiSphere(Vec2f pos, float angle, float n, float radius) {
+    public DemiDisque(Vec2f pos, float angle, float n, float radius) {
         this(pos, angle, n, radius, Color.BLACK);
     }
 
     public ArrayList<Vec2f> pArc(Vec2f centre, float r) {
         ArrayList<Vec2f> pA = new ArrayList<>();
-        for (int i = 0; i < 1001; i++) {
-            float alpha = (float) (i * Math.PI / 1000 - Math.PI / 2) + angle;
+        int numPoints = 20;
+        for (int i = 0; i < numPoints; i++) {
+            float alpha = (float) (i * Math.PI / numPoints - Math.PI / 2) + angle;
             float X = (float) (r * Math.cos(alpha));
             float Y = (float) (r * Math.sin(alpha));
             Vec2f p = new Vec2f(X, Y);
@@ -70,7 +64,17 @@ public class DemiSphere extends Objet {
 
     @Override
     public void recalc() {
-
+        aretes = new ArrayList<>();
+        Vec2f a = new Vec2f(position.x - (float) (this.radius * Math.cos(Math.PI / 2 + angle)), position.y - (float) (this.radius * Math.sin(Math.PI / 2 + angle)));
+        Vec2f b = new Vec2f(position.x + (float) (this.radius * Math.cos(Math.PI / 2 + angle)), position.y + (float) (this.radius * Math.sin(Math.PI / 2 + angle)));
+        Segment diam = new Segment(a, b);
+        aretes.add(diam);
+        ArrayList<Vec2f> pAs = pArc(position, this.radius);
+        pAs.add(0, b);
+        pAs.add(a);
+        for (int i = 0; i < pAs.size() - 1; i++) {
+            aretes.add(new Segment(pAs.get(i), pAs.get(i + 1)));
+        }
     }
 
     public void draw(Graphics2D g) {

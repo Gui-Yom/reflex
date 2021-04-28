@@ -170,7 +170,7 @@ public class Main {
 
         sim.objets.add(new Mirror(new Vec2f(400, 100), 100, 0));
 
-        sim.objets.add(new DemiSphere(new Vec2f(500, 400), 0, Constants.REFRAC_GLASS, 100));
+        sim.objets.add(new DemiDisque(new Vec2f(500, 400), 0, Constants.REFRAC_GLASS, 100));
     }
 
     static void recalculer() {
