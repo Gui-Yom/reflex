@@ -5,6 +5,7 @@ import reflex.Segment;
 import reflex.Utils;
 import reflex.Vec2f;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -13,13 +14,13 @@ import java.util.ArrayList;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class Parallepipede extends Objet {
+public class LamesP extends Objet {
 
     protected ArrayList<Segment> aretes;
     protected float longueur;
     protected float largeur;
 
-    public Parallepipede(Vec2f pos, float angle, float lon, float larg, float n, Color color) {
+    public LamesP(Vec2f pos, float angle, float lon, float larg, float n, Color color) {
         super(pos, angle, n, color);
         this.longueur = lon;
         this.largeur = larg;
@@ -40,7 +41,7 @@ public class Parallepipede extends Objet {
         }
     }
 
-    public Parallepipede(Vec2f position, float longueur, float largeur, float indice) {
+    public LamesP(Vec2f position, float longueur, float largeur, float indice) {
         this(position, 0f, longueur, largeur, indice, Color.BLACK);
     }
 
@@ -64,12 +65,10 @@ public class Parallepipede extends Objet {
     }
 
     @Override
-    public void recalc() {
-
-    }
-
-    @Override
     public void draw(Graphics2D g) {
+        if (selected) {
+            g.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 5f }, 0));
+        }
         g.setColor(color);
         double centerX = position.x + largeur / 2;
         double centerY = position.y + longueur / 2;

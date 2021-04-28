@@ -5,6 +5,7 @@ import reflex.Segment;
 import reflex.Utils;
 import reflex.Vec2f;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -72,6 +73,9 @@ public class DemiSphere extends Objet {
     }
 
     public void draw(Graphics2D g) {
+        if (selected) {
+            g.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 5f }, 0));
+        }
         g.setColor(color);
         AffineTransform afftran = new AffineTransform();
         afftran.rotate(angle);

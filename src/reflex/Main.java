@@ -3,7 +3,7 @@ package reflex;
 import reflex.objets.Laser;
 import reflex.objets.Mirror;
 import reflex.objets.Objet;
-import reflex.objets.Parallepipede;
+import reflex.objets.LamesP;
 
 import javax.swing.JFrame;
 import javax.swing.event.MouseInputAdapter;
@@ -48,7 +48,7 @@ public class Main {
         menu.add(fLame);*/
 
         configuration1();
-        sim.compute();
+        recalculer();
 
         AtomicReference<Objet> selected = new AtomicReference<>();
 
@@ -60,11 +60,14 @@ public class Main {
                 for (Objet o : sim.objets) {
                     if (o.isClickedOn(clicked)) {
                         selected.set(o);
-                        break;
-                    } else {
-                        selected.set(null);
+                        o.setSelected(true);
+                        redessiner();
+                        return;
                     }
                 }
+                selected.get().setSelected(false);
+                selected.set(null);
+                redessiner();
             }
         });
 
@@ -73,7 +76,7 @@ public class Main {
             if (o != null) {
                 o.setAngle(o.getAngle() + e.getWheelRotation() * (float) Math.PI / 128);
                 o.recalc();
-                redessiner();
+                recalculer();
             }
         });
 
@@ -84,40 +87,40 @@ public class Main {
                     case KeyEvent.VK_1:
                         clear();
                         configuration1();
-                        redessiner();
+                        recalculer();
                         break;
                     case KeyEvent.VK_2:
                         clear();
                         configuration2();
-                        redessiner();
+                        recalculer();
                         break;
                     case KeyEvent.VK_UP:
                         Objet o = selected.get();
                         if (o != null)
                             o.setPosition(new Vec2f(o.getPosition().x, o.getPosition().y - 1));
-                        redessiner();
+                        recalculer();
                         break;
                     case KeyEvent.VK_DOWN:
                         o = selected.get();
                         if (o != null)
                             o.setPosition(new Vec2f(o.getPosition().x, o.getPosition().y + 1));
-                        redessiner();
+                        recalculer();
                         break;
                     case KeyEvent.VK_RIGHT:
                         o = selected.get();
                         if (o != null)
                             o.setPosition(new Vec2f(o.getPosition().x + 1, o.getPosition().y));
-                        redessiner();
+                        recalculer();
                         break;
                     case KeyEvent.VK_LEFT:
                         o = selected.get();
                         if (o != null)
                             o.setPosition(new Vec2f(o.getPosition().x - 1, o.getPosition().y));
-                        redessiner();
+                        recalculer();
                         break;
                     case KeyEvent.VK_ENTER:
-                        sim.objets.add(new Parallepipede(new Vec2f(50, 50), 100, 50, -1f));
-                        redessiner();
+                        sim.objets.add(new LamesP(new Vec2f(50, 50), 100, 50, -1f));
+                        recalculer();
                         break;
                     case KeyEvent.VK_ESCAPE:
                         frame.dispose();
@@ -139,7 +142,7 @@ public class Main {
         sim.objets.add(m2);
         Mirror m3 = new Mirror(new Vec2f(200, 150), 100, (float) -Math.PI / 4);
         sim.objets.add(m3);
-        Parallepipede lame = new Parallepipede(new Vec2f(200f, 300f), 200, 100, Constants.REFRAC_GLASS);
+        LamesP lame = new LamesP(new Vec2f(200f, 300f), 200, 100, Constants.REFRAC_GLASS);
         sim.objets.add(lame);
         //demiSphere d = new demiSphere(new reflex.Vec2f(50, 50), reflex.Constants.REFRAC_GLASS, 5f);
     }
@@ -150,8 +153,12 @@ public class Main {
         sim.objets.add(new Mirror(new Vec2f(400, 100), 100, 0));
     }
 
-    static void redessiner() {
+    static void recalculer() {
         sim.compute();
+        redessiner();
+    }
+
+    static void redessiner() {
         canvas.repaint();
     }
 
