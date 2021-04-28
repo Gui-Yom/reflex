@@ -1,9 +1,9 @@
-package reflex;
-
-import reflex.objets.*;
-
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -17,32 +17,36 @@ public class Main {
 
     public static void main(String[] args) {
 
+        // This allows Java2D to use a gpu when rendering
         System.setProperty("sun.java2d.opengl", "true");
 
         frame = new JFrame("Reflex");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
-        //frame.setLayout(new BorderLayout());
+        frame.setLayout(new BorderLayout());
 
         sim = new Simulation();
         canvas = new Canvas(sim);
-        //frame.add(canvas, BorderLayout.CENTER);
+        frame.add(canvas, BorderLayout.CENTER);
 
         frame.add(canvas);
-        /*
         JPanel menu = new JPanel();
         frame.add(menu, BorderLayout.NORTH);
         menu.setLayout(new FlowLayout());
 
         JButton reinit = new JButton("Reinitialiser");
+        reinit.addActionListener(e -> {
+            clear();
+            redessiner();
+        });
         menu.add(reinit);
-        JButton dSphere = new JButton("Demi-sphere");
-        menu.add(dSphere);
-        JButton miroir = new JButton("Miroir");
-        menu.add(miroir);
-        JButton fLame = new JButton("Face a lames paralleles");
-        menu.add(fLame);*/
+        JButton btnDemidisque = new JButton("Demi-disque");
+        menu.add(btnDemidisque);
+        JButton btnMiroir = new JButton("Miroir");
+        menu.add(btnMiroir);
+        JButton btnLamesP = new JButton("Lame à faces parallèles");
+        menu.add(btnLamesP);
 
         configuration1();
         recalculer();
@@ -103,6 +107,7 @@ public class Main {
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_1:
+                        System.out.println("1");
                         clear();
                         configuration1();
                         recalculer();
@@ -162,7 +167,7 @@ public class Main {
         sim.objets.add(m3);
         LamesP lame = new LamesP(new Vec2f(200f, 300f), 200, 100, Constants.REFRAC_GLASS);
         sim.objets.add(lame);
-        //demiSphere d = new demiSphere(new reflex.Vec2f(50, 50), reflex.Constants.REFRAC_GLASS, 5f);
+        //demiSphere d = new demiSphere(new Vec2f(50, 50), Constants.REFRAC_GLASS, 5f);
     }
 
     static void configuration2() {

@@ -1,5 +1,3 @@
-package reflex;
-
 public class Intersection {
     Vec2f point;
     Vec2f normal;

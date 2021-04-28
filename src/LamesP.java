@@ -1,10 +1,3 @@
-package reflex.objets;
-
-import reflex.Intersection;
-import reflex.Segment;
-import reflex.Utils;
-import reflex.Vec2f;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;

@@ -1,8 +1,3 @@
-package reflex;
-
-import reflex.objets.Laser;
-import reflex.objets.Objet;
-
 import java.util.ArrayList;
 import java.util.List;
 

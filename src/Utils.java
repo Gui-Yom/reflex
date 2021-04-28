@@ -1,5 +1,3 @@
-package reflex;
-
 import java.awt.Color;
 
 import static java.lang.Math.*;
@@ -89,7 +87,7 @@ public final class Utils {
             // If sign is different, t < 0, no intersection
             // If |a| > |b|, t > 1, no intersection
             return null;
-        } else { // reflex.Intersection
+        } else { // Intersection
             float t = a / b;
             return new Vec2f(p1.x + t * (p2.x - p1.x), p1.y + t * (p2.y - p1.y));
         }

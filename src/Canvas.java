@@ -1,7 +1,3 @@
-package reflex;
-
-import reflex.objets.Objet;
-
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;

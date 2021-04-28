@@ -1,5 +1,3 @@
-package reflex;
-
 import static java.lang.Math.acos;
 import static java.lang.Math.atan2;
 
@@ -119,7 +117,7 @@ public class Vec2f implements Cloneable {
 
     @Override
     public String toString() {
-        return "reflex.Vec2f{" +
+        return "Vec2f{" +
                    "x=" + x +
                    ", y=" + y +
                    '}';

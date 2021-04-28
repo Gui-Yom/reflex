@@ -1,5 +1,3 @@
-package reflex;
-
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 
