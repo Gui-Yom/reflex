@@ -13,21 +13,22 @@ public class LamesP extends Objet {
         super(pos, angle, n, color);
         this.longueur = lon;
         this.largeur = larg;
-        ArrayList<Vec2f> p = new ArrayList<>();
-        Vec2f A = new Vec2f(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        Vec2f B = new Vec2f(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        Vec2f C = new Vec2f(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        Vec2f D = new Vec2f(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        p.add(A);
-        p.add(B);
-        p.add(C);
-        p.add(D);
-        p.add(A);
+        //ArrayList<Vec2f> p = new ArrayList<>();
+        //Vec2f A = new Vec2f(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+        //Vec2f B = new Vec2f(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+        //Vec2f C = new Vec2f(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+        //Vec2f D = new Vec2f(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+        //p.add(A);
+        //p.add(B);
+        //p.add(C);
+        //p.add(D);
+        //p.add(A);
 
-        this.aretes = new ArrayList<>();
-        for (int i = 0; i < p.size() - 1; i++) {
-            aretes.add(new Segment(p.get(i), p.get(i + 1)));
-        }
+        //this.aretes = new ArrayList<>();
+        //for (int i = 0; i < p.size() - 1; i++) {
+          //  aretes.add(new Segment(p.get(i), p.get(i + 1)));
+        //}
+        recalc();
     }
 
     public LamesP(Vec2f position, float longueur, float largeur, float indice) {
@@ -51,6 +52,24 @@ public class LamesP extends Objet {
         // TODO use angle to rotate bounding box
         return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
     }
+    
+    public void recalc(){
+		ArrayList<Vec2f> p = new ArrayList<>();
+        Vec2f A = new Vec2f(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+        Vec2f B = new Vec2f(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+        Vec2f C = new Vec2f(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+        Vec2f D = new Vec2f(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+        p.add(A);
+        p.add(B);
+        p.add(C);
+        p.add(D);
+        p.add(A);
+
+        this.aretes = new ArrayList<>();
+        for (int i = 0; i < p.size() - 1; i++) {
+            aretes.add(new Segment(p.get(i), p.get(i + 1)));
+        }
+	}
 
     @Override
     public void draw(Graphics2D g) {
