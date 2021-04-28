@@ -1,9 +1,9 @@
 package reflex;
 
+import reflex.objets.LamesP;
 import reflex.objets.Laser;
 import reflex.objets.Mirror;
 import reflex.objets.Objet;
-import reflex.objets.LamesP;
 
 import javax.swing.JFrame;
 import javax.swing.event.MouseInputAdapter;
@@ -52,26 +52,47 @@ public class Main {
 
         AtomicReference<Objet> selected = new AtomicReference<>();
 
+        canvas.requestFocus();
         canvas.addMouseListener(new MouseInputAdapter() {
+
+            Vec2f initialDragPos = Vec2f.NULL;
+
             @Override
             public void mousePressed(MouseEvent e) {
                 //System.out.println(e.getPoint());
                 Vec2f clicked = new Vec2f(e.getX(), e.getY());
+                initialDragPos = clicked;
                 for (Objet o : sim.objets) {
                     if (o.isClickedOn(clicked)) {
+                        Objet sel = selected.get();
+                        if (sel != null)
+                            sel.setSelected(false);
                         selected.set(o);
                         o.setSelected(true);
                         redessiner();
                         return;
                     }
                 }
-                selected.get().setSelected(false);
-                selected.set(null);
-                redessiner();
+                Objet o = selected.get();
+                if (o != null) {
+                    selected.get().setSelected(false);
+                    selected.set(null);
+                    redessiner();
+                }
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                Objet o = selected.get();
+                //System.out.println("Drag : " + e.getX() + ", " + e.getY());
+                if (o != null) {
+                    o.setPosition(o.getPosition().plus(new Vec2f(e.getX(), e.getY()).minus(initialDragPos)));
+                    recalculer();
+                }
             }
         });
 
-        frame.addMouseWheelListener(e -> {
+        canvas.addMouseWheelListener(e -> {
             Objet o = selected.get();
             if (o != null) {
                 o.setAngle(o.getAngle() + e.getWheelRotation() * (float) Math.PI / 128);
@@ -134,7 +155,7 @@ public class Main {
 
     static void configuration1() {
         // On ajoute nos reflex.objets
-        sim.lasers.add(new Laser(new Vec2f(100, 400), Vec2f.fromPolar(1, (float) (-Math.PI / 5)), 720));
+        sim.objets.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 720));
 
         Mirror m = new Mirror(new Vec2f(400, 100), 100, 0);
         sim.objets.add(m);
@@ -148,7 +169,7 @@ public class Main {
     }
 
     static void configuration2() {
-        sim.lasers.add(new Laser(new Vec2f(100, 400), Vec2f.fromPolar(1, (float) (-Math.PI / 5)), 720));
+        sim.objets.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 720));
 
         sim.objets.add(new Mirror(new Vec2f(400, 100), 100, 0));
     }
@@ -164,6 +185,6 @@ public class Main {
 
     static void clear() {
         sim.objets.clear();
-        sim.lasers.clear();
+        sim.rays.clear();
     }
 }

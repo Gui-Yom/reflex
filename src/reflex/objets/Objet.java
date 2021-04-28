@@ -5,11 +5,14 @@ import reflex.Drawable;
 import reflex.Intersection;
 import reflex.Vec2f;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Stroke;
 
 
 public abstract class Objet implements Drawable {
-    protected static final float clickedBias = 6f;
+    protected static final float CLICKED_BIAS = 6f;
+    protected static final Stroke STROKE_SELECTED = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 5f }, 0);
     protected Vec2f position;
     protected float indice;
     protected Color color;

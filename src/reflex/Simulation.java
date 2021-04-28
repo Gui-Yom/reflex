@@ -13,7 +13,6 @@ public class Simulation {
 
     // Means big number
     private static final float INFINITY = 999999;
-    List<Laser> lasers = new ArrayList<>();
     List<Objet> objets = new ArrayList<>();
     // Computed rays
     List<Ray> rays = new ArrayList<>();
@@ -24,9 +23,12 @@ public class Simulation {
     void compute() {
         rays.clear();
         System.out.println("Start compute");
-        // reflex.Ray sources
-        for (Laser laser : lasers) {
-            computeRay(laser.getOrigin(), laser.getDirection(), ParentRay.fromLaser(laser));
+        // Ray sources
+        for (Objet o : objets) {
+            if (o instanceof Laser) {
+                Laser laser = (Laser) o;
+                computeRay(laser.getPosition(), laser.getDirection(), ParentRay.fromLaser(laser));
+            }
         }
     }
 
@@ -37,12 +39,14 @@ public class Simulation {
         float distance = INFINITY;
         // World objects
         for (Objet objet : objets) {
-            Intersection i = objet.intersect(origin, end);
-            if (i != null) {
-                float d_ = i.point.minus(origin).length();
-                if (d_ > 0.0001 && d_ < distance) {
-                    intersection = i;
-                    distance = d_;
+            if (!(objet instanceof Laser)) {
+                Intersection i = objet.intersect(origin, end);
+                if (i != null) {
+                    float d_ = i.point.minus(origin).length();
+                    if (d_ > 0.0001 && d_ < distance) {
+                        intersection = i;
+                        distance = d_;
+                    }
                 }
             }
         }

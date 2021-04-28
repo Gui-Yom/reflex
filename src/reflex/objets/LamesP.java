@@ -5,7 +5,6 @@ import reflex.Segment;
 import reflex.Utils;
 import reflex.Vec2f;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -60,14 +59,14 @@ public class LamesP extends Objet {
         Vec2f a = getPosition();
         Vec2f b = getPosition().plus(new Vec2f(largeur, longueur));
         // TODO use angle to rotate bounding box
-        return click.x <= max(a.x, b.x) + clickedBias && click.x >= min(a.x, b.x) - clickedBias
-                   && click.y <= max(a.y, b.y) + clickedBias && click.y >= min(a.y, b.y) - clickedBias;
+        return click.x <= max(a.x, b.x) + CLICKED_BIAS && click.x >= min(a.x, b.x) - CLICKED_BIAS
+                   && click.y <= max(a.y, b.y) + CLICKED_BIAS && click.y >= min(a.y, b.y) - CLICKED_BIAS;
     }
 
     @Override
     public void draw(Graphics2D g) {
         if (selected) {
-            g.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 5f }, 0));
+            g.setStroke(STROKE_SELECTED);
         }
         g.setColor(color);
         double centerX = position.x + largeur / 2;

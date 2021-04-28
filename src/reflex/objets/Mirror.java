@@ -42,14 +42,14 @@ public class Mirror extends Objet {
     public boolean isClickedOn(Vec2f click) {
         Vec2f a = position;
         Vec2f b = position.plus(Vec2f.fromPolar(width, angle));
-        return (click.x <= max(a.x, b.x) + clickedBias && click.x >= min(a.x, b.x) - clickedBias
-                    && click.y <= max(a.y, b.y) + clickedBias && click.y >= min(a.y, b.y) - clickedBias);
+        return (click.x <= max(a.x, b.x) + CLICKED_BIAS && click.x >= min(a.x, b.x) - CLICKED_BIAS
+                    && click.y <= max(a.y, b.y) + CLICKED_BIAS && click.y >= min(a.y, b.y) - CLICKED_BIAS);
     }
 
     @Override
     public void draw(Graphics2D g) {
         if (selected) {
-            g.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 5f }, 0));
+            g.setStroke(STROKE_SELECTED);
         }
         g.setColor(Color.BLACK);
         g.draw(new Line2D.Float(position.x, position.y, (float) (position.x + width * Math.cos(angle)), (float) (position.y + width * Math.sin(angle))));

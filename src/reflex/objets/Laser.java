@@ -1,33 +1,62 @@
 package reflex.objets;
 
-import reflex.Drawable;
+import reflex.Intersection;
 import reflex.Utils;
 import reflex.Vec2f;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
-public class Laser implements Drawable {
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
-    Vec2f origin;
+public class Laser extends Objet {
+
     Vec2f direction;
 
-    float intensity = 1;
+    float intensity;
     float wavelength;
 
-    public Laser(Vec2f origin, Vec2f direction, float wavelength) {
-        this.origin = origin;
-        this.direction = direction.normalize();
+    public Laser(Vec2f position, float angle, float wavelength, float intensity) {
+        super(position, angle, -1, Utils.waveLengthToRGB(wavelength));
+        this.intensity = intensity;
         this.wavelength = wavelength;
+        recalc();
+    }
+
+    public Laser(Vec2f position, float angle, float wavelength) {
+        this(position, angle, wavelength, 1);
     }
 
     public float sample(float time) {
         return intensity * (float) Math.cos(2 * Math.PI * Utils.wavelengthToFreq(wavelength) * time);
     }
 
-    public Vec2f getOrigin() {
-        return origin;
+    @Override
+    public void recalc() {
+        direction = Vec2f.fromPolar(1, angle);
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        if (selected) {
+            g.setStroke(STROKE_SELECTED);
+        }
+        g.setColor(Utils.waveLengthToRGB(wavelength));
+        g.draw(new Rectangle2D.Float(position.x - 5, position.y - 5, 10, 10));
+    }
+
+    @Override
+    public boolean isClickedOn(Vec2f click) {
+        Vec2f a = getPosition().minus(new Vec2f(-5, -5));
+        Vec2f b = getPosition().plus(new Vec2f(5, 5));
+        return click.x <= max(a.x, b.x) + CLICKED_BIAS && click.x >= min(a.x, b.x) - CLICKED_BIAS
+                   && click.y <= max(a.y, b.y) + CLICKED_BIAS && click.y >= min(a.y, b.y) - CLICKED_BIAS;
+    }
+
+    @Override
+    public Intersection intersect(Vec2f origin, Vec2f end) {
+        throw new UnsupportedOperationException("Laser can't interact with rays");
     }
 
     public Vec2f getDirection() {
@@ -38,14 +67,15 @@ public class Laser implements Drawable {
         return intensity;
     }
 
+    public void setIntensity(float intensity) {
+        this.intensity = intensity;
+    }
+
     public float getWavelength() {
         return wavelength;
     }
 
-    @Override
-    public void draw(Graphics2D g) {
-        g.setColor(Utils.waveLengthToRGB(wavelength));
-        g.draw(new Rectangle2D.Float(origin.x - 5, origin.y - 5, 10, 10));
-        g.draw(new Line2D.Float(origin.x, origin.y, origin.x + direction.x * 10, origin.y + direction.y * 10));
+    public void setWavelength(float wavelength) {
+        this.wavelength = wavelength;
     }
 }

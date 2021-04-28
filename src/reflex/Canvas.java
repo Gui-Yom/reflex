@@ -1,6 +1,5 @@
 package reflex;
 
-import reflex.objets.Laser;
 import reflex.objets.Objet;
 
 import javax.swing.JPanel;
@@ -30,14 +29,11 @@ public class Canvas extends JPanel {
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        for (Laser laser : simulation.lasers) {
-            laser.draw((Graphics2D) g2d.create());
+        for (Objet objet : simulation.objets) {
+            objet.draw((Graphics2D) g2d.create());
         }
         for (Ray ray : simulation.rays) {
             ray.draw((Graphics2D) g2d.create());
-        }
-        for (Objet objet : simulation.objets) {
-            objet.draw((Graphics2D) g2d.create());
         }
         System.out.printf("Draw time : %d ms%n", System.currentTimeMillis() - startTime);
     }
