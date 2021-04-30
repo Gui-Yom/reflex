@@ -6,14 +6,14 @@ import java.awt.geom.Line2D;
  */
 public class Ray implements Drawable {
 
-    Vec2f start;
-    Vec2f end;
+    Vec2d start;
+    Vec2d end;
 
-    float intensity;
-    float wavelength;
-    float phaseShift;
+    double intensity;
+    double wavelength;
+    double phaseShift;
 
-    public Ray(Vec2f start, Vec2f end, float intensity, float wavelength, float phaseShift) {
+    public Ray(Vec2d start, Vec2d end, double intensity, double wavelength, double phaseShift) {
         this.start = start;
         this.end = end;
         this.intensity = intensity;
@@ -21,13 +21,13 @@ public class Ray implements Drawable {
         this.phaseShift = phaseShift;
     }
 
-    public Vec2f sample(float time) {
-        return Vec2f.UNIT_X.scale((float) (intensity * Math.cos(time * 2 * Math.PI * Utils.wavelengthToFreq(wavelength) + phaseShift)));
+    public Vec2d sample(double time) {
+        return Vec2d.UNIT_X.scale(intensity * Math.cos(time * 2 * Math.PI * Utils.wavelengthToFreq(wavelength) + phaseShift));
     }
 
     @Override
     public void draw(Graphics2D g) {
         g.setColor(Utils.waveLengthToRGB(wavelength));
-        g.draw(new Line2D.Float(start.x, start.y, end.x, end.y));
+        g.draw(new Line2D.Double(start.x, start.y, end.x, end.y));
     }
 }

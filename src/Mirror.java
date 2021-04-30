@@ -4,10 +4,10 @@ import java.awt.geom.Line2D;
 
 public class Mirror extends Objet {
 
-    float width;
-    Vec2f normal;
+    private final double width;
+    private Vec2d normal;
 
-    public Mirror(Vec2f position, float width, float angle) {
+    public Mirror(Vec2d position, double width, double angle) {
         super(position, angle, -1f, Color.BLACK);
         this.width = width;
         recalc();
@@ -15,23 +15,23 @@ public class Mirror extends Objet {
 
     @Override
     public void recalc() {
-        this.normal = Vec2f.fromPolar(1, (float) (angle + Math.PI / 2)).normalize();
+        this.normal = Vec2d.fromPolar(1, (float) (angle + Math.PI / 2)).normalize();
     }
 
     @Override
-    public Intersection intersect(Vec2f origin, Vec2f end) {
+    public Intersection intersect(Vec2d origin, Vec2d end) {
 
-        final Vec2f mirrorEnd = position.plus(Vec2f.fromPolar(width, angle));
-        final Vec2f intersection = Utils.segmentIntersect(position, mirrorEnd, origin, end);
+        final Vec2d mirrorEnd = position.plus(Vec2d.fromPolar(width, angle));
+        final Vec2d intersection = Utils.segmentIntersect(position, mirrorEnd, origin, end);
         //System.out.printf("intersection: %s%n", intersection);
 
         return intersection == null ? null : new Intersection(intersection, normal, indice);
     }
 
     @Override
-    public boolean isClickedOn(Vec2f click) {
-        Vec2f a = getPosition();
-        Vec2f b = getPosition().plus(Vec2f.fromPolar(width, angle));
+    public boolean isClickedOn(Vec2d click) {
+        Vec2d a = getPosition();
+        Vec2d b = getPosition().plus(Vec2d.fromPolar(width, angle));
         return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
     }
 
@@ -41,9 +41,9 @@ public class Mirror extends Objet {
             g.setStroke(STROKE_SELECTED);
         }
         g.setColor(Color.BLACK);
-        g.draw(new Line2D.Float(position.x, position.y, (float) (position.x + width * Math.cos(angle)), (float) (position.y + width * Math.sin(angle))));
+        g.draw(new Line2D.Double(position.x, position.y, position.x + width * Math.cos(angle), position.y + width * Math.sin(angle)));
         g.setColor(Color.ORANGE);
-        g.draw(new Line2D.Float(position.x, position.y, position.x + normal.x * 10, position.y + normal.y * 10));
+        g.draw(new Line2D.Double(position.x, position.y, position.x + normal.x * 10, position.y + normal.y * 10));
     }
 
     @Override

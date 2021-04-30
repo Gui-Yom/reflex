@@ -6,10 +6,10 @@ import java.util.ArrayList;
 public class LamesP extends Objet {
 
     protected ArrayList<Segment> aretes;
-    protected float longueur;
-    protected float largeur;
+    protected double longueur;
+    protected double largeur;
 
-    public LamesP(Vec2f pos, float angle, float lon, float larg, float n, Color color) {
+    public LamesP(Vec2d pos, double angle, double lon, double larg, double n, Color color) {
         super(pos, angle, n, color);
         this.longueur = lon;
         this.largeur = larg;
@@ -26,18 +26,18 @@ public class LamesP extends Objet {
 
         //this.aretes = new ArrayList<>();
         //for (int i = 0; i < p.size() - 1; i++) {
-          //  aretes.add(new Segment(p.get(i), p.get(i + 1)));
+        //  aretes.add(new Segment(p.get(i), p.get(i + 1)));
         //}
         recalc();
     }
 
-    public LamesP(Vec2f position, float longueur, float largeur, float indice) {
+    public LamesP(Vec2d position, double longueur, double largeur, double indice) {
         this(position, 0, longueur, largeur, indice, Color.BLACK);
     }
 
-    public Intersection intersect(Vec2f origin, Vec2f end) {
+    public Intersection intersect(Vec2d origin, Vec2d end) {
         for (Segment seg : aretes) {
-            Vec2f testintersect = Utils.segmentIntersect(seg.pointA, seg.pointB, origin, end);
+            Vec2d testintersect = Utils.segmentIntersect(seg.pointA, seg.pointB, origin, end);
             if (testintersect != null) {
                 return new Intersection(testintersect, seg.normale, indice);
             }
@@ -46,19 +46,19 @@ public class LamesP extends Objet {
     }
 
     @Override
-    public boolean isClickedOn(Vec2f click) {
-        Vec2f a = getPosition();
-        Vec2f b = getPosition().plus(new Vec2f(largeur, longueur));
+    public boolean isClickedOn(Vec2d click) {
+        Vec2d a = getPosition();
+        Vec2d b = getPosition().plus(new Vec2d(largeur, longueur));
         // TODO use angle to rotate bounding box
         return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
     }
-    
-    public void recalc(){
-		ArrayList<Vec2f> p = new ArrayList<>();
-        Vec2f A = new Vec2f(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        Vec2f B = new Vec2f(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        Vec2f C = new Vec2f(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        Vec2f D = new Vec2f(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+
+    public void recalc() {
+        ArrayList<Vec2d> p = new ArrayList<>();
+        Vec2d A = new Vec2d(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+        Vec2d B = new Vec2d(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+        Vec2d C = new Vec2d(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
+        Vec2d D = new Vec2d(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
         p.add(A);
         p.add(B);
         p.add(C);
@@ -69,7 +69,7 @@ public class LamesP extends Objet {
         for (int i = 0; i < p.size() - 1; i++) {
             aretes.add(new Segment(p.get(i), p.get(i + 1)));
         }
-	}
+    }
 
     @Override
     public void draw(Graphics2D g) {
@@ -81,22 +81,22 @@ public class LamesP extends Objet {
         double centerY = position.y + longueur / 2;
         g.translate(centerX, centerY);
         g.rotate(angle);
-        g.draw(new Rectangle2D.Float(-largeur / 2, -longueur / 2, largeur, longueur));
+        g.draw(new Rectangle2D.Double(-largeur / 2, -longueur / 2, largeur, longueur));
     }
 
-    public float getLongueur() {
+    public double getLongueur() {
         return longueur;
     }
 
-    public void setLongueur(float longueur) {
+    public void setLongueur(double longueur) {
         this.longueur = longueur;
     }
 
-    public float getLargeur() {
+    public double getLargeur() {
         return largeur;
     }
 
-    public void setLargeur(float largeur) {
+    public void setLargeur(double largeur) {
         this.largeur = largeur;
     }
 }

@@ -6,27 +6,27 @@ import java.awt.Stroke;
 public abstract class Objet implements Drawable {
     protected static final float CLICKED_BIAS = 6f;
     protected static final Stroke STROKE_SELECTED = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 5f }, 0);
-    protected Vec2f position;
-    protected float indice;
+    protected Vec2d position;
+    protected double indice;
     protected Color color;
-    protected float angle;
+    protected double angle;
     /**
      * true if the current object is selected
      */
     protected boolean selected = false;
 
-    public Objet(Vec2f position, float angle, float indice, Color color) {
+    public Objet(Vec2d position, double angle, double indice, Color color) {
         this.position = position;
         this.indice = indice;
         this.color = color;
         this.angle = angle;
     }
 
-    public Objet(float indice, Color color) {
-        this(Vec2f.NULL, 0.0f, indice, color);
+    public Objet(double indice, Color color) {
+        this(Vec2d.NULL, 0.0f, indice, color);
     }
 
-    public Objet(float indice) {
+    public Objet(double indice) {
         this(indice, Color.BLACK);
     }
 
@@ -46,23 +46,23 @@ public abstract class Objet implements Drawable {
      * @param end    the end point of the ray
      * @return a non null value to indicate the ray has intersected with this object
      */
-    public abstract Intersection intersect(Vec2f origin, Vec2f end);
+    public abstract Intersection intersect(Vec2d origin, Vec2d end);
 
-    public abstract boolean isClickedOn(Vec2f click);
+    public abstract boolean isClickedOn(Vec2d click);
 
-    public Vec2f getPosition() {
+    public Vec2d getPosition() {
         return position;
     }
 
-    public void setPosition(Vec2f position) {
+    public void setPosition(Vec2d position) {
         this.position = position;
     }
 
-    public float getIndice() {
+    public double getIndice() {
         return indice;
     }
 
-    public void setIndice(float indice) {
+    public void setIndice(double indice) {
         this.indice = indice;
     }
 
@@ -74,11 +74,11 @@ public abstract class Objet implements Drawable {
         this.color = color;
     }
 
-    public float getAngle() {
+    public double getAngle() {
         return angle;
     }
 
-    public void setAngle(float ang) {
+    public void setAngle(double ang) {
         this.angle = ang;
     }
 

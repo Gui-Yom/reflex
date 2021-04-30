@@ -3,29 +3,29 @@ import java.awt.geom.Rectangle2D;
 
 public class Laser extends Objet {
 
-    Vec2f direction;
+    Vec2d direction;
 
-    float intensity;
-    float wavelength;
+    double intensity;
+    double wavelength;
 
-    public Laser(Vec2f position, float angle, float wavelength, float intensity) {
+    public Laser(Vec2d position, double angle, double wavelength, double intensity) {
         super(position, angle, -1, Utils.waveLengthToRGB(wavelength));
         this.intensity = intensity;
         this.wavelength = wavelength;
         recalc();
     }
 
-    public Laser(Vec2f position, float angle, float wavelength) {
+    public Laser(Vec2d position, double angle, double wavelength) {
         this(position, angle, wavelength, 1);
     }
 
-    public float sample(float time) {
+    public double sample(double time) {
         return intensity * (float) Math.cos(2 * Math.PI * Utils.wavelengthToFreq(wavelength) * time);
     }
 
     @Override
     public void recalc() {
-        direction = Vec2f.fromPolar(1, angle);
+        direction = Vec2d.fromPolar(1, angle);
         color = Utils.waveLengthToRGB(wavelength);
     }
 
@@ -35,39 +35,39 @@ public class Laser extends Objet {
             g.setStroke(STROKE_SELECTED);
         }
         g.setColor(Utils.waveLengthToRGB(wavelength));
-        g.draw(new Rectangle2D.Float(position.x - 5, position.y - 5, 10, 10));
+        g.draw(new Rectangle2D.Double(position.x - 5, position.y - 5, 10, 10));
     }
 
     @Override
-    public boolean isClickedOn(Vec2f click) {
-        Vec2f extent = new Vec2f(5, 5);
-        Vec2f a = getPosition().minus(extent);
-        Vec2f b = getPosition().plus(extent);
+    public boolean isClickedOn(Vec2d click) {
+        Vec2d extent = new Vec2d(5, 5);
+        Vec2d a = getPosition().minus(extent);
+        Vec2d b = getPosition().plus(extent);
         return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
     }
 
     @Override
-    public Intersection intersect(Vec2f origin, Vec2f end) {
+    public Intersection intersect(Vec2d origin, Vec2d end) {
         throw new UnsupportedOperationException("Laser can't interact with rays");
     }
 
-    public Vec2f getDirection() {
+    public Vec2d getDirection() {
         return direction;
     }
 
-    public float getIntensity() {
+    public double getIntensity() {
         return intensity;
     }
 
-    public void setIntensity(float intensity) {
+    public void setIntensity(double intensity) {
         this.intensity = intensity;
     }
 
-    public float getWavelength() {
+    public double getWavelength() {
         return wavelength;
     }
 
-    public void setWavelength(float wavelength) {
+    public void setWavelength(double wavelength) {
         this.wavelength = wavelength;
     }
 }

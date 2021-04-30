@@ -1,19 +1,19 @@
 public class Segment {
-    public Vec2f pointA;
-    public Vec2f pointB;
-    public Vec2f normale;
+    public Vec2d pointA;
+    public Vec2d pointB;
+    public Vec2d normale;
 
-    public Segment(Vec2f a, Vec2f b) {
+    public Segment(Vec2d a, Vec2d b) {
         this.pointA = a;
         this.pointB = b;
         this.normale = this.getNormale();
     }
 
-    public Vec2f getNormale() {
-        float dx = pointB.x - pointA.x;
-        float dy = pointB.y - pointA.y;
+    public Vec2d getNormale() {
+        double dx = pointB.x - pointA.x;
+        double dy = pointB.y - pointA.y;
 
-        return new Vec2f(-dy, dx);
+        return new Vec2d(-dy, dx);
     }
 }
 

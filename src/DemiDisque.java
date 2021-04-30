@@ -6,14 +6,14 @@ import java.util.ArrayList;
 
 public class DemiDisque extends Objet {
 
+    private final double radius;
     protected ArrayList<Segment> aretes;
-    private final float radius;
 
     /*
     This object position is the center of the circle
      */
 
-    public DemiDisque(Vec2f pos, float angle, float n, float radius, Color c) {
+    public DemiDisque(Vec2d pos, double angle, double n, double radius, Color c) {
         super(pos, angle, n, c);
 
         this.radius = radius;
@@ -21,26 +21,26 @@ public class DemiDisque extends Objet {
     }
 
 
-    public DemiDisque(Vec2f pos, float angle, float n, float radius) {
+    public DemiDisque(Vec2d pos, double angle, double n, double radius) {
         this(pos, angle, n, radius, Color.BLACK);
     }
 
-    public ArrayList<Vec2f> pArc(Vec2f centre, float r) {
-        ArrayList<Vec2f> pA = new ArrayList<>();
+    public ArrayList<Vec2d> pArc(Vec2d centre, double r) {
+        ArrayList<Vec2d> pA = new ArrayList<>();
         int numPoints = 20;
         for (int i = 0; i < numPoints; i++) {
-            float alpha = (float) (i * Math.PI / numPoints - Math.PI / 2) + angle;
-            float X = (float) (r * Math.cos(alpha));
-            float Y = (float) (r * Math.sin(alpha));
-            Vec2f p = new Vec2f(X, Y);
+            double alpha = i * Math.PI / numPoints - Math.PI / 2 + angle;
+            double X = r * Math.cos(alpha);
+            double Y = r * Math.sin(alpha);
+            Vec2d p = new Vec2d(X, Y);
             pA.add(p);
         }
         return pA;
     }
 
-    public Intersection intersect(Vec2f origin, Vec2f end) {
+    public Intersection intersect(Vec2d origin, Vec2d end) {
         for (Segment seg : aretes) {
-            Vec2f testintersect = Utils.segmentIntersect(seg.pointA, seg.pointB, origin, end);
+            Vec2d testintersect = Utils.segmentIntersect(seg.pointA, seg.pointB, origin, end);
             if (testintersect != null) {
                 return new Intersection(testintersect, seg.normale, indice);
             }
@@ -49,20 +49,20 @@ public class DemiDisque extends Objet {
     }
 
     @Override
-    public boolean isClickedOn(Vec2f click) {
-        Vec2f a = getPosition();
-        Vec2f b = getPosition().plus(new Vec2f(2 * radius, 2 * radius));
+    public boolean isClickedOn(Vec2d click) {
+        Vec2d a = getPosition();
+        Vec2d b = getPosition().plus(new Vec2d(2 * radius, 2 * radius));
         return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
     }
 
     @Override
     public void recalc() {
         aretes = new ArrayList<>();
-        Vec2f a = new Vec2f(position.x - (float) (this.radius * Math.cos(Math.PI / 2 + angle)), position.y - (float) (this.radius * Math.sin(Math.PI / 2 + angle)));
-        Vec2f b = new Vec2f(position.x + (float) (this.radius * Math.cos(Math.PI / 2 + angle)), position.y + (float) (this.radius * Math.sin(Math.PI / 2 + angle)));
+        Vec2d a = new Vec2d(position.x - this.radius * Math.cos(Math.PI / 2 + angle), position.y - this.radius * Math.sin(Math.PI / 2 + angle));
+        Vec2d b = new Vec2d(position.x + this.radius * Math.cos(Math.PI / 2 + angle), position.y + this.radius * Math.sin(Math.PI / 2 + angle));
         Segment diam = new Segment(a, b);
         aretes.add(diam);
-        ArrayList<Vec2f> pAs = pArc(position, this.radius);
+        ArrayList<Vec2d> pAs = pArc(position, this.radius);
         pAs.add(0, b);
         pAs.add(a);
         for (int i = 0; i < pAs.size() - 1; i++) {
@@ -76,9 +76,9 @@ public class DemiDisque extends Objet {
         }
         g.setColor(color);
         g.translate(position.x, position.y);
-        g.draw(new Rectangle2D.Float(0, 0, 2 * radius, 2 * radius));
+        g.draw(new Rectangle2D.Double(0, 0, 2 * radius, 2 * radius));
         g.rotate(angle);
-        g.draw(new Arc2D.Float(0, 0, 2 * radius, 2 * radius, 0, (float) Math.toDegrees(Math.PI), Arc2D.CHORD));
+        g.draw(new Arc2D.Double(0, 0, 2 * radius, 2 * radius, 0, Math.toDegrees(Math.PI), Arc2D.CHORD));
     }
 }
 

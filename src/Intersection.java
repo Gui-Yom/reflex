@@ -1,13 +1,13 @@
 public class Intersection {
-    Vec2f point;
-    Vec2f normal;
+    Vec2d point;
+    Vec2d normal;
 
     /**
      * A negative value indicates this object can't transmit/refract light
      */
-    float n;
+    double n;
 
-    public Intersection(Vec2f point, Vec2f normal, float n) {
+    public Intersection(Vec2d point, Vec2d normal, double n) {
         this.point = point;
         this.normal = normal;
         this.n = n;

@@ -56,12 +56,12 @@ public class Main {
         canvas.requestFocus();
         canvas.addMouseListener(new MouseInputAdapter() {
 
-            Vec2f initialDragPos = Vec2f.NULL;
+            Vec2d initialDragPos = Vec2d.NULL;
 
             @Override
             public void mousePressed(MouseEvent e) {
                 //System.out.println(e.getPoint());
-                Vec2f clicked = new Vec2f(e.getX(), e.getY());
+                Vec2d clicked = new Vec2d(e.getX(), e.getY());
                 initialDragPos = clicked;
                 for (Objet o : sim.getObjets()) {
                     if (o.isClickedOn(clicked)) {
@@ -87,7 +87,7 @@ public class Main {
                 Objet o = selected.get();
                 //System.out.println("Drag : " + e.getX() + ", " + e.getY());
                 if (o != null) {
-                    o.setPosition(o.getPosition().plus(new Vec2f(e.getX(), e.getY()).minus(initialDragPos)));
+                    o.setPosition(o.getPosition().plus(new Vec2d(e.getX(), e.getY()).minus(initialDragPos)));
                     recalculer();
                 }
             }
@@ -96,7 +96,7 @@ public class Main {
         canvas.addMouseWheelListener(e -> {
             Objet o = selected.get();
             if (o != null) {
-                o.setAngle(o.getAngle() + e.getWheelRotation() * (float) Math.PI / 128);
+                o.setAngle(o.getAngle() + e.getWheelRotation() * Math.PI / 128);
                 o.recalc();
                 recalculer();
             }
@@ -120,29 +120,29 @@ public class Main {
                     case KeyEvent.VK_UP:
                         Objet o = selected.get();
                         if (o != null)
-                            o.setPosition(new Vec2f(o.getPosition().x, o.getPosition().y - 1));
+                            o.setPosition(new Vec2d(o.getPosition().x, o.getPosition().y - 1));
                         recalculer();
                         break;
                     case KeyEvent.VK_DOWN:
                         o = selected.get();
                         if (o != null)
-                            o.setPosition(new Vec2f(o.getPosition().x, o.getPosition().y + 1));
+                            o.setPosition(new Vec2d(o.getPosition().x, o.getPosition().y + 1));
                         recalculer();
                         break;
                     case KeyEvent.VK_RIGHT:
                         o = selected.get();
                         if (o != null)
-                            o.setPosition(new Vec2f(o.getPosition().x + 1, o.getPosition().y));
+                            o.setPosition(new Vec2d(o.getPosition().x + 1, o.getPosition().y));
                         recalculer();
                         break;
                     case KeyEvent.VK_LEFT:
                         o = selected.get();
                         if (o != null)
-                            o.setPosition(new Vec2f(o.getPosition().x - 1, o.getPosition().y));
+                            o.setPosition(new Vec2d(o.getPosition().x - 1, o.getPosition().y));
                         recalculer();
                         break;
                     case KeyEvent.VK_ENTER:
-                        sim.add(new LamesP(new Vec2f(50, 50), 100, 50, -1f));
+                        sim.add(new LamesP(new Vec2d(50, 50), 100, 50, -1));
                         recalculer();
                         break;
                     case KeyEvent.VK_ESCAPE:
@@ -157,25 +157,25 @@ public class Main {
 
     static void configuration1() {
         // On ajoute nos reflex.objets
-        sim.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 632));
+        sim.add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
 
-        Mirror m = new Mirror(new Vec2f(400, 100), 100, 0);
+        Mirror m = new Mirror(new Vec2d(400, 100), 100, 0);
         sim.add(m);
-        Mirror m2 = new Mirror(new Vec2f(300, 400), 100, 0);
+        Mirror m2 = new Mirror(new Vec2d(300, 400), 100, 0);
         sim.add(m2);
-        Mirror m3 = new Mirror(new Vec2f(200, 150), 100, (float) -Math.PI / 4);
+        Mirror m3 = new Mirror(new Vec2d(200, 150), 100, -Math.PI / 4);
         sim.add(m3);
-        LamesP lame = new LamesP(new Vec2f(200f, 300f), 200, 100, Constants.REFRAC_GLASS);
+        LamesP lame = new LamesP(new Vec2d(200f, 300f), 200, 100, Constants.REFRAC_GLASS);
         sim.add(lame);
         //demiSphere d = new demiSphere(new Vec2f(50, 50), Constants.REFRAC_GLASS, 5f);
     }
 
     static void configuration2() {
-        sim.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 632));
+        sim.add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
 
-        sim.add(new Mirror(new Vec2f(400, 100), 100, 0));
+        sim.add(new Mirror(new Vec2d(400, 100), 100, 0));
 
-        sim.add(new DemiDisque(new Vec2f(500, 400), 0, Constants.REFRAC_GLASS, 100));
+        sim.add(new DemiDisque(new Vec2d(500, 400), 0, Constants.REFRAC_GLASS, 100));
     }
 
     static void recalculer() {
