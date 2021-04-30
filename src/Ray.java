@@ -4,7 +4,7 @@ import java.awt.geom.Line2D;
 /**
  * A ray of light as a finite segment
  */
-public class Ray implements Drawable {
+public class Ray implements Drawable, Sampler {
 
     private Vec2d start;
     private Vec2d end;
@@ -21,6 +21,7 @@ public class Ray implements Drawable {
         this.phaseShift = phaseShift;
     }
 
+    @Override
     public Vec2d sample(double time) {
         return Vec2d.UNIT_X.scale(intensity * Math.cos(time * 2 * Math.PI * Utils.wavelengthToFreq(wavelength) + phaseShift));
     }

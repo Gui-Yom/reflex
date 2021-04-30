@@ -1,7 +1,7 @@
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-public class Laser extends Objet {
+public class Laser extends Objet implements Sampler {
 
     private Vec2d direction;
 
@@ -19,8 +19,9 @@ public class Laser extends Objet {
         this(position, angle, wavelength, 1);
     }
 
-    public double sample(double time) {
-        return intensity * (float) Math.cos(2 * Math.PI * Utils.wavelengthToFreq(wavelength) * time);
+    @Override
+    public Vec2d sample(double time) {
+        return new Vec2d().x(intensity * (float) Math.cos(2 * Math.PI * Utils.wavelengthToFreq(wavelength) * time));
     }
 
     @Override
