@@ -84,19 +84,21 @@ public class Simulation {
     private static class ParentRay {
         float intensity;
         float wavelength;
+        float nEnvironment; 
         // TODO add polarization
 
-        public ParentRay(float intensity, float wavelength) {
+        public ParentRay(float intensity, float wavelength, float nEnvironment) {
             this.intensity = intensity;
             this.wavelength = wavelength;
+            this.nEnvironment = nEnvironment;
         }
 
-        static ParentRay fromRay(Ray ray) {
-            return new ParentRay(ray.intensity, ray.wavelength);
+        static ParentRay fromRay(Ray ray, float nEnv) {
+            return new ParentRay(ray.intensity, ray.wavelength, nEnv);
         }
 
         static ParentRay fromLaser(Laser laser) {
-            return new ParentRay(laser.getIntensity(), laser.getWavelength());
+            return new ParentRay(laser.getIntensity(), laser.getWavelength(), 1.0f);
         }
     }
 }
