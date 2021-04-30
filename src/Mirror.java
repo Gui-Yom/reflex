@@ -4,7 +4,7 @@ import java.awt.geom.Line2D;
 
 public class Mirror extends Objet {
 
-    private final double width;
+    private double width;
     private Vec2d normal;
 
     public Mirror(Vec2d position, double width, double angle) {
@@ -20,11 +20,8 @@ public class Mirror extends Objet {
 
     @Override
     public Intersection intersect(Vec2d origin, Vec2d end) {
-
         final Vec2d mirrorEnd = position.plus(Vec2d.fromPolar(width, angle));
         final Vec2d intersection = Utils.segmentIntersect(position, mirrorEnd, origin, end);
-        //System.out.printf("intersection: %s%n", intersection);
-
         return intersection == null ? null : new Intersection(intersection, normal, indice);
     }
 
@@ -54,5 +51,23 @@ public class Mirror extends Objet {
                    ", normal=" + normal +
                    ", position=" + position +
                    '}';
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+        recalc();
+    }
+
+    public Vec2d getNormal() {
+        return normal;
+    }
+
+    public void setNormal(Vec2d normal) {
+        this.normal = normal;
+        recalc();
     }
 }

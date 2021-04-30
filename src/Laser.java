@@ -3,10 +3,10 @@ import java.awt.geom.Rectangle2D;
 
 public class Laser extends Objet {
 
-    Vec2d direction;
+    private Vec2d direction;
 
-    double intensity;
-    double wavelength;
+    private double intensity;
+    private double wavelength;
 
     public Laser(Vec2d position, double angle, double wavelength, double intensity) {
         super(position, angle, -1, Utils.waveLengthToRGB(wavelength));

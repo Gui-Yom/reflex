@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class DemiDisque extends Objet {
 
-    private final double radius;
-    protected ArrayList<Segment> aretes;
+    private double radius;
+    private ArrayList<Segment> aretes;
 
     /*
     This object position is the center of the circle
@@ -25,7 +25,7 @@ public class DemiDisque extends Objet {
         this(pos, angle, n, radius, Color.BLACK);
     }
 
-    public ArrayList<Vec2d> pArc(Vec2d centre, double r) {
+    public ArrayList<Vec2d> pArc(double r) {
         ArrayList<Vec2d> pA = new ArrayList<>();
         int numPoints = 20;
         for (int i = 0; i < numPoints; i++) {
@@ -38,11 +38,12 @@ public class DemiDisque extends Objet {
         return pA;
     }
 
+    @Override
     public Intersection intersect(Vec2d origin, Vec2d end) {
         for (Segment seg : aretes) {
-            Vec2d testintersect = Utils.segmentIntersect(seg.pointA, seg.pointB, origin, end);
+            Vec2d testintersect = Utils.segmentIntersect(seg.getPointA(), seg.getPointB(), origin, end);
             if (testintersect != null) {
-                return new Intersection(testintersect, seg.normale, indice);
+                return new Intersection(testintersect, seg.getNormal(), indice);
             }
         }
         return null;
@@ -62,7 +63,7 @@ public class DemiDisque extends Objet {
         Vec2d b = new Vec2d(position.x + this.radius * Math.cos(Math.PI / 2 + angle), position.y + this.radius * Math.sin(Math.PI / 2 + angle));
         Segment diam = new Segment(a, b);
         aretes.add(diam);
-        ArrayList<Vec2d> pAs = pArc(position, this.radius);
+        ArrayList<Vec2d> pAs = pArc(this.radius);
         pAs.add(0, b);
         pAs.add(a);
         for (int i = 0; i < pAs.size() - 1; i++) {
@@ -70,6 +71,7 @@ public class DemiDisque extends Objet {
         }
     }
 
+    @Override
     public void draw(Graphics2D g) {
         if (selected) {
             g.setStroke(STROKE_SELECTED);
@@ -79,6 +81,15 @@ public class DemiDisque extends Objet {
         g.draw(new Rectangle2D.Double(0, 0, 2 * radius, 2 * radius));
         g.rotate(angle);
         g.draw(new Arc2D.Double(0, 0, 2 * radius, 2 * radius, 0, Math.toDegrees(Math.PI), Arc2D.CHORD));
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
+        recalc();
     }
 }
 

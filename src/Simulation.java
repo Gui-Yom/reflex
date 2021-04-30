@@ -36,7 +36,7 @@ public class Simulation {
             if (!(objet instanceof Laser)) {
                 Intersection i = objet.intersect(origin, end);
                 if (i != null) {
-                    double d = i.point.minus(origin).length();
+                    double d = i.getPoint().minus(origin).length();
                     if (d > 0.0001 && d < distance) {
                         intersection = i;
                         distance = d;
@@ -47,20 +47,20 @@ public class Simulation {
         if (intersection != null) {
             // We calculate the reflected and refracted rays with a recursion
             // Spawn the reflected ray
-            Vec2d reflected = Utils.reflect(direction.normalize(), intersection.normal);
+            Vec2d reflected = Utils.reflect(direction.normalize(), intersection.getNormal());
             //System.out.println("Reflected : " + reflected);
-            computeRay(intersection.point, reflected, parentRay);
+            computeRay(intersection.getPoint(), reflected, parentRay);
             // TODO mettre les indices de réfraction des reflex.objets
             // Spawn the refracted ray
             if (intersection.canTransmit()) {
                 // TODO inverser les indices de réfraction dans le cas où on sort de l'objet
-                Vec2d refracted = Utils.refract(direction.normalize(), intersection.normal, 1.0f, intersection.n);
+                Vec2d refracted = Utils.refract(direction.normalize(), intersection.getNormal(), 1.0f, intersection.getN());
                 //System.out.println("Refracted : " + refracted);
                 if (refracted != null) {
-                    computeRay(intersection.point, refracted, parentRay);
+                    computeRay(intersection.getPoint(), refracted, parentRay);
                 }
             }
-            end = intersection.point;
+            end = intersection.getPoint();
         }
         rays.add(new Ray(origin, end, parentRay.intensity, parentRay.wavelength, 0));
     }
@@ -94,7 +94,7 @@ public class Simulation {
         }
 
         static ParentRay fromRay(Ray ray, double nEnv) {
-            return new ParentRay(ray.intensity, ray.wavelength, nEnv);
+            return new ParentRay(ray.getIntensity(), ray.getWavelength(), nEnv);
         }
 
         static ParentRay fromLaser(Laser laser) {

@@ -5,29 +5,14 @@ import java.util.ArrayList;
 
 public class LamesP extends Objet {
 
-    protected ArrayList<Segment> aretes;
-    protected double longueur;
-    protected double largeur;
+    private ArrayList<Segment> aretes;
+    private double longueur;
+    private double largeur;
 
     public LamesP(Vec2d pos, double angle, double lon, double larg, double n, Color color) {
         super(pos, angle, n, color);
         this.longueur = lon;
         this.largeur = larg;
-        //ArrayList<Vec2f> p = new ArrayList<>();
-        //Vec2f A = new Vec2f(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        //Vec2f B = new Vec2f(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        //Vec2f C = new Vec2f(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        //Vec2f D = new Vec2f(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        //p.add(A);
-        //p.add(B);
-        //p.add(C);
-        //p.add(D);
-        //p.add(A);
-
-        //this.aretes = new ArrayList<>();
-        //for (int i = 0; i < p.size() - 1; i++) {
-        //  aretes.add(new Segment(p.get(i), p.get(i + 1)));
-        //}
         recalc();
     }
 
@@ -37,9 +22,9 @@ public class LamesP extends Objet {
 
     public Intersection intersect(Vec2d origin, Vec2d end) {
         for (Segment seg : aretes) {
-            Vec2d testintersect = Utils.segmentIntersect(seg.pointA, seg.pointB, origin, end);
+            Vec2d testintersect = Utils.segmentIntersect(seg.getPointA(), seg.getPointB(), origin, end);
             if (testintersect != null) {
-                return new Intersection(testintersect, seg.normale, indice);
+                return new Intersection(testintersect, seg.getNormal(), indice);
             }
         }
         return null;
