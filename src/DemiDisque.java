@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class DemiDisque extends Objet {
 
     protected ArrayList<Segment> aretes;
-    private float radius;
+    private final float radius;
 
     /*
     This object position is the center of the circle

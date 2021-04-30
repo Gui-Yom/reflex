@@ -2,15 +2,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Calcule les
+ * Calcule les rayons
  */
 public class Simulation {
 
-    // Means big number
+    // Un nombre suffisamment grand
     private static final float INFINITY = 999999;
-    List<Objet> objets = new ArrayList<>();
-    // Computed rays
-    List<Ray> rays = new ArrayList<>();
+    private List<Objet> objets = new ArrayList<>();
+    // Les rayons calculés
+    private List<Ray> rays = new ArrayList<>();
 
     /**
      * Will compute the rays
@@ -28,7 +28,6 @@ public class Simulation {
     }
 
     void computeRay(Vec2f origin, Vec2f direction, ParentRay parentRay) {
-        //System.out.printf("ray: %s, %s%n", origin, direction);
         Vec2f end = direction.scale(INFINITY).plus(origin);
         Intersection intersection = null;
         float distance = INFINITY;
@@ -64,6 +63,22 @@ public class Simulation {
             end = intersection.point;
         }
         rays.add(new Ray(origin, end, parentRay.intensity, parentRay.wavelength, 0));
+    }
+
+    public List<Objet> getObjets() {
+        return objets;
+    }
+
+    public List<Ray> getRays() {
+        return rays;
+    }
+
+    public void add(Objet o) {
+        objets.add(o);
+    }
+
+    public void clear() {
+        objets.clear();
     }
 
     private static class ParentRay {

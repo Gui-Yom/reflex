@@ -63,7 +63,7 @@ public class Main {
                 //System.out.println(e.getPoint());
                 Vec2f clicked = new Vec2f(e.getX(), e.getY());
                 initialDragPos = clicked;
-                for (Objet o : sim.objets) {
+                for (Objet o : sim.getObjets()) {
                     if (o.isClickedOn(clicked)) {
                         Objet sel = selected.get();
                         if (sel != null)
@@ -142,7 +142,7 @@ public class Main {
                         recalculer();
                         break;
                     case KeyEvent.VK_ENTER:
-                        sim.objets.add(new LamesP(new Vec2f(50, 50), 100, 50, -1f));
+                        sim.add(new LamesP(new Vec2f(50, 50), 100, 50, -1f));
                         recalculer();
                         break;
                     case KeyEvent.VK_ESCAPE:
@@ -157,25 +157,25 @@ public class Main {
 
     static void configuration1() {
         // On ajoute nos reflex.objets
-        sim.objets.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 632));
+        sim.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 632));
 
         Mirror m = new Mirror(new Vec2f(400, 100), 100, 0);
-        sim.objets.add(m);
+        sim.add(m);
         Mirror m2 = new Mirror(new Vec2f(300, 400), 100, 0);
-        sim.objets.add(m2);
+        sim.add(m2);
         Mirror m3 = new Mirror(new Vec2f(200, 150), 100, (float) -Math.PI / 4);
-        sim.objets.add(m3);
+        sim.add(m3);
         LamesP lame = new LamesP(new Vec2f(200f, 300f), 200, 100, Constants.REFRAC_GLASS);
-        sim.objets.add(lame);
+        sim.add(lame);
         //demiSphere d = new demiSphere(new Vec2f(50, 50), Constants.REFRAC_GLASS, 5f);
     }
 
     static void configuration2() {
-        sim.objets.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 632));
+        sim.add(new Laser(new Vec2f(100, 400), (float) (-Math.PI / 5), 632));
 
-        sim.objets.add(new Mirror(new Vec2f(400, 100), 100, 0));
+        sim.add(new Mirror(new Vec2f(400, 100), 100, 0));
 
-        sim.objets.add(new DemiDisque(new Vec2f(500, 400), 0, Constants.REFRAC_GLASS, 100));
+        sim.add(new DemiDisque(new Vec2f(500, 400), 0, Constants.REFRAC_GLASS, 100));
     }
 
     static void recalculer() {
@@ -188,7 +188,7 @@ public class Main {
     }
 
     static void clear() {
-        sim.objets.clear();
-        sim.rays.clear();
+        sim.clear();
+        sim.clear();
     }
 }

@@ -31,7 +31,7 @@ public class LamesP extends Objet {
     }
 
     public LamesP(Vec2f position, float longueur, float largeur, float indice) {
-        this(position, 0f, longueur, largeur, indice, Color.BLACK);
+        this(position, 0, longueur, largeur, indice, Color.BLACK);
     }
 
     public Intersection intersect(Vec2f origin, Vec2f end) {
