@@ -11,6 +11,7 @@ public class Canvas extends JPanel {
     public Canvas(Simulation simulation) {
         super(true);
         this.simulation = simulation;
+        setFocusable(true);
     }
 
     @Override

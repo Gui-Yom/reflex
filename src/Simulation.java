@@ -17,7 +17,7 @@ public class Simulation {
      */
     void compute() {
         rays.clear();
-        System.out.println("Start compute");
+        //System.out.println("Start compute");
         // Ray sources
         for (Objet o : objets) {
             if (o instanceof Laser) {

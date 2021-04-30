@@ -126,6 +126,20 @@ public class Vec2d implements Cloneable {
         return new Vec2d(x, y);
     }
 
+    /**
+     * Rotate this vector
+     *
+     * @param angle
+     * @return
+     */
+    public Vec2d rotate(double angle) {
+
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+
+        return new Vec2d(cos * x - sin * y, sin * x + cos * y);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

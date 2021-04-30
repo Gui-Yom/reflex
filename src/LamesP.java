@@ -1,11 +1,12 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class LamesP extends Objet {
 
-    private ArrayList<Segment> aretes;
+    private ArrayList<Segment> segments = new ArrayList<>(4);
     private double longueur;
     private double largeur;
 
@@ -20,9 +21,10 @@ public class LamesP extends Objet {
         this(position, 0, longueur, largeur, indice, Color.BLACK);
     }
 
+    @Override
     public Intersection intersect(Vec2d origin, Vec2d end) {
-        for (Segment seg : aretes) {
-            Vec2d testintersect = Utils.segmentIntersect(seg.getPointA(), seg.getPointB(), origin, end);
+        for (Segment seg : segments) {
+            Vec2d testintersect = Utils.segmentIntersect(seg.getA(), seg.getB(), origin, end);
             if (testintersect != null) {
                 return new Intersection(testintersect, seg.getNormal(), indice);
             }
@@ -32,28 +34,47 @@ public class LamesP extends Objet {
 
     @Override
     public boolean isClickedOn(Vec2d click) {
+
+        Vec2d a = new Vec2d(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+        Vec2d b = new Vec2d(0, 0);
+        for (Segment seg : segments) {
+            if (seg.getA().x < a.x) {
+                a = a.x(seg.getA().x);
+            }
+            if (seg.getA().y < a.y) {
+                a = a.y(seg.getA().y);
+            }
+            if (seg.getA().x > b.x) {
+                b = b.x(seg.getA().x);
+            }
+            if (seg.getA().y > b.y) {
+                b = b.y(seg.getA().y);
+            }
+            System.out.printf("a: %s%n", seg.getA());
+        }
+        System.out.printf("%s, %s%n", a, b);
+
+        /*
         Vec2d a = getPosition();
-        Vec2d b = getPosition().plus(new Vec2d(largeur, longueur));
-        // TODO use angle to rotate bounding box
+        Vec2d b = getPosition().plus(new Vec2d(largeur, longueur));*/
+
         return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
     }
 
+    @Override
     public void recalc() {
-        ArrayList<Vec2d> p = new ArrayList<>();
-        Vec2d A = new Vec2d(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        Vec2d B = new Vec2d(position.x - (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        Vec2d C = new Vec2d(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y + (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        Vec2d D = new Vec2d(position.x + (float) (largeur * Math.cos(Math.PI / 2 + angle)), position.y - (float) (longueur * Math.sin(Math.PI / 2 + angle)));
-        p.add(A);
-        p.add(B);
-        p.add(C);
-        p.add(D);
-        p.add(A);
 
-        this.aretes = new ArrayList<>();
-        for (int i = 0; i < p.size() - 1; i++) {
-            aretes.add(new Segment(p.get(i), p.get(i + 1)));
-        }
+        Vec2d a = new Vec2d(position.x - largeur * Math.cos(Math.PI / 2 + angle), position.y - longueur * Math.sin(Math.PI / 2 + angle));
+        Vec2d b = new Vec2d(position.x - largeur * Math.cos(Math.PI / 2 + angle), position.y + longueur * Math.sin(Math.PI / 2 + angle));
+        Vec2d c = new Vec2d(position.x + largeur * Math.cos(Math.PI / 2 + angle), position.y + longueur * Math.sin(Math.PI / 2 + angle));
+        Vec2d d = new Vec2d(position.x + largeur * Math.cos(Math.PI / 2 + angle), position.y - longueur * Math.sin(Math.PI / 2 + angle));
+
+        segments.clear();
+
+        segments.add(new Segment(a, b));
+        segments.add(new Segment(b, c));
+        segments.add(new Segment(c, d));
+        segments.add(new Segment(d, a));
     }
 
     @Override
@@ -64,9 +85,13 @@ public class LamesP extends Objet {
         g.setColor(color);
         double centerX = position.x + largeur / 2;
         double centerY = position.y + longueur / 2;
-        g.translate(centerX, centerY);
-        g.rotate(angle);
-        g.draw(new Rectangle2D.Double(-largeur / 2, -longueur / 2, largeur, longueur));
+        //g.translate(centerX, centerY);
+        //g.rotate(angle);
+        //g.draw(new Rectangle2D.Double(-largeur / 2, -longueur / 2, largeur, longueur));
+
+        for (Segment s : segments) {
+            g.draw(new Line2D.Double(s.getA().x, s.getA().y, s.getB().x, s.getB().y));
+        }
     }
 
     public double getLongueur() {

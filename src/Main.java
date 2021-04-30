@@ -30,7 +30,6 @@ public class Main {
         canvas = new Canvas(sim);
         frame.add(canvas, BorderLayout.CENTER);
 
-        frame.add(canvas);
         JPanel menu = new JPanel();
         frame.add(menu, BorderLayout.NORTH);
         menu.setLayout(new FlowLayout());
@@ -53,13 +52,17 @@ public class Main {
 
         AtomicReference<Objet> selected = new AtomicReference<>();
 
-        canvas.requestFocus();
         canvas.addMouseListener(new MouseInputAdapter() {
 
             Vec2d initialDragPos = Vec2d.NULL;
 
             @Override
             public void mousePressed(MouseEvent e) {
+                // Becaus java swing is a bitch
+                canvas.requestFocus();
+                //canvas.requestFocusInWindow();
+                //System.out.println(canvas.hasFocus());
+
                 //System.out.println(e.getPoint());
                 Vec2d clicked = new Vec2d(e.getX(), e.getY());
                 initialDragPos = clicked;
@@ -102,7 +105,7 @@ public class Main {
             }
         });
 
-        frame.addKeyListener(new KeyAdapter() {
+        canvas.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {

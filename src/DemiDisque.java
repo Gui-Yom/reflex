@@ -41,7 +41,7 @@ public class DemiDisque extends Objet {
     @Override
     public Intersection intersect(Vec2d origin, Vec2d end) {
         for (Segment seg : aretes) {
-            Vec2d testintersect = Utils.segmentIntersect(seg.getPointA(), seg.getPointB(), origin, end);
+            Vec2d testintersect = Utils.segmentIntersect(seg.getA(), seg.getB(), origin, end);
             if (testintersect != null) {
                 return new Intersection(testintersect, seg.getNormal(), indice);
             }
