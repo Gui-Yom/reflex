@@ -67,7 +67,11 @@ public class Simulation {
 				}
                 //System.out.println("Refracted : " + refracted);
                 if (refracted != null) {
-                    computeRay(intersection.getPoint(), refracted, parentRay.goInDepth(parentRay.nEnvironment));
+                    if (parentRay.nEnvironment==1.0f){
+						computeRay(intersection.getPoint(), refracted, parentRay.goInDepth(intersection.getN()));
+					} else {
+						computeRay(intersection.getPoint(), refracted, parentRay.goInDepth(1.0f));
+					}
                 }
             }
             end = intersection.getPoint();
