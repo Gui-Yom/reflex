@@ -112,7 +112,7 @@ public class Main {
                     case KeyEvent.VK_1:
                         System.out.println("1");
                         clear();
-                        configuration2();
+                        configuration1();
                         recalculer();
                         break;
                     case KeyEvent.VK_2:
