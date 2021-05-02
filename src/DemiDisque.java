@@ -30,8 +30,8 @@ public class DemiDisque extends Objet {
         int numPoints = 20;
         for (int i = 0; i < numPoints; i++) {
             double alpha = i * Math.PI / numPoints - Math.PI / 2 + angle;
-            double X = r * Math.cos(alpha);
-            double Y = r * Math.sin(alpha);
+            double X = position.x + r * Math.cos(alpha);
+            double Y = position.y + r * Math.sin(alpha);
             Vec2d p = new Vec2d(X, Y);
             pA.add(p);
         }
