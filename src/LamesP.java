@@ -19,6 +19,7 @@ public class LamesP extends Objet {
 
     public LamesP(Vec2d position, double longueur, double largeur, double indice) {
         this(position, 0, longueur, largeur, indice, Color.BLACK);
+        recalc();
     }
 
     @Override
