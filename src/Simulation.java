@@ -54,10 +54,13 @@ public class Simulation {
             // Spawn the refracted ray
             if (intersection.canTransmit()) {
                 // TODO inverser les indices de réfraction dans le cas où on sort de l'objet
-                Vec2d refracted = Utils.refract(direction.normalize(), intersection.getNormal(), 1.0f, intersection.getN());
+				Vec2d refracted = Utils.refract(direction.normalize(), intersection.getNormal(), 1.0f, intersection.getN());
+                if (parentRay.nEnvironment!=1.0f) {
+					refracted = Utils.refract(direction.normalize(), intersection.getNormal(), intersection.getN(), 1.0f);
+				}	
                 //System.out.println("Refracted : " + refracted);
                 if (refracted != null) {
-                    computeRay(intersection.getPoint(), refracted, parentRay);
+					computeRay(intersection.getPoint(), refracted, parentRay);
                 }
             }
             end = intersection.getPoint();
@@ -79,6 +82,7 @@ public class Simulation {
 
     public void clear() {
         objets.clear();
+        rays.clear();
     }
 
     private static class ParentRay {
