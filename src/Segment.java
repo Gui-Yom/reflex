@@ -9,7 +9,7 @@ public class Segment {
 
         double dx = this.b.x - this.a.x;
         double dy = this.b.y - this.a.y;
-        this.normal = new Vec2d(-dy, dx);
+        this.normal = new Vec2d(-dy, dx).normalize();
     }
 
     public Vec2d getA() {
