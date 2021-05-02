@@ -80,7 +80,7 @@ public class DemiDisque extends Objet {
         g.translate(position.x, position.y);
         g.draw(new Rectangle2D.Double(0, 0, 2 * radius, 2 * radius));
         g.rotate(angle);
-        g.draw(new Arc2D.Double(0, 0, 2 * radius, 2 * radius, 0, Math.toDegrees(Math.PI), Arc2D.CHORD));
+        g.draw(new Arc2D.Double(0, 0, 2 * radius, 2 * radius, Math.toDegrees(-Math.PI/2), Math.toDegrees(Math.PI), Arc2D.CHORD));
     }
 
     public double getRadius() {
