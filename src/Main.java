@@ -122,26 +122,34 @@ public class Main {
                         break;
                     case KeyEvent.VK_UP:
                         Objet o = selected.get();
-                        if (o != null)
+                        if (o != null) {
                             o.setPosition(new Vec2d(o.getPosition().x, o.getPosition().y - 1));
+                            o.recalc();
+                        }
                         recalculer();
                         break;
                     case KeyEvent.VK_DOWN:
                         o = selected.get();
-                        if (o != null)
+                        if (o != null) {
                             o.setPosition(new Vec2d(o.getPosition().x, o.getPosition().y + 1));
+                            o.recalc();
+                        }
                         recalculer();
                         break;
                     case KeyEvent.VK_RIGHT:
                         o = selected.get();
-                        if (o != null)
+                        if (o != null) {
                             o.setPosition(new Vec2d(o.getPosition().x + 1, o.getPosition().y));
+                            o.recalc();
+                        }
                         recalculer();
                         break;
                     case KeyEvent.VK_LEFT:
                         o = selected.get();
-                        if (o != null)
+                        if (o != null) {
                             o.setPosition(new Vec2d(o.getPosition().x - 1, o.getPosition().y));
+                            o.recalc();
+                        }
                         recalculer();
                         break;
                     case KeyEvent.VK_ENTER:

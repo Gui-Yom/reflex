@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class LamesP extends Objet {
@@ -24,13 +23,22 @@ public class LamesP extends Objet {
 
     @Override
     public Intersection intersect(Vec2d origin, Vec2d end) {
+        Intersection best = null;
+        double d = Double.POSITIVE_INFINITY;
         for (Segment seg : segments) {
             Vec2d testintersect = Utils.segmentIntersect(seg.getA(), seg.getB(), origin, end);
             if (testintersect != null) {
-                return new Intersection(testintersect, seg.getNormal(), indice);
+                double a = testintersect.minus(origin).length();
+                //System.out.println("a: " + a);
+                if (a > 0.0001 && a < d) {
+                    //System.out.println("d: " + d);
+                    d = a;
+                    best = new Intersection(testintersect, seg.getNormal(), indice);
+                }
             }
         }
-        return null;
+        //System.out.println(best);
+        return best;
     }
 
     @Override
@@ -65,10 +73,10 @@ public class LamesP extends Objet {
     @Override
     public void recalc() {
 
-        Vec2d a = new Vec2d(position.x - largeur * Math.cos(Math.PI / 2 + angle), position.y - longueur * Math.sin(Math.PI / 2 + angle));
-        Vec2d b = new Vec2d(position.x - largeur * Math.cos(Math.PI / 2 + angle), position.y + longueur * Math.sin(Math.PI / 2 + angle));
-        Vec2d c = new Vec2d(position.x + largeur * Math.cos(Math.PI / 2 + angle), position.y + longueur * Math.sin(Math.PI / 2 + angle));
-        Vec2d d = new Vec2d(position.x + largeur * Math.cos(Math.PI / 2 + angle), position.y - longueur * Math.sin(Math.PI / 2 + angle));
+        Vec2d a = position;
+        Vec2d b = new Vec2d(largeur, 0).rotate(angle).plus(a);
+        Vec2d c = new Vec2d(largeur, longueur).rotate(angle).plus(a);
+        Vec2d d = new Vec2d(0, longueur).rotate(angle).plus(a);
 
         segments.clear();
 
