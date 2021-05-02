@@ -55,7 +55,7 @@ public class Simulation {
             // Spawn the reflected ray
             Vec2d reflected = Utils.reflect(direction.normalize(), intersection.getNormal());
             //System.out.println("Reflected : " + reflected);
-            computeRay(intersection.getPoint(), reflected, parentRay.goInDepth());
+            computeRay(intersection.getPoint(), reflected, parentRay.goInDepth(parentRay.nEnvironment));
             // TODO mettre les indices de réfraction des reflex.objets
             // Spawn the refracted ray
             if (intersection.canTransmit()) {
@@ -63,10 +63,11 @@ public class Simulation {
 				Vec2d refracted = Utils.refract(direction.normalize(), intersection.getNormal(), 1.0f, intersection.getN());
                 if (parentRay.nEnvironment!=1.0f) {
 					refracted = Utils.refract(direction.normalize(), intersection.getNormal(), intersection.getN(), 1.0f);
+					
 				}
                 //System.out.println("Refracted : " + refracted);
                 if (refracted != null) {
-                    computeRay(intersection.getPoint(), refracted, parentRay.goInDepth());
+                    computeRay(intersection.getPoint(), refracted, parentRay.goInDepth(parentRay.nEnvironment));
                 }
             }
             end = intersection.getPoint();
@@ -113,8 +114,8 @@ public class Simulation {
             return new ParentRay(laser.getIntensity(), laser.getWavelength(), 1.0, depth);
         }
 
-        ParentRay goInDepth() {
-            return new ParentRay(intensity / 2, wavelength, nEnvironment, depth + 1);
+        ParentRay goInDepth(double n) {
+            return new ParentRay(intensity / 2, wavelength, n, depth + 1);
         }
     }
 }
