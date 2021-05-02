@@ -9,6 +9,7 @@ public class Simulation {
     // Un nombre suffisamment grand
     private static final double INFINITY = 999999;
     private static final int maxDepth = 8;
+    private static final double indiceMilieu = Constants.REFRAC_VACUUM;
     private final List<Objet> objets = new ArrayList<>();
     // Les rayons calculés
     private final List<Ray> rays = new ArrayList<>();
@@ -55,23 +56,27 @@ public class Simulation {
             // Spawn the reflected ray
             Vec2d reflected = Utils.reflect(direction.normalize(), intersection.getNormal());
             //System.out.println("Reflected : " + reflected);
-            computeRay(intersection.getPoint(), reflected, parentRay.goInDepth(parentRay.nEnvironment));
+            double newIntensity = parentRay.intensity;
+            if (intersection.canTransmit())
+                newIntensity /= 2;
+            computeRay(intersection.getPoint(), reflected, parentRay.goInDepth(newIntensity, parentRay.nEnvironment));
             // TODO mettre les indices de réfraction des reflex.objets
             // Spawn the refracted ray
             if (intersection.canTransmit()) {
                 // TODO inverser les indices de réfraction dans le cas où on sort de l'objet
-				Vec2d refracted = Utils.refract(direction.normalize(), intersection.getNormal(), 1.0f, intersection.getN());
-                if (parentRay.nEnvironment!=1.0f) {
-					refracted = Utils.refract(direction.normalize(), intersection.getNormal(), intersection.getN(), 1.0f);
-					
-				}
+                Vec2d refracted = null;
+                if (parentRay.nEnvironment != indiceMilieu) {
+                    refracted = Utils.refract(direction.normalize(), intersection.getNormal(), intersection.getN(), indiceMilieu);
+                } else {
+                    refracted = Utils.refract(direction.normalize(), intersection.getNormal(), indiceMilieu, intersection.getN());
+                }
                 //System.out.println("Refracted : " + refracted);
                 if (refracted != null) {
-                    if (parentRay.nEnvironment==1.0f){
-						computeRay(intersection.getPoint(), refracted, parentRay.goInDepth(intersection.getN()));
-					} else {
-						computeRay(intersection.getPoint(), refracted, parentRay.goInDepth(1.0f));
-					}
+                    if (parentRay.nEnvironment == indiceMilieu) {
+                        computeRay(intersection.getPoint(), refracted, parentRay.goInDepth(newIntensity, intersection.getN()));
+                    } else {
+                        computeRay(intersection.getPoint(), refracted, parentRay.goInDepth(newIntensity, indiceMilieu));
+                    }
                 }
             }
             end = intersection.getPoint();
@@ -115,11 +120,11 @@ public class Simulation {
         }
 
         static ParentRay fromLaser(Laser laser, int depth) {
-            return new ParentRay(laser.getIntensity(), laser.getWavelength(), 1.0, depth);
+            return new ParentRay(laser.getIntensity(), laser.getWavelength(), indiceMilieu, depth);
         }
 
-        ParentRay goInDepth(double n) {
-            return new ParentRay(intensity / 2, wavelength, n, depth + 1);
+        ParentRay goInDepth(double intensity, double n) {
+            return new ParentRay(intensity, wavelength, n, depth + 1);
         }
     }
 }

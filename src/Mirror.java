@@ -15,7 +15,7 @@ public class Mirror extends Objet {
 
     @Override
     public void recalc() {
-        this.normal = Vec2d.fromPolar(1, (float) (angle + Math.PI / 2)).normalize();
+        this.normal = Vec2d.fromPolar(1, angle + Math.PI / 2).normalize();
     }
 
     @Override

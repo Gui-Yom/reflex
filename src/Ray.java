@@ -1,4 +1,4 @@
-import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 
@@ -7,12 +7,12 @@ import java.awt.geom.Line2D;
  */
 public class Ray implements Drawable, Sampler {
 
-    private Vec2d start;
-    private Vec2d end;
+    private final Vec2d start;
+    private final Vec2d end;
 
-    private double intensity;
-    private double wavelength;
-    private double phaseShift;
+    private final double intensity;
+    private final double wavelength;
+    private final double phaseShift;
 
     public Ray(Vec2d start, Vec2d end, double intensity, double wavelength, double phaseShift) {
         this.start = start;
@@ -29,8 +29,12 @@ public class Ray implements Drawable, Sampler {
 
     @Override
     public void draw(Graphics2D g) {
-        g.setColor(Utils.waveLengthToRGB(wavelength));
+        //if (intensity >= 0.05) {
+        Color c = Utils.waveLengthToRGB(wavelength);
+        c = new Color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, (float) intensity);
+        g.setColor(c);
         g.draw(new Line2D.Double(start.x, start.y, end.x, end.y));
+        //}
     }
 
     public Vec2d getStart() {
@@ -51,5 +55,16 @@ public class Ray implements Drawable, Sampler {
 
     public double getPhaseShift() {
         return phaseShift;
+    }
+
+    @Override
+    public String toString() {
+        return "Ray{" +
+                   "start=" + start +
+                   ", end=" + end +
+                   ", intensity=" + intensity +
+                   ", wavelength=" + wavelength +
+                   ", phaseShift=" + phaseShift +
+                   '}';
     }
 }

@@ -1,11 +1,11 @@
 public class Intersection {
-    private Vec2d point;
-    private Vec2d normal;
+    private final Vec2d point;
+    private final Vec2d normal;
 
     /**
      * A negative value indicates the interface can't transmit/refract light
      */
-    private double n;
+    private final double n;
 
     public Intersection(Vec2d point, Vec2d normal, double n) {
         this.point = point;

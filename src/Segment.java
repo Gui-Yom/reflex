@@ -1,7 +1,7 @@
 public class Segment {
-    private Vec2d a;
-    private Vec2d b;
-    private Vec2d normal;
+    private final Vec2d a;
+    private final Vec2d b;
+    private final Vec2d normal;
 
     public Segment(Vec2d a, Vec2d b) {
         this.a = a;

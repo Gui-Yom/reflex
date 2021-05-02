@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class LamesP extends Objet {
 
-    private ArrayList<Segment> segments = new ArrayList<>(4);
+    private final ArrayList<Segment> segments = new ArrayList<>(4);
     private double longueur;
     private double largeur;
 
@@ -18,7 +18,6 @@ public class LamesP extends Objet {
 
     public LamesP(Vec2d position, double longueur, double largeur, double indice) {
         this(position, 0, longueur, largeur, indice, Color.BLACK);
-        recalc();
     }
 
     @Override
