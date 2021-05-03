@@ -79,13 +79,16 @@ public final class Utils {
      */
     public static Vec2d segmentIntersect(Vec2d p1, Vec2d p2, Vec2d p3, Vec2d p4) {
         Vec2d diff12 = p1.minus(p2);
+        Vec2d diff21 = diff12.negate();
         Vec2d diff34 = p3.minus(p4);
         Vec2d diff13 = p1.minus(p3);
         double a = diff13.x * diff34.y - diff13.y * diff34.x;
         double b = diff12.x * diff34.y - diff12.y * diff34.x;
-        if ((a < 0 && b > 0) || (a > 0 && b < 0) || abs(a) > abs(b)) {
+        double c = diff21.x * diff13.y - diff21.y * diff13.x;
+        if ((a < 0 && b > 0) || (a > 0 && b < 0) || (c < 0 && b > 0) || (c > 0 && b < 0) || abs(a) > abs(b) || abs(c) > abs(b)) {
             // If sign is different, t < 0, no intersection
             // If |a| > |b|, t > 1, no intersection
+            // We check for t = a/b and for u = c/b
             return null;
         } else { // Intersection
             double t = a / b;
@@ -108,12 +111,20 @@ public final class Utils {
      * https://docs.gl/sl4/reflect
      * R = I - 2*(I.N)*N
      *
-     * @param i the incident vector, normalized
-     * @param n normal vector, normalized
-     * @return the reflected vector
+     * @param i le vecteur incident, normalisé.
+     * @param n le vecteur normal à la surface, normalisé. Sa direction n'a pas d'importance.
+     * @return le vecteur réfléchi
      */
     public static Vec2d reflect(Vec2d i, Vec2d n) {
-        return i.minus(n.scale(2 * i.dot(n)));
+        double dot = i.dot(n);
+
+        /*
+        System.out.println("reflect");
+        System.out.println("i: " + i);
+        System.out.println("n: " + n);
+        System.out.println("dot: " + dot);*/
+
+        return i.minus(n.scale(2 * dot));
     }
 
     /**

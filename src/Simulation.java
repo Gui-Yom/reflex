@@ -144,6 +144,14 @@ public class Simulation {
         add(new DemiDisque(new Vec2d(500, 400), 0, Constants.REFRAC_GLASS, 100));
     }
 
+    void configuration3() {
+        clear();
+
+        add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
+
+        add(new Mirror(new Vec2d(400, 100), 200, 0));
+    }
+
     private static class ParentRay {
         double intensity;
         double wavelength;

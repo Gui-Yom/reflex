@@ -68,6 +68,10 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
                 sim.configuration2();
                 recalc();
                 break;
+            case KeyEvent.VK_3:
+                sim.configuration3();
+                recalc();
+                break;
             case KeyEvent.VK_UP:
                 Objet o = selected.get();
                 if (o != null) {
