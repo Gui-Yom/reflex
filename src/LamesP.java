@@ -58,9 +58,9 @@ public class LamesP extends Objet {
             if (seg.getA().y > b.y) {
                 b = b.y(seg.getA().y);
             }
-            System.out.printf("a: %s%n", seg.getA());
+            //System.out.printf("a: %s%n", seg.getA());
         }
-        System.out.printf("%s, %s%n", a, b);
+        //System.out.printf("%s, %s%n", a, b);
 
         /*
         Vec2d a = getPosition();

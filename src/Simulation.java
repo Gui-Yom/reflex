@@ -8,11 +8,19 @@ public class Simulation {
 
     // Un nombre suffisamment grand
     private static final double INFINITY = 999999;
-    private static final int maxDepth = 8;
     private static final double indiceMilieu = Constants.REFRAC_VACUUM;
     private final List<Objet> objets = new ArrayList<>();
     // Les rayons calculés
     private final List<Ray> rays = new ArrayList<>();
+    private int maxDepth;
+
+    public Simulation(int maxDepth) {
+        this.maxDepth = maxDepth;
+    }
+
+    public Simulation() {
+        this(8);
+    }
 
     /**
      * Will compute the rays
@@ -99,6 +107,41 @@ public class Simulation {
     public void clear() {
         objets.clear();
         rays.clear();
+    }
+
+    public int getMaxDepth() {
+        return maxDepth;
+    }
+
+    public void setMaxDepth(int maxDepth) {
+        this.maxDepth = maxDepth;
+    }
+
+    void configuration1() {
+        clear();
+
+        // On ajoute nos reflex.objets
+        add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
+
+        Mirror m = new Mirror(new Vec2d(400, 100), 100, 0);
+        add(m);
+        Mirror m2 = new Mirror(new Vec2d(300, 400), 100, 0);
+        add(m2);
+        Mirror m3 = new Mirror(new Vec2d(200, 150), 100, -Math.PI / 4);
+        add(m3);
+        LamesP lame = new LamesP(new Vec2d(200f, 300f), 200, 100, Constants.REFRAC_GLASS);
+        add(lame);
+        //demiSphere d = new demiSphere(new Vec2f(50, 50), Constants.REFRAC_GLASS, 5f);
+    }
+
+    void configuration2() {
+        clear();
+
+        add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
+
+        add(new Mirror(new Vec2d(400, 100), 100, 0));
+
+        add(new DemiDisque(new Vec2d(500, 400), 0, Constants.REFRAC_GLASS, 100));
     }
 
     private static class ParentRay {

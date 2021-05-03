@@ -1,17 +1,35 @@
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputListener;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.*;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class Canvas extends JPanel {
+public class Canvas extends JPanel implements KeyListener, MouseWheelListener, MouseInputListener {
 
-    Simulation simulation;
+    private Simulation sim;
+    private AtomicReference<Objet> selected = new AtomicReference<>();
+    private Vec2d initialDragPos = Vec2d.NULL;
 
-    public Canvas(Simulation simulation) {
+    public Canvas(Simulation sim) {
         super(true);
-        this.simulation = simulation;
+        this.sim = sim;
         setFocusable(true);
+
+        addKeyListener(this);
+        addMouseWheelListener(this);
+        addMouseListener(this);
+        addMouseMotionListener(this);
+
+        sim.configuration1();
+        recalc();
+    }
+
+    public void recalc() {
+        sim.compute();
+        repaint();
     }
 
     @Override
@@ -27,12 +45,145 @@ public class Canvas extends JPanel {
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        for (Objet objet : simulation.getObjets()) {
+        for (Objet objet : sim.getObjets()) {
             objet.draw((Graphics2D) g2d.create());
         }
-        for (Ray ray : simulation.getRays()) {
+        for (Ray ray : sim.getRays()) {
             ray.draw((Graphics2D) g2d.create());
         }
-        System.out.printf("Draw time : %d ms%n", System.currentTimeMillis() - startTime);
+
+        g2d.setColor(Color.BLACK);
+        g2d.drawString(String.format("%d ms", System.currentTimeMillis() - startTime), getWidth() - 30, 10);
     }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_1:
+                System.out.println("1");
+                sim.configuration1();
+                recalc();
+                break;
+            case KeyEvent.VK_2:
+                sim.configuration2();
+                recalc();
+                break;
+            case KeyEvent.VK_UP:
+                Objet o = selected.get();
+                if (o != null) {
+                    o.setPosition(new Vec2d(o.getPosition().x, o.getPosition().y - 1));
+                    o.recalc();
+                    recalc();
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                o = selected.get();
+                if (o != null) {
+                    o.setPosition(new Vec2d(o.getPosition().x, o.getPosition().y + 1));
+                    o.recalc();
+                    recalc();
+                }
+                break;
+            case KeyEvent.VK_RIGHT:
+                o = selected.get();
+                if (o != null) {
+                    o.setPosition(new Vec2d(o.getPosition().x + 1, o.getPosition().y));
+                    o.recalc();
+                    recalc();
+                }
+                break;
+            case KeyEvent.VK_LEFT:
+                o = selected.get();
+                if (o != null) {
+                    o.setPosition(new Vec2d(o.getPosition().x - 1, o.getPosition().y));
+                    o.recalc();
+                    recalc();
+                }
+                break;
+            case KeyEvent.VK_ENTER:
+                sim.add(new LamesP(new Vec2d(50, 50), 100, 50, -1));
+                recalc();
+                break;
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+        requestFocus();
+
+        Vec2d clicked = new Vec2d(e.getX(), e.getY());
+        initialDragPos = clicked;
+        for (Objet o : sim.getObjets()) {
+            if (o.isClickedOn(clicked)) {
+                Objet sel = selected.get();
+                if (sel != null)
+                    sel.setSelected(false);
+                selected.set(o);
+                o.setSelected(true);
+                repaint();
+                return;
+            }
+        }
+        Objet o = selected.get();
+        if (o != null) {
+            selected.get().setSelected(false);
+            selected.set(null);
+            repaint();
+        }
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+
+        // La touche ctrl est pressée
+        // On modifie le maxDepth de la simulation
+        if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0) {
+            sim.setMaxDepth(sim.getMaxDepth() - e.getWheelRotation());
+            recalc();
+            return;
+        }
+
+        Objet o = selected.get();
+        if (o != null) {
+            o.setAngle(o.getAngle() + e.getWheelRotation() * Math.PI / 128);
+            o.recalc();
+            recalc();
+        }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        Objet o = selected.get();
+        //System.out.println("Drag : " + e.getX() + ", " + e.getY());
+        if (o != null) {
+            Vec2d newDragPos = new Vec2d(e.getX(), e.getY());
+            o.setPosition(o.getPosition().plus(newDragPos.minus(initialDragPos)));
+            initialDragPos = newDragPos;
+            recalc();
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) { }
+
+    @Override
+    public void keyReleased(KeyEvent e) { }
+
+    @Override
+    public void mouseMoved(MouseEvent e) { }
+
+    @Override
+    public void mouseClicked(MouseEvent e) { }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        initialDragPos = Vec2d.NULL;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) { }
+
+    @Override
+    public void mouseExited(MouseEvent e) { }
 }
