@@ -51,6 +51,8 @@ public class Main implements ActionListener{
         reinit.addActionListener(e -> {
             sim.clear();
             canvas.recalc();
+            sim.add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
+
         });
         menu.add(reinit);
         JButton btnDemidisque = new JButton("Demi-disque");
@@ -71,6 +73,7 @@ public class Main implements ActionListener{
             canvas.recalc();
         });
         menu.add(btnLamesP);
+
 
         frame.setVisible(true);
         
