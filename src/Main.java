@@ -44,6 +44,8 @@ public class Main {
         reinit.addActionListener(e -> {
             sim.clear();
             canvas.recalc();
+            sim.add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
+
         });
         menu.add(reinit);
         JButton btnDemidisque = new JButton("Demi-disque");
