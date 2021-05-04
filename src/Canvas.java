@@ -124,9 +124,17 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
             case KeyEvent.VK_R:
                 recalc();
                 break;
-        }
-    }
+            case KeyEvent.VK_DELETE:
+            o = selected.get();
+            if (o != null) {
+				sim.getObjets().remove(o);
+				recalc();
+            }
+   }
+}
+		
 
+		
     @Override
     public void mousePressed(MouseEvent e) {
 
@@ -188,8 +196,10 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
             o.recalc();
             recalc();
         }
+        
     }
-
+       
+        
     @Override
     public void mouseDragged(MouseEvent e) {
         Objet o = selected.get();
@@ -225,3 +235,4 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
     @Override
     public void mouseExited(MouseEvent e) { }
 }
+
