@@ -2,16 +2,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Calcule les rayons
+ * Les calculs se passent ici
  */
 public class Simulation {
 
-    // Un nombre suffisamment grand
+    // Un nombre suffisamment grand, pour éviter les problèmes avec Double.POSITIVE_INFINITY
     private static final double INFINITY = 999999;
-    private static final double indiceMilieu = Constants.REFRAC_VACUUM;
+    private static final double ENV_REFRAC_INDEX = Constants.REFRAC_VACUUM;
     private final List<Objet> objets = new ArrayList<>();
     // Les rayons calculés
     private final List<Ray> rays = new ArrayList<>();
+    // Nombre maximal de récursions
     private int maxDepth;
 
     public Simulation(int maxDepth) {
@@ -27,69 +28,81 @@ public class Simulation {
      */
     void compute() {
         rays.clear();
-        //System.out.println("Start compute");
-        // Ray sources
+        // Les sources de rayon sont des lasers
         for (Objet o : objets) {
             if (o instanceof Laser) {
                 Laser laser = (Laser) o;
-                computeRay(laser.getPosition(), laser.getDirection(), ParentRay.fromLaser(laser, 0));
+                computeRay(new ComputeState(laser));
             }
         }
     }
 
-    void computeRay(Vec2d origin, Vec2d direction, ParentRay parentRay) {
-        Vec2d end = direction.scale(INFINITY).plus(origin);
-        if (parentRay.depth >= maxDepth) {
-            rays.add(new Ray(origin, end, parentRay.intensity, parentRay.wavelength, 0));
+    /**
+     * Calcule le tracé des rayons par récursion
+     *
+     * @param state informations sur le rayon et l'état actuel de la simulation
+     * @see ComputeState
+     */
+    void computeRay(ComputeState state) {
+        // Par défaut, le rayon actuel va à l'infini
+        Vec2d end = state.direction.scale(INFINITY).plus(state.origin);
+
+        // On limite la récursion pour éviter le stack overflow en cas de réflections infinies
+        if (state.depth >= maxDepth) {
+            rays.add(new Ray(state.origin, end, state.intensity, state.wavelength, 0));
             return;
         }
 
         Intersection intersection = null;
         double distance = INFINITY;
-        // World objects
+        // On cherche l'intersection la plus proche de l'origine du rayon
         for (Objet objet : objets) {
-            if (!(objet instanceof Laser)) {
-                Intersection i = objet.intersect(origin, end);
-                if (i != null) {
-                    double d = i.getPoint().minus(origin).length();
-                    if (d > 0.0001 && d < distance) {
-                        intersection = i;
-                        distance = d;
-                    }
+            Intersection i = objet.intersect(state.origin, end);
+            if (i != null) {
+                double d = i.getPoint().minus(state.origin).length();
+                // La première condition permet d'éviter l'intersection entre le rayon et la surface d'où il part
+                if (d > 0.0001 && d < distance) {
+                    intersection = i;
+                    distance = d;
                 }
             }
         }
+
         if (intersection != null) {
-            // We calculate the reflected and refracted rays with a recursion
-            // Spawn the reflected ray
-            Vec2d reflected = Utils.reflect(direction.normalize(), intersection.getNormal());
-            //System.out.println("Reflected : " + reflected);
-            double newIntensity = parentRay.intensity;
+            // Le rayon actuel se finit au point d'intersection
+            end = intersection.getPoint();
+
+            // On lance le calcul du rayon réfléchi
+            Vec2d reflected = Utils.reflect(state.direction.normalize(), intersection.getNormal());
+
+            // On calcule l'intensité du nouveau rayon
+            double newIntensity = state.intensity;
             if (intersection.canTransmit())
                 newIntensity /= 2;
-            computeRay(intersection.getPoint(), reflected, parentRay.goInDepth(newIntensity, parentRay.nEnvironment));
-            // TODO mettre les indices de réfraction des reflex.objets
-            // Spawn the refracted ray
+
+            computeRay(state.goInDepth(intersection.getPoint(), reflected, newIntensity, state.currRefracIndex));
+
+            // Il existe un rayon réfracté / transmis
             if (intersection.canTransmit()) {
-                // TODO inverser les indices de réfraction dans le cas où on sort de l'objet
-                Vec2d refracted = null;
-                if (parentRay.nEnvironment != indiceMilieu) {
-                    refracted = Utils.refract(direction.normalize(), intersection.getNormal(), intersection.getN(), indiceMilieu);
-                } else {
-                    refracted = Utils.refract(direction.normalize(), intersection.getNormal(), indiceMilieu, intersection.getN());
+                // Indice de réfraction du milieu du rayon incident
+                double currIndex = ENV_REFRAC_INDEX;
+                // Indice de réfraction du milieu du rayon transmis
+                double targetIndex = intersection.getN();
+                // On inverse les index dans le cas où on sort d'un objet
+                if (state.currRefracIndex != ENV_REFRAC_INDEX) {
+                    currIndex = state.currRefracIndex;
+                    targetIndex = ENV_REFRAC_INDEX;
                 }
-                //System.out.println("Refracted : " + refracted);
+
+                // On calcule le rayon réfracté
+                Vec2d refracted = Utils.refract(state.direction.normalize(), intersection.getNormal(), currIndex, targetIndex);
                 if (refracted != null) {
-                    if (parentRay.nEnvironment == indiceMilieu) {
-                        computeRay(intersection.getPoint(), refracted, parentRay.goInDepth(newIntensity, intersection.getN()));
-                    } else {
-                        computeRay(intersection.getPoint(), refracted, parentRay.goInDepth(newIntensity, indiceMilieu));
-                    }
+                    computeRay(state.goInDepth(intersection.getPoint(), refracted, newIntensity, targetIndex));
                 }
             }
-            end = intersection.getPoint();
         }
-        rays.add(new Ray(origin, end, parentRay.intensity, parentRay.wavelength, 0));
+        // On ajoute le rayon actuel à la liste des rayons calculés
+        rays.add(new Ray(state.origin, end, state.intensity, state.wavelength, 0));
     }
 
     public List<Objet> getObjets() {
@@ -117,7 +130,7 @@ public class Simulation {
         this.maxDepth = maxDepth;
     }
 
-    void configuration1() {
+    public void configuration1() {
         clear();
 
         // On ajoute nos reflex.objets
@@ -134,7 +147,7 @@ public class Simulation {
         //demiSphere d = new demiSphere(new Vec2f(50, 50), Constants.REFRAC_GLASS, 5f);
     }
 
-    void configuration2() {
+    public void configuration2() {
         clear();
 
         add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
@@ -144,7 +157,7 @@ public class Simulation {
         add(new DemiDisque(new Vec2d(500, 400), 0, Constants.REFRAC_GLASS, 100));
     }
 
-    void configuration3() {
+    public void configuration3() {
         clear();
 
         add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
@@ -152,30 +165,46 @@ public class Simulation {
         add(new Mirror(new Vec2d(400, 100), 200, 0));
     }
 
-    private static class ParentRay {
+    /**
+     * Stocke les informations de calcul pour la récursion
+     */
+    private static class ComputeState {
+        Vec2d origin;
+        Vec2d direction;
         double intensity;
         double wavelength;
-        double nEnvironment;
+        double currRefracIndex;
         int depth;
-        // TODO add polarization
 
-        public ParentRay(double intensity, double wavelength, double nEnvironment, int depth) {
+        ComputeState(Vec2d origin, Vec2d direction, double intensity, double wavelength, double currRefracIndex, int depth) {
+            this.origin = origin;
+            this.direction = direction;
             this.intensity = intensity;
             this.wavelength = wavelength;
-            this.nEnvironment = nEnvironment;
+            this.currRefracIndex = currRefracIndex;
             this.depth = depth;
         }
 
-        static ParentRay fromRay(Ray ray, double nEnv, int depth) {
-            return new ParentRay(ray.getIntensity(), ray.getWavelength(), nEnv, depth);
+        /**
+         * Crée une instance de départ à partir d'un laser
+         *
+         * @param laser le laser qui crée le rayon initial
+         */
+        ComputeState(Laser laser) {
+            this(laser.getPosition(), laser.getDirection(), laser.getIntensity(), laser.getWavelength(), ENV_REFRAC_INDEX, 0);
         }
 
-        static ParentRay fromLaser(Laser laser, int depth) {
-            return new ParentRay(laser.getIntensity(), laser.getWavelength(), indiceMilieu, depth);
-        }
-
-        ParentRay goInDepth(double intensity, double n) {
-            return new ParentRay(intensity, wavelength, n, depth + 1);
+        /**
+         * Construit une nouvelle instance pour un nouveau rayon fils
+         *
+         * @param origin    l'origine du nouveau rayon
+         * @param direction la nouvelle direction du rayon
+         * @param intensity la nouvelle intensité du rayon
+         * @param n         le nouvel indice de réfraction du milieu
+         * @return la nouvelle instance de ComputeState
+         */
+        ComputeState goInDepth(Vec2d origin, Vec2d direction, double intensity, double n) {
+            return new ComputeState(origin, direction, intensity, wavelength, n, depth + 1);
         }
     }
 }

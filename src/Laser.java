@@ -49,7 +49,8 @@ public class Laser extends Objet implements Sampler {
 
     @Override
     public Intersection intersect(Vec2d origin, Vec2d end) {
-        throw new UnsupportedOperationException("Laser can't interact with rays");
+        // Un laser ne dévie pas les rayons
+        return null;
     }
 
     public Vec2d getDirection() {

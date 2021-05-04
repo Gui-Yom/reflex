@@ -7,6 +7,11 @@ import java.awt.RenderingHints;
 import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Cette classe gère les inputs (clavier, souris) et l'affichage. Aucun calculs ici.
+ *
+ * @see Simulation
+ */
 public class Canvas extends JPanel implements KeyListener, MouseWheelListener, MouseInputListener {
 
     private Simulation sim;
@@ -16,6 +21,8 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
     public Canvas(Simulation sim) {
         super(true);
         this.sim = sim;
+
+        // Nécessaire car un JPanel ne peut pas recevoir certains évènements par défaut
         setFocusable(true);
 
         addKeyListener(this);
@@ -27,11 +34,20 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
         recalc();
     }
 
+    /**
+     * Recalcule la simulation et redessine le canvas
+     */
     public void recalc() {
         sim.compute();
         repaint();
     }
 
+    /**
+     * Code appelé pour le dessin du canvas.
+     * On y dessine les objets et les rayons, ainsi que certaines informations texte utiles.
+     *
+     * @param g
+     */
     @Override
     public void paint(Graphics g) {
         long startTime = System.currentTimeMillis();
@@ -45,11 +61,11 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        for (Objet objet : sim.getObjets()) {
-            objet.draw((Graphics2D) g2d.create());
+        for (Drawable d : sim.getObjets()) {
+            d.draw((Graphics2D) g2d.create());
         }
-        for (Ray ray : sim.getRays()) {
-            ray.draw((Graphics2D) g2d.create());
+        for (Drawable d : sim.getRays()) {
+            d.draw((Graphics2D) g2d.create());
         }
 
         g2d.setColor(Color.BLACK);
