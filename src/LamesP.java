@@ -19,10 +19,11 @@ public class LamesP extends ObjetComplexe {
     @Override
     public void recalc() {
 
-        Vec2d a = position;
-        Vec2d b = new Vec2d(largeur, 0).rotate(angle).plus(a);
-        Vec2d c = new Vec2d(largeur, longueur).rotate(angle).plus(a);
-        Vec2d d = new Vec2d(0, longueur).rotate(angle).plus(a);
+        Vec2d center = new Vec2d(longueur / 2, largeur / 2);
+        Vec2d a = center.negate().rotate(angle).plus(position);
+        Vec2d b = new Vec2d(longueur / 2, -largeur / 2).rotate(angle).plus(position);
+        Vec2d c = new Vec2d(longueur / 2, largeur / 2).rotate(angle).plus(position);
+        Vec2d d = new Vec2d(-longueur / 2, largeur / 2).rotate(angle).plus(position);
 
         segments.clear();
 
