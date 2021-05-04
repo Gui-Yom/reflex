@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class DemiDisque extends Objet {
 
+    private static final int NUM_POINTS = 64;
     private double radius;
     private ArrayList<Segment> segments;
 
@@ -26,20 +27,15 @@ public class DemiDisque extends Objet {
 
     @Override
     public Intersection intersect(Vec2d origin, Vec2d end) {
-        for (Segment seg : segments) {
-            Vec2d testintersect = Utils.segmentIntersect(seg.getA(), seg.getB(), origin, end);
-            if (testintersect != null) {
-                return new Intersection(testintersect, seg.getNormal(), indice);
-            }
-        }
-        return null;
+        Intersection i = Utils.segmentListIntersect(origin, end, segments);
+        i = i != null ? new Intersection(i.getPoint(), i.getNormal(), refracIndex) : null;
+        return i;
     }
 
     @Override
     public boolean isClickedOn(Vec2d click) {
-        Vec2d a = getPosition();
-        Vec2d b = getPosition().plus(new Vec2d(2 * radius, 2 * radius));
-        return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
+        Vec2d[] bounds = Utils.findAABB(segments);
+        return Utils.testBoundingBox(bounds[0], bounds[1], click, CLICK_BIAS);
     }
 
     @Override
@@ -47,12 +43,11 @@ public class DemiDisque extends Objet {
         segments = new ArrayList<>();
         Vec2d a = new Vec2d(position.x - this.radius * Math.cos(Math.PI / 2 + angle), position.y - this.radius * Math.sin(Math.PI / 2 + angle));
         Vec2d b = new Vec2d(position.x + this.radius * Math.cos(Math.PI / 2 + angle), position.y + this.radius * Math.sin(Math.PI / 2 + angle));
-        Segment diam = new Segment(a, b);
+        Segment diam = new Segment(b, a);
         segments.add(diam);
         ArrayList<Vec2d> pA = new ArrayList<>();
-        int numPoints = 1200;
-        for (int i1 = 0; i1 < numPoints; i1++) {
-            double alpha = i1 * Math.PI / numPoints - Math.PI / 2 + angle;
+        for (int i1 = 0; i1 < NUM_POINTS; i1++) {
+            double alpha = i1 * Math.PI / NUM_POINTS - Math.PI / 2 + angle;
             double X = this.radius * Math.cos(alpha);
             double Y = this.radius * Math.sin(alpha);
             Vec2d p = new Vec2d(X, Y).plus(position);

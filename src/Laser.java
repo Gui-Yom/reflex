@@ -44,7 +44,7 @@ public class Laser extends Objet implements Sampler {
         Vec2d extent = new Vec2d(5, 5);
         Vec2d a = getPosition().minus(extent);
         Vec2d b = getPosition().plus(extent);
-        return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
+        return Utils.testBoundingBox(a, b, click, CLICK_BIAS);
     }
 
     @Override

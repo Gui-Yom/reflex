@@ -5,16 +5,16 @@ public class Intersection {
     /**
      * A negative value indicates the interface can't transmit/refract light
      */
-    private final double n;
+    private final double index;
 
-    public Intersection(Vec2d point, Vec2d normal, double n) {
+    public Intersection(Vec2d point, Vec2d normal, double index) {
         this.point = point;
         this.normal = normal;
-        this.n = n;
+        this.index = index;
     }
 
     public boolean canTransmit() {
-        return n > 0;
+        return index > 0;
     }
 
     public Vec2d getPoint() {
@@ -25,7 +25,7 @@ public class Intersection {
         return normal;
     }
 
-    public double getN() {
-        return n;
+    public double getIndex() {
+        return index;
     }
 }

@@ -4,11 +4,11 @@ import java.awt.Stroke;
 
 
 public abstract class Objet implements Drawable {
-    protected static final float CLICKED_BIAS = 6f;
+    protected static final float CLICK_BIAS = 6f;
     protected static final Stroke STROKE_SELECTED = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 5f }, 0);
 
     protected Vec2d position;
-    protected double indice;
+    protected double refracIndex;
     protected Color color;
     protected double angle;
     /**
@@ -16,19 +16,19 @@ public abstract class Objet implements Drawable {
      */
     protected boolean selected = false;
 
-    public Objet(Vec2d position, double angle, double indice, Color color) {
+    public Objet(Vec2d position, double angle, double refracIndex, Color color) {
         this.position = position;
-        this.indice = indice;
+        this.refracIndex = refracIndex;
         this.color = color;
         this.angle = angle;
     }
 
-    public Objet(double indice, Color color) {
-        this(Vec2d.NULL, 0.0f, indice, color);
+    public Objet(double refracIndex, Color color) {
+        this(Vec2d.NULL, 0.0f, refracIndex, color);
     }
 
-    public Objet(double indice) {
-        this(indice, Color.BLACK);
+    public Objet(double refracIndex) {
+        this(refracIndex, Color.BLACK);
     }
 
     public Objet() {
@@ -59,12 +59,12 @@ public abstract class Objet implements Drawable {
         this.position = position;
     }
 
-    public double getIndice() {
-        return indice;
+    public double getRefracIndex() {
+        return refracIndex;
     }
 
-    public void setIndice(double indice) {
-        this.indice = indice;
+    public void setRefracIndex(double refracIndex) {
+        this.refracIndex = refracIndex;
     }
 
     public Color getColor() {

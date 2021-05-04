@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.List;
 
 import static java.lang.Math.*;
 
@@ -94,11 +95,52 @@ public final class Utils {
         }
     }
 
+    public static Intersection segmentListIntersect(Vec2d origin, Vec2d end, List<Segment> segments) {
+        Intersection best = null;
+        double d = Double.POSITIVE_INFINITY;
+        for (Segment seg : segments) {
+            Vec2d testintersect = segmentIntersect(seg.getA(), seg.getB(), origin, end);
+            if (testintersect != null) {
+                double a = testintersect.minus(origin).length();
+                if (a > 0.0001 && a < d) {
+                    d = a;
+                    best = new Intersection(testintersect, seg.getNormal(), 0);
+                }
+            }
+        }
+        //System.out.println(best);
+        return best;
+    }
+
     /**
-     * @param a
-     * @param b
-     * @param click
-     * @return true if click is inside the rectangle ab
+     * Trouve le Axis Aligned Bounding Box d'une liste de segments.
+     */
+    public static Vec2d[] findAABB(List<Segment> segments) {
+        Vec2d a = new Vec2d(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+        Vec2d b = new Vec2d(0, 0);
+
+        // Cherche le point le plus proche et le plus éloigné de l'origine
+        // Ces 2 points nous permettent de créer le rectangle de sélection
+        // qui englobe cet objet
+        for (Segment seg : segments) {
+            if (seg.getA().x < a.x) {
+                a = a.x(seg.getA().x);
+            }
+            if (seg.getA().y < a.y) {
+                a = a.y(seg.getA().y);
+            }
+            if (seg.getA().x > b.x) {
+                b = b.x(seg.getA().x);
+            }
+            if (seg.getA().y > b.y) {
+                b = b.y(seg.getA().y);
+            }
+        }
+        return new Vec2d[] { a, b };
+    }
+
+    /**
+     * @return true si click est dans le aabb défini par a et b
      */
     public static boolean testBoundingBox(Vec2d a, Vec2d b, Vec2d click, float bias) {
         return click.x <= max(a.x, b.x) + bias && click.x >= min(a.x, b.x) - bias

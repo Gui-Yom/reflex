@@ -76,7 +76,7 @@ public class Simulation {
             // Indice de réfraction du milieu du rayon incident
             double currIndex = ENV_REFRAC_INDEX;
             // Indice de réfraction du milieu du rayon transmis
-            double targetIndex = intersection.getN();
+            double targetIndex = intersection.getIndex();
             // On inverse les index dans le cas où on sort d'un objet
             if (state.currRefracIndex != ENV_REFRAC_INDEX) {
                 currIndex = state.currRefracIndex;

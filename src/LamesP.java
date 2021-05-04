@@ -22,51 +22,15 @@ public class LamesP extends Objet {
 
     @Override
     public Intersection intersect(Vec2d origin, Vec2d end) {
-        Intersection best = null;
-        double d = Double.POSITIVE_INFINITY;
-        for (Segment seg : segments) {
-            Vec2d testintersect = Utils.segmentIntersect(seg.getA(), seg.getB(), origin, end);
-            if (testintersect != null) {
-                double a = testintersect.minus(origin).length();
-                //System.out.println("a: " + a);
-                if (a > 0.0001 && a < d) {
-                    //System.out.println("d: " + d);
-                    d = a;
-                    best = new Intersection(testintersect, seg.getNormal(), indice);
-                }
-            }
-        }
-        //System.out.println(best);
-        return best;
+        Intersection i = Utils.segmentListIntersect(origin, end, segments);
+        i = i != null ? new Intersection(i.getPoint(), i.getNormal(), refracIndex) : null;
+        return i;
     }
 
     @Override
     public boolean isClickedOn(Vec2d click) {
-
-        Vec2d a = new Vec2d(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-        Vec2d b = new Vec2d(0, 0);
-        for (Segment seg : segments) {
-            if (seg.getA().x < a.x) {
-                a = a.x(seg.getA().x);
-            }
-            if (seg.getA().y < a.y) {
-                a = a.y(seg.getA().y);
-            }
-            if (seg.getA().x > b.x) {
-                b = b.x(seg.getA().x);
-            }
-            if (seg.getA().y > b.y) {
-                b = b.y(seg.getA().y);
-            }
-            //System.out.printf("a: %s%n", seg.getA());
-        }
-        //System.out.printf("%s, %s%n", a, b);
-
-        /*
-        Vec2d a = getPosition();
-        Vec2d b = getPosition().plus(new Vec2d(largeur, longueur));*/
-
-        return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
+        Vec2d[] bounds = Utils.findAABB(segments);
+        return Utils.testBoundingBox(bounds[0], bounds[1], click, CLICK_BIAS);
     }
 
     @Override

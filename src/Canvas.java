@@ -14,8 +14,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class Canvas extends JPanel implements KeyListener, MouseWheelListener, MouseInputListener {
 
-    private Simulation sim;
-    private AtomicReference<Objet> selected = new AtomicReference<>();
+    private final Simulation sim;
+    private final AtomicReference<Objet> selected = new AtomicReference<>();
     private Vec2d initialDragPos = Vec2d.NULL;
 
     public Canvas(Simulation sim) {

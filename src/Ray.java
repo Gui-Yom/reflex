@@ -7,14 +7,12 @@ import java.awt.geom.Line2D;
  */
 public class Ray implements Drawable, Sampler {
 
+    public static double RAY_DISPLAY_TRESHOLD = 0.1;
     private final Vec2d start;
     private final Vec2d end;
-
     private final double intensity;
     private final double wavelength;
     private final double phaseShift;
-
-    public static double RAY_DISPLAY_TRESHOLD = 0.1;
 
     public Ray(Vec2d start, Vec2d end, double intensity, double wavelength, double phaseShift) {
         this.start = start;

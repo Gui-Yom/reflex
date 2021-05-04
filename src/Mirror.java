@@ -22,14 +22,14 @@ public class Mirror extends Objet {
     public Intersection intersect(Vec2d origin, Vec2d end) {
         final Vec2d mirrorEnd = position.plus(Vec2d.fromPolar(width, angle));
         final Vec2d intersection = Utils.segmentIntersect(position, mirrorEnd, origin, end);
-        return intersection == null ? null : new Intersection(intersection, normal, indice);
+        return intersection == null ? null : new Intersection(intersection, normal, refracIndex);
     }
 
     @Override
     public boolean isClickedOn(Vec2d click) {
         Vec2d a = getPosition();
         Vec2d b = getPosition().plus(Vec2d.fromPolar(width, angle));
-        return Utils.testBoundingBox(a, b, click, CLICKED_BIAS);
+        return Utils.testBoundingBox(a, b, click, CLICK_BIAS);
     }
 
     @Override
