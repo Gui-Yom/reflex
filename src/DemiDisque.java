@@ -50,7 +50,7 @@ public class DemiDisque extends Objet {
         Segment diam = new Segment(a, b);
         segments.add(diam);
         ArrayList<Vec2d> pA = new ArrayList<>();
-        int numPoints = 6;
+        int numPoints = 1200;
         for (int i1 = 0; i1 < numPoints; i1++) {
             double alpha = i1 * Math.PI / numPoints - Math.PI / 2 + angle;
             double X = this.radius * Math.cos(alpha);
