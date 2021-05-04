@@ -47,10 +47,22 @@ public class Main {
         });
         menu.add(reinit);
         JButton btnDemidisque = new JButton("Demi-disque");
+        btnDemidisque.addActionListener(e -> {
+		sim.objets.add(new DemiDisque(new Vec2f(500, 400), 0, Constants.REFRAC_GLASS, 100));
+		redessiner();
+		});	
         menu.add(btnDemidisque);
         JButton btnMiroir = new JButton("Miroir");
+        btnMiroir.addActionListener(e -> {
+		sim.objets.add(new Mirror(new Vec2f(250, 300), 100, 0));
+		redessiner();
+		});	
         menu.add(btnMiroir);
         JButton btnLamesP = new JButton("Lame à faces parallèles");
+        btnLamesP.addActionListener(e -> {
+		sim.objets.add(new LamesP(new Vec2f(200f, 300f), 200, 100, Constants.REFRAC_GLASS));	
+		redessiner();
+		});
         menu.add(btnLamesP);
 
         frame.setVisible(true);
