@@ -58,7 +58,7 @@ public class Main {
             canvas.recalc();
         });
         menu.add(btnMiroir);
-        JButton btnLamesP = new JButton("Lame à faces parallèles");
+        JButton btnLamesP = new JButton("Lame a faces paralleles");
         btnLamesP.addActionListener(e -> {
             sim.add(new LamesP(new Vec2d(200f, 300f), 200, 100, Constants.REFRAC_GLASS));
             canvas.recalc();
