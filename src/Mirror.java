@@ -70,4 +70,14 @@ public class Mirror extends Objet {
         this.normal = normal;
         recalc();
     }
+
+    @Override
+    public double getMainDimension() {
+        return width;
+    }
+
+    @Override
+    public void setMainDimension(double mainDimension) {
+        this.width = mainDimension;
+    }
 }

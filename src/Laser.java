@@ -72,4 +72,14 @@ public class Laser extends Objet implements Sampler {
     public void setWavelength(double wavelength) {
         this.wavelength = wavelength;
     }
+
+    @Override
+    public double getMainDimension() {
+        return wavelength;
+    }
+
+    @Override
+    public void setMainDimension(double mainDimension) {
+        wavelength = mainDimension;
+    }
 }

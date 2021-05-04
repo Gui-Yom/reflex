@@ -90,4 +90,8 @@ public abstract class Objet implements Drawable {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
+
+    public abstract double getMainDimension();
+
+    public abstract void setMainDimension(double mainDimension);
 }

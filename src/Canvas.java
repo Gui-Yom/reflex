@@ -159,7 +159,16 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
     public void mouseWheelMoved(MouseWheelEvent e) {
 
         // ctrl+molette pour contrôler le maximum de récursion
+        // ctrl+molette avec un objet sélectionné pour modifier sa taille
         if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0) {
+            Objet o = selected.get();
+            if (o != null) {
+                o.setMainDimension(Math.max(o.getMainDimension() - e.getWheelRotation(), 0));
+                o.recalc();
+                recalc();
+                return;
+            }
+
             sim.setMaxDepth(Math.max(sim.getMaxDepth() - e.getWheelRotation(), 0));
             recalc();
             return;
@@ -172,6 +181,7 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
             return;
         }
 
+        // molette pour faire tourner l'objet sélectionné
         Objet o = selected.get();
         if (o != null) {
             o.setAngle(o.getAngle() + e.getWheelRotation() * Math.PI / 128);

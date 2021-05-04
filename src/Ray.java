@@ -7,7 +7,7 @@ import java.awt.geom.Line2D;
  */
 public class Ray implements Drawable, Sampler {
 
-    public static double RAY_DISPLAY_TRESHOLD = 0.1;
+    public static double RAY_DISPLAY_TRESHOLD = 0.001;
     private final Vec2d start;
     private final Vec2d end;
     private final double intensity;

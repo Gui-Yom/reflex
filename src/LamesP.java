@@ -47,5 +47,15 @@ public class LamesP extends ObjetComplexe {
     public void setLargeur(double largeur) {
         this.largeur = largeur;
     }
+
+    @Override
+    public double getMainDimension() {
+        return longueur;
+    }
+
+    @Override
+    public void setMainDimension(double mainDimension) {
+        this.longueur = mainDimension;
+    }
 }
 
