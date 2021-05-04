@@ -16,7 +16,7 @@ public class Laser extends Objet implements Sampler {
     }
 
     public Laser(Vec2d position, double angle, double wavelength) {
-        this(position, angle, wavelength, 1);
+        this(position, angle, wavelength, Constants.INTENSITY_MAX);
     }
 
     @Override

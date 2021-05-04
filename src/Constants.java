@@ -11,4 +11,6 @@ public class Constants {
     public static final double REFRAC_WATER = 1.333f;
     public static final double REFRAC_DIAMOND = 2.417f;
     public static final double REFRAC_GLASS = 1.52f;
+
+    public static final double INTENSITY_MAX = 100;
 }

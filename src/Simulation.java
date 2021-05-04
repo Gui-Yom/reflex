@@ -32,6 +32,7 @@ public class Simulation {
         for (Objet o : objets) {
             if (o instanceof Laser) {
                 Laser laser = (Laser) o;
+                System.out.println("start ray");
                 computeRay(new ComputeState(laser));
             }
         }
@@ -72,32 +73,39 @@ public class Simulation {
             // Le rayon actuel se finit au point d'intersection
             end = intersection.getPoint();
 
+            // Indice de réfraction du milieu du rayon incident
+            double currIndex = ENV_REFRAC_INDEX;
+            // Indice de réfraction du milieu du rayon transmis
+            double targetIndex = intersection.getN();
+            // On inverse les index dans le cas où on sort d'un objet
+            if (state.currRefracIndex != ENV_REFRAC_INDEX) {
+                currIndex = state.currRefracIndex;
+                targetIndex = ENV_REFRAC_INDEX;
+            }
+
+            // On calcule l'intensité du rayon réfléchi
+            double reflectIntensity;
+            if (intersection.canTransmit()) {
+                reflectIntensity = state.intensity * Utils.coefReflectPower(currIndex, targetIndex);
+            } else {
+                reflectIntensity = state.intensity;
+            }
+            System.out.println("reflect: " + reflectIntensity);
             // On lance le calcul du rayon réfléchi
             Vec2d reflected = Utils.reflect(state.direction.normalize(), intersection.getNormal());
 
-            // On calcule l'intensité du nouveau rayon
-            double newIntensity = state.intensity;
-            if (intersection.canTransmit())
-                newIntensity /= 2;
+            computeRay(state.goInDepth(intersection.getPoint(), reflected, reflectIntensity, state.currRefracIndex));
 
-            computeRay(state.goInDepth(intersection.getPoint(), reflected, newIntensity, state.currRefracIndex));
-
-            // Il existe un rayon réfracté / transmis
+            // Il peut exister un rayon réfracté / transmis
             if (intersection.canTransmit()) {
-                // Indice de réfraction du milieu du rayon incident
-                double currIndex = ENV_REFRAC_INDEX;
-                // Indice de réfraction du milieu du rayon transmis
-                double targetIndex = intersection.getN();
-                // On inverse les index dans le cas où on sort d'un objet
-                if (state.currRefracIndex != ENV_REFRAC_INDEX) {
-                    currIndex = state.currRefracIndex;
-                    targetIndex = ENV_REFRAC_INDEX;
-                }
-
                 // On calcule le rayon réfracté
                 Vec2d refracted = Utils.refract(state.direction.normalize(), intersection.getNormal(), currIndex, targetIndex);
+                System.out.println("t: " + refracted);
                 if (refracted != null) {
-                    computeRay(state.goInDepth(intersection.getPoint(), refracted, newIntensity, targetIndex));
+                    // Intensité du rayon transmis
+                    double refractIntensity = state.intensity * Utils.coefTransmitPower(currIndex, targetIndex);
+                    System.out.println("refract: " + refractIntensity);
+                    computeRay(state.goInDepth(intersection.getPoint(), refracted, refractIntensity, targetIndex));
                 }
             }
         }

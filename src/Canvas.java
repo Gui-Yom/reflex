@@ -69,8 +69,9 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
         }
 
         g2d.setColor(Color.BLACK);
-        g2d.drawString(String.format("%d ms", System.currentTimeMillis() - startTime), getWidth() - 30, 10);
-        g2d.drawString(String.format("depth: %d", sim.getMaxDepth()), getWidth() - 50, 22);
+        g2d.drawString(String.format("%d ms", System.currentTimeMillis() - startTime), getWidth() - 31, 10);
+        g2d.drawString(String.format("depth: %d", sim.getMaxDepth()), getWidth() - 52, 22);
+        g2d.drawString(String.format("display treshold: %.3f", Ray.RAY_DISPLAY_TRESHOLD), getWidth() - 120, 34);
     }
 
     @Override
@@ -157,11 +158,17 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
 
-        // La touche ctrl est pressée
-        // On modifie le maxDepth de la simulation
+        // ctrl+molette pour contrôler le maximum de récursion
         if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0) {
             sim.setMaxDepth(Math.max(sim.getMaxDepth() - e.getWheelRotation(), 0));
             recalc();
+            return;
+        }
+
+        // shift+molette pour contrôler la limite d'intensité pour le dessin des rayons
+        if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0) {
+            Ray.RAY_DISPLAY_TRESHOLD = Math.max(Ray.RAY_DISPLAY_TRESHOLD - e.getWheelRotation() * 0.001, 0);
+            repaint();
             return;
         }
 
@@ -176,7 +183,6 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
     @Override
     public void mouseDragged(MouseEvent e) {
         Objet o = selected.get();
-        //System.out.println("Drag : " + e.getX() + ", " + e.getY());
         if (o != null) {
             Vec2d newDragPos = new Vec2d(e.getX(), e.getY());
             o.setPosition(o.getPosition().plus(newDragPos.minus(initialDragPos)));

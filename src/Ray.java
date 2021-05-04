@@ -14,6 +14,8 @@ public class Ray implements Drawable, Sampler {
     private final double wavelength;
     private final double phaseShift;
 
+    public static double RAY_DISPLAY_TRESHOLD = 0.1;
+
     public Ray(Vec2d start, Vec2d end, double intensity, double wavelength, double phaseShift) {
         this.start = start;
         this.end = end;
@@ -29,12 +31,15 @@ public class Ray implements Drawable, Sampler {
 
     @Override
     public void draw(Graphics2D g) {
-        //if (intensity >= 0.05) {
-        Color c = Utils.waveLengthToRGB(wavelength);
-        c = new Color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, (float) intensity);
-        g.setColor(c);
-        g.draw(new Line2D.Double(start.x, start.y, end.x, end.y));
-        //}
+        if (intensity > RAY_DISPLAY_TRESHOLD * Constants.INTENSITY_MAX) {
+            Color c = Utils.waveLengthToRGB(wavelength);
+            c = new Color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, (float) (intensity * 0.75 / Constants.INTENSITY_MAX + 1.0 - 0.75));
+            g.setColor(c);
+            g.draw(new Line2D.Double(start.x, start.y, end.x, end.y));
+        } /*else {
+            g.setColor(Color.LIGHT_GRAY);
+            g.draw(new Line2D.Double(start.x, start.y, end.x, end.y));
+        }*/
     }
 
     public Vec2d getStart() {

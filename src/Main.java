@@ -11,6 +11,7 @@ public class Main {
     private static JFrame frame;
     private static Simulation sim;
     private static Canvas canvas;
+
     public static void main(String[] args) {
 
         // Force l'utilisation du gpu pour le rendu

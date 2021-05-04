@@ -3,8 +3,6 @@ import java.awt.Color;
 import static java.lang.Math.*;
 
 public final class Utils {
-    private static final double Gamma = 0.80;
-    private static final double IntensityMax = 255;
 
     /**
      * Taken from Earl F. Glynn's web page:
@@ -58,9 +56,9 @@ public final class Utils {
         }
 
         return new Color(
-            (int) Math.round(IntensityMax * Math.pow(r * factor, Gamma)),
-            (int) Math.round(IntensityMax * Math.pow(g * factor, Gamma)),
-            (int) Math.round(IntensityMax * Math.pow(b * factor, Gamma)));
+            (int) round((double) 255 * pow(r * factor, 0.80)),
+            (int) round((double) 255 * pow(g * factor, 0.80)),
+            (int) round((double) 255 * pow(b * factor, 0.80)));
     }
 
     public static double wavelengthToFreq(double wavelength) {
@@ -141,5 +139,19 @@ public final class Utils {
         double eta = n1 / n2;
         double k = 1 - eta * eta * (1 - dot * dot);
         return k < 0 ? null : i.scale(eta).plus(n.scale(eta * dot - (float) sqrt(k)));
+    }
+
+    /**
+     * @return le coefficient de réflexion de l'onde en puissance R
+     */
+    public static double coefReflectPower(double n1, double n2) {
+        return pow((n1 - n2) / (n1 + n2), 2);
+    }
+
+    /**
+     * @return le coefficient de transmission de l'onde en puissance T
+     */
+    public static double coefTransmitPower(double n1, double n2) {
+        return 4 * n1 * n2 / pow(n1 + n2, 2);
     }
 }
