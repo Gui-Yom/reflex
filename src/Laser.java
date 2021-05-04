@@ -35,7 +35,7 @@ public class Laser extends Objet implements Sampler {
         if (selected) {
             g.setStroke(STROKE_SELECTED);
         }
-        g.setColor(Utils.waveLengthToRGB(wavelength));
+        g.setColor(color);
         g.draw(new Rectangle2D.Double(position.x - 5, position.y - 5, 10, 10));
     }
 

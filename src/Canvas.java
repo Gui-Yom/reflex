@@ -70,13 +70,13 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
 
         g2d.setColor(Color.BLACK);
         g2d.drawString(String.format("%d ms", System.currentTimeMillis() - startTime), getWidth() - 30, 10);
+        g2d.drawString(String.format("depth: %d", sim.getMaxDepth()), getWidth() - 50, 22);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_1:
-                System.out.println("1");
                 sim.configuration1();
                 recalc();
                 break;
@@ -120,8 +120,7 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
                     recalc();
                 }
                 break;
-            case KeyEvent.VK_ENTER:
-                sim.add(new LamesP(new Vec2d(50, 50), 100, 50, -1));
+            case KeyEvent.VK_R:
                 recalc();
                 break;
         }
@@ -130,6 +129,8 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
     @Override
     public void mousePressed(MouseEvent e) {
 
+        // Important, sinon le canvas ne peut jamais avoir le focus
+        // On ne pourra pas recevoir les évènements clavier sans ça
         requestFocus();
 
         Vec2d clicked = new Vec2d(e.getX(), e.getY());
@@ -159,7 +160,7 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
         // La touche ctrl est pressée
         // On modifie le maxDepth de la simulation
         if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0) {
-            sim.setMaxDepth(sim.getMaxDepth() - e.getWheelRotation());
+            sim.setMaxDepth(Math.max(sim.getMaxDepth() - e.getWheelRotation(), 0));
             recalc();
             return;
         }
@@ -179,6 +180,7 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
         if (o != null) {
             Vec2d newDragPos = new Vec2d(e.getX(), e.getY());
             o.setPosition(o.getPosition().plus(newDragPos.minus(initialDragPos)));
+            o.recalc();
             initialDragPos = newDragPos;
             recalc();
         }
