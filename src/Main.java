@@ -5,12 +5,16 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class Main {
 
     private static JFrame frame;
     private static Simulation sim;
     private static Canvas canvas;
+    private static JFrame accueil;
 
     public static void main(String[] args) {
 
@@ -66,5 +70,39 @@ public class Main {
         menu.add(btnLamesP);
 
         frame.setVisible(true);
+        
+        accueil = new JFrame("accueil - Reflex");
+        accueil.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        accueil.setBounds(1000,50,800,1000);
+        accueil.setLayout(null);
+        
+        JPanel panFond = new JPanel();
+        panFond.setBounds(0,0,accueil.getWidth(),accueil.getHeight());
+        
+        Font police = new Font ("Norwester", Font.BOLD,15);
+        
+        JButton explication = new JButton("Explications - à lire - IMPORTANT");
+        explication.setBackground(new Color(64,76,98));
+        explication.setForeground(new Color(243,135,37));
+        explication.setFont(police);
+        explication.setBounds(250,50,300,80);
+		//panFond.add(explication);
+        
+        
+        //image de fond
+		ImageIcon fondMenu = new ImageIcon ("fond projet.jpg");
+		ImageIcon resultat = new ImageIcon ( fondMenu.getImage().getScaledInstance(800,1000, Image.SCALE_DEFAULT));
+		
+		JLabel fond = new JLabel (resultat);
+		fond.setBounds(0,0,800,1000);
+		fond.add(explication);
+		panFond.add(fond);
+		
+		
+		accueil.setContentPane(panFond);
+        
+        accueil.setVisible(true);
+        
+        
     }
 }
