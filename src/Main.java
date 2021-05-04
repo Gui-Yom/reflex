@@ -9,12 +9,15 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Main {
+public class Main implements ActionListener{
 
     private static JFrame frame;
     private static Simulation sim;
     private static Canvas canvas;
     private static JFrame accueil;
+    private static JFrame fenExpli;
+    private static JButton compris;
+    private static JButton explication;
 
     public static void main(String[] args) {
 
@@ -71,6 +74,8 @@ public class Main {
 
         frame.setVisible(true);
         
+        //création de la fenètre d'accueil
+        
         accueil = new JFrame("accueil - Reflex");
         accueil.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         accueil.setBounds(1000,50,800,1000);
@@ -79,14 +84,17 @@ public class Main {
         JPanel panFond = new JPanel();
         panFond.setBounds(0,0,accueil.getWidth(),accueil.getHeight());
         
+        //paramètre du bouton
+        
         Font police = new Font ("Norwester", Font.BOLD,15);
         
-        JButton explication = new JButton("Explications - à lire - IMPORTANT");
+        explication = new JButton("Explications - à lire - IMPORTANT");
         explication.setBackground(new Color(64,76,98));
         explication.setForeground(new Color(243,135,37));
         explication.setFont(police);
         explication.setBounds(250,50,300,80);
-		//panFond.add(explication);
+        explication.addActionListener(this);
+		
         
         
         //image de fond
@@ -103,6 +111,43 @@ public class Main {
         
         accueil.setVisible(true);
         
+         fenExpli = new JFrame("Explications");
+        fenExpli.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        fenExpli.setBounds(1000,50,800,1000);
+        fenExpli.setLayout(null);
+        
+        JPanel expFond = new JPanel();
+        expFond.setBounds(0,0,fenExpli.getWidth(),fenExpli.getHeight);
+        expFond.setBackground(new Color(16,31,64));
+        
+        compris = new JButton("Compris !");
+        compris.setBackground(new Color(64,76,98));
+        compris.setForeground(new Color(243,135,37));
+        compris.setFont(police);
+        compris.setBounds(250,820,300,80);
+        compris.addActionListener(this);
+        
+        
+        
+        expFond.add(compris);
+        fenExpli.add(expFond);
+        fenExpli.setVisible(false);
+        
+        
+				
+			
+        
         
     }
+    
+    public void actionPerformed (ActionEvent f){
+			if(f.getSource()==explication){
+				fenExpli.setVisible(true);
+			}
+			if (f.getSource()==compris){
+				fenExpli.setVisible(false);
+			}
+	}
+    
+    
 }
