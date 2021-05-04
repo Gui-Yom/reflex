@@ -67,6 +67,7 @@ public class Main {
         });
         menu.add(btnLamesP);
 
+
         frame.setVisible(true);
     }
 }
