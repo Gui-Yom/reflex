@@ -1,3 +1,10 @@
+package reflex.objets;
+
+import reflex.Drawable;
+import reflex.utils.Constants;
+import reflex.utils.Intersection;
+import reflex.utils.Vec2d;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;

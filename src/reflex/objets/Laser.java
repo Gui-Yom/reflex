@@ -1,3 +1,11 @@
+package reflex.objets;
+
+import reflex.Sampler;
+import reflex.utils.Constants;
+import reflex.utils.Intersection;
+import reflex.utils.Utils;
+import reflex.utils.Vec2d;
+
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 

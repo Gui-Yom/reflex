@@ -1,3 +1,5 @@
+package reflex.utils;
+
 public class Segment {
     private final Vec2d a;
     private final Vec2d b;

@@ -19,10 +19,8 @@ if %ERRORLEVEL% GTR 0 (
     goto :find
 )
 
-set build=%build% -encoding UTF-8 -cp src -d build\classes --release 11
-%build% src\Main.java
-set jar="%JAVA_HOME%\bin\jar"
-%jar% --create --file build\reflex.jar --manifest src\META-INF\MANIFEST.MF -C build\classes .
+%build% -encoding UTF-8 -cp src -d build\classes --release 11 src\reflex\Main.java
+%jar% --create -f build\reflex.jar -m src\META-INF\MANIFEST.MF -C build\classes . -C resources .
 
 echo OK. Run `java -jar build\reflex.jar`.
 :end

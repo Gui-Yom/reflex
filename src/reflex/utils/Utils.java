@@ -1,3 +1,5 @@
+package reflex.utils;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -89,7 +91,7 @@ public final class Utils {
             // If |a| > |b|, t > 1, no intersection
             // We check for t = a/b and for u = c/b
             return null;
-        } else { // Intersection
+        } else { // reflex.utils.Intersection
             double t = a / b;
             return new Vec2d(p1.x + t * (p2.x - p1.x), p1.y + t * (p2.y - p1.y));
         }

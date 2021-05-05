@@ -1,3 +1,11 @@
+package reflex;
+
+import reflex.objets.*;
+import reflex.utils.Constants;
+import reflex.utils.Intersection;
+import reflex.utils.Utils;
+import reflex.utils.Vec2d;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +34,7 @@ public class Simulation {
     /**
      * Will compute the rays
      */
-    void compute() {
+    public void compute() {
         rays.clear();
         // Les sources de rayon sont des lasers
         for (Objet o : objets) {
@@ -156,7 +164,7 @@ public class Simulation {
         add(m3);
         LamesP lame = new LamesP(new Vec2d(200f, 300f), 200, 100, Constants.REFRAC_GLASS);
         add(lame);
-        //demiSphere d = new demiSphere(new Vec2f(50, 50), Constants.REFRAC_GLASS, 5f);
+        //demiSphere d = new demiSphere(new Vec2f(50, 50), reflex.utils.Constants.REFRAC_GLASS, 5f);
     }
 
     public void configuration2() {

@@ -1,3 +1,5 @@
+package reflex.utils;
+
 import static java.lang.Math.acos;
 import static java.lang.Math.atan2;
 
@@ -150,6 +152,6 @@ public class Vec2d implements Cloneable {
 
     @Override
     public String toString() {
-        return "Vec2d{" + "x=" + x + ", y=" + y + '}';
+        return "reflex.utils.Vec2d{" + "x=" + x + ", y=" + y + '}';
     }
 }

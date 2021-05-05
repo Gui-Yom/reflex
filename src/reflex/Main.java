@@ -1,3 +1,14 @@
+package reflex;
+
+import reflex.objets.DemiDisque;
+import reflex.objets.LamesP;
+import reflex.objets.Laser;
+import reflex.objets.Mirror;
+import reflex.ui.Canvas;
+import reflex.ui.FenetreInformation;
+import reflex.utils.Constants;
+import reflex.utils.Vec2d;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

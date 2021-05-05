@@ -1,3 +1,9 @@
+package reflex;
+
+import reflex.utils.Constants;
+import reflex.utils.Utils;
+import reflex.utils.Vec2d;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
@@ -62,7 +68,7 @@ public class Ray implements Drawable, Sampler {
 
     @Override
     public String toString() {
-        return "Ray{" +
+        return "reflex.Ray{" +
                    "start=" + start +
                    ", end=" + end +
                    ", intensity=" + intensity +

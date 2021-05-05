@@ -1,3 +1,11 @@
+package reflex.ui;
+
+import reflex.Drawable;
+import reflex.Ray;
+import reflex.Simulation;
+import reflex.objets.Objet;
+import reflex.utils.Vec2d;
+
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 import java.awt.Color;

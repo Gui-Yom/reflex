@@ -1,3 +1,5 @@
+package reflex.utils;
+
 public class Intersection {
     private final Vec2d point;
     private final Vec2d normal;

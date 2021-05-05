@@ -1,3 +1,9 @@
+package reflex.objets;
+
+import reflex.utils.Intersection;
+import reflex.utils.Utils;
+import reflex.utils.Vec2d;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
@@ -45,7 +51,7 @@ public class Mirror extends Objet {
 
     @Override
     public String toString() {
-        return "Mirror{" +
+        return "reflex.objets.Mirror{" +
                    "width=" + width +
                    ", angle=" + angle +
                    ", normal=" + normal +

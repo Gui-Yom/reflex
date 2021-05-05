@@ -1,3 +1,8 @@
+package reflex.objets;
+
+import reflex.utils.Segment;
+import reflex.utils.Vec2d;
+
 import java.awt.Color;
 
 public class LamesP extends ObjetComplexe {

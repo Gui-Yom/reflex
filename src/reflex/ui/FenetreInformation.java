@@ -1,17 +1,18 @@
+package reflex.ui;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 
 public class FenetreInformation extends JFrame {
 
-    private JPanel panelPresentation;
-    private JPanel panelExplications;
-    private JButton btnCompris;
-    private JButton btnExplications;
+    private final JPanel panelPresentation;
+    private final JPanel panelExplications;
+    private final JButton btnCompris;
+    private final JButton btnExplications;
 
     public FenetreInformation() {
         super("Manuel d'utilisation");
@@ -37,7 +38,7 @@ public class FenetreInformation extends JFrame {
         //image de fond
         ImageIcon imageFond = null;
         try {
-            imageFond = new ImageIcon(ImageIO.read(new File("src/fond projet.jpg")).getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH));
+            imageFond = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("fond projet.jpg")).getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH));
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Can't load image.");
