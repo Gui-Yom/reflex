@@ -47,10 +47,7 @@ public abstract class ObjetComplexe extends Objet {
 
     @Override
     public void draw(Graphics2D g) {
-        if (selected) {
-            g.setStroke(STROKE_SELECTED);
-        }
-        g.setColor(color);
+        super.draw(g);
         for (Segment s : segments) {
             g.draw(new Line2D.Double(s.getA().x, s.getA().y, s.getB().x, s.getB().y));
         }

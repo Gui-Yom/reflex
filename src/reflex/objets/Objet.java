@@ -7,6 +7,7 @@ import reflex.utils.Vec2d;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Stroke;
 
 
@@ -43,20 +44,58 @@ public abstract class Objet implements Drawable {
     }
 
     /**
-     * Let the object recalc some values it has after updating a value.
+     * Permet à l'objet de recalculer ses paramètres après un changement
      */
     public void recalc() {
-        // Default no op impl
+        // L'implémentation par défaut ne fait rien
     }
 
     /**
      * @param origin the origin point of the ray
      * @param end    the end point of the ray
-     * @return a non null value to indicate the ray has intersected with this object
+     * @return une valeur non nulle pour indiquer que le rayon intersecte avec cet objet
      */
     public abstract Intersection intersect(Vec2d origin, Vec2d end);
 
+    /**
+     * @param click
+     * @return true si click est sur l'objet
+     */
     public abstract boolean isClickedOn(Vec2d click);
+
+    @Override
+    public void draw(Graphics2D g) {
+        if (selected) {
+            g.setStroke(STROKE_SELECTED);
+        }
+        g.setColor(color);
+    }
+
+    /**
+     * @return le texte affiché lorsque l'objet est pointé à la souris
+     */
+    public String getTooltipText() {
+        return String.format("%s {pos: {x: %.2f, y: %.2f}, angle: %.3f, n: %.3f}", getClass().getSimpleName(), position.x, position.y, angle, refracIndex);
+    }
+
+    /**
+     * @return la valeur de la dimension principale de l'objet
+     */
+    public abstract double getMainDim();
+
+    /**
+     * Définit la valeur de la dimension principale de l'objet
+     */
+    public abstract void setMainDim(double mainDimension);
+
+    /**
+     * @return la valeur de la dimension secondaire de l'objet
+     */
+    public abstract double getSecondaryDim();
+
+    public abstract void setSecondaryDim(double secondaryDim);
+
+    // Accesseurs
 
     public Vec2d getPosition() {
         return position;
@@ -97,8 +136,4 @@ public abstract class Objet implements Drawable {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
-
-    public abstract double getMainDimension();
-
-    public abstract void setMainDimension(double mainDimension);
 }

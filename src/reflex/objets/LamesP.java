@@ -10,15 +10,15 @@ public class LamesP extends ObjetComplexe {
     private double longueur;
     private double largeur;
 
-    public LamesP(Vec2d pos, double angle, double lon, double larg, double n, Color color) {
-        super(pos, angle, n, color, 4);
+    public LamesP(Vec2d pos, double angle, double lon, double larg, double refracIndex, Color color) {
+        super(pos, angle, refracIndex, color, 4);
         this.longueur = lon;
         this.largeur = larg;
         recalc();
     }
 
-    public LamesP(Vec2d position, double longueur, double largeur, double indice) {
-        this(position, 0, longueur, largeur, indice, Color.BLACK);
+    public LamesP(Vec2d position, double longueur, double largeur, double angle, double refracIndex) {
+        this(position, angle, longueur, largeur, refracIndex, Color.BLACK);
     }
 
     @Override
@@ -55,13 +55,23 @@ public class LamesP extends ObjetComplexe {
     }
 
     @Override
-    public double getMainDimension() {
+    public double getMainDim() {
         return longueur;
     }
 
     @Override
-    public void setMainDimension(double mainDimension) {
+    public void setMainDim(double mainDimension) {
         this.longueur = mainDimension;
+    }
+
+    @Override
+    public double getSecondaryDim() {
+        return largeur;
+    }
+
+    @Override
+    public void setSecondaryDim(double secondaryDim) {
+        largeur = secondaryDim;
     }
 }
 

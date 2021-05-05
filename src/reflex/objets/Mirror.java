@@ -40,10 +40,7 @@ public class Mirror extends Objet {
 
     @Override
     public void draw(Graphics2D g) {
-        if (selected) {
-            g.setStroke(STROKE_SELECTED);
-        }
-        g.setColor(Color.BLACK);
+        super.draw(g);
         g.draw(new Line2D.Double(position.x, position.y, position.x + width * Math.cos(angle), position.y + width * Math.sin(angle)));
         g.setColor(Color.ORANGE);
         g.draw(new Line2D.Double(position.x, position.y, position.x + normal.x * 10, position.y + normal.y * 10));
@@ -78,12 +75,20 @@ public class Mirror extends Objet {
     }
 
     @Override
-    public double getMainDimension() {
+    public double getMainDim() {
         return width;
     }
 
     @Override
-    public void setMainDimension(double mainDimension) {
+    public void setMainDim(double mainDimension) {
         this.width = mainDimension;
     }
+
+    @Override
+    public double getSecondaryDim() {
+        return 0;
+    }
+
+    @Override
+    public void setSecondaryDim(double secondaryDim) { }
 }
