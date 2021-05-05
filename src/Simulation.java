@@ -125,6 +125,10 @@ public class Simulation {
         objets.add(o);
     }
 
+    public void remove(Objet o) {
+        objets.remove(o);
+    }
+
     public void clear() {
         objets.clear();
         rays.clear();
