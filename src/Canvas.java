@@ -82,7 +82,7 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
 
     @Override
     public Point getToolTipLocation(MouseEvent event) {
-        System.out.printf("%d, %d%n", event.getX(), event.getY());
+        //System.out.printf("%d, %d%n", event.getX(), event.getY());
         for (Objet o : sim.getObjets()) {
             if (o.isClickedOn(new Vec2d(event.getX(), event.getY()))) {
                 setToolTipText(o.getTooltipText());
@@ -106,6 +106,10 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
                 break;
             case KeyEvent.VK_3:
                 sim.configuration3();
+                recalc();
+                break;
+            case KeyEvent.VK_4:
+                sim.configuration4();
                 recalc();
                 break;
             case KeyEvent.VK_UP:
