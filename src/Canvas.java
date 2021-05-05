@@ -1,9 +1,7 @@
 import javax.swing.JPanel;
+import javax.swing.ToolTipManager;
 import javax.swing.event.MouseInputListener;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -13,6 +11,12 @@ import java.util.concurrent.atomic.AtomicReference;
  * @see Simulation
  */
 public class Canvas extends JPanel implements KeyListener, MouseWheelListener, MouseInputListener {
+
+    static {
+        ToolTipManager.sharedInstance().setDismissDelay(1000);
+        ToolTipManager.sharedInstance().setInitialDelay(100);
+        ToolTipManager.sharedInstance().setReshowDelay(200);
+    }
 
     private final Simulation sim;
     private final AtomicReference<Objet> selected = new AtomicReference<>();
@@ -32,6 +36,8 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
 
         sim.configuration1();
         recalc();
+
+        setToolTipText("");
     }
 
     /**
@@ -54,7 +60,7 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
 
         Graphics2D g2d = (Graphics2D) g;
         // Antialiasing may cause some lines to simply disappear
-        //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
@@ -75,6 +81,19 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
     }
 
     @Override
+    public Point getToolTipLocation(MouseEvent event) {
+        //System.out.printf("%d, %d%n", event.getX(), event.getY());
+        for (Objet o : sim.getObjets()) {
+            if (o.isClickedOn(new Vec2d(event.getX(), event.getY()))) {
+                setToolTipText(o.getTooltipText());
+                return new Point(10, 10);
+            }
+        }
+        setToolTipText("");
+        return new Point(10, 10);
+    }
+
+    @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_1:
@@ -87,6 +106,10 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
                 break;
             case KeyEvent.VK_3:
                 sim.configuration3();
+                recalc();
+                break;
+            case KeyEvent.VK_4:
+                sim.configuration4();
                 recalc();
                 break;
             case KeyEvent.VK_UP:
@@ -130,9 +153,9 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
                     sim.remove(o);
                     recalc();
                 }
+                break;
         }
     }
-
 
     @Override
     public void mousePressed(MouseEvent e) {
