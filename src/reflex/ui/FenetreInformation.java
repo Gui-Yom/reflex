@@ -1,9 +1,10 @@
+package reflex.ui;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 
 public class FenetreInformation extends JFrame {
