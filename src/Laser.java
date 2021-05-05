@@ -87,6 +87,6 @@ public class Laser extends Objet implements Sampler {
 
     @Override
     public void setSecondaryDim(double secondaryDim) {
-        intensity = secondaryDim;
+        intensity = Math.min(secondaryDim, Constants.INTENSITY_MAX);
     }
 }

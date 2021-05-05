@@ -82,17 +82,27 @@ public class FenetreInformation extends JFrame {
         com1.setFont(police);
         com1.setForeground(foregroundColor);
         com1.setBounds(20, 170, 280, 340);
-        com1.setText("<html><ul><li>Sélectionner un objet (passe en pointillets) :<br>Click gauche</li><li>Déplacer:<br>Maintenir click gauche souris & flèches du clavier</li><li>Pivoter :<br>molette souris</li><li>Agrandir :<br>CTRL+Molette</li><li>Supprimer :<br>touche SUPPR</li></ul></html>");
+        com1.setText("<html><ul>" +
+                         "<li>Sélectionner un objet (pointillets) : Clic gauche</li>" +
+                         "<li>Déplacer :<br>Maintenir click gauche souris & flèches du clavier</li>" +
+                         "<li>Pivoter : molette</li>" +
+                         "<li>Modifier le premier paramètre (taille, longueur d'onde) :<br>CTRL + Molette</li>" +
+                         "<li>Modifier le deuxième paramètre (taille, intensité) :<br>SHIFT + Molette</li>" +
+                         "<li>Supprimer : SUPPR/DEL</li>" +
+                         "</ul></html>");
 
         JLabel com2 = new JLabel();
         com2.setFont(police);
         com2.setForeground(foregroundColor);
         com2.setBounds(300, 170, 280, 340);
-        com2.setText("<html><ul><li>Choisir une configuration prédéfinie :<br>touche 1, 2 ou 3 du clavier</li><li>Rafraichir l'affichage :<br>touche R</li><li>Augmenter la limite de calcul des rayons :<br>CTRL + Molette</li><li>Augmenter la limite d'affichage des rayons :<br>SHIFT + Molette</li></ul></html>");
+        com2.setText("<html><ul>" +
+                         "<li>Choisir une configuration prédéfinie :<br>touche 1, 2, 3, 4 du clavier</li>" +
+                         "<li>Rafraichir l'affichage :<br>touche R</li><li>Augmenter la limite de calcul des rayons :<br>CTRL + Molette</li>" +
+                         "<li>Augmenter la limite d'affichage des rayons (intensité) :<br>SHIFT + Molette</li>" +
+                         "</ul></html>");
 
         panelExplications.add(com1);
         panelExplications.add(com2);
-
 
         btnExplications.addActionListener(e -> setContentPane(panelExplications));
         btnCompris.addActionListener(e -> setContentPane(panelPresentation));

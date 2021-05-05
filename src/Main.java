@@ -45,10 +45,14 @@ public class Main {
         reinit.addActionListener(e -> {
             sim.clear();
             canvas.recalc();
-            sim.add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
-
         });
         menu.add(reinit);
+        JButton btnLaser = new JButton("Laser");
+        btnLaser.addActionListener(e -> {
+            sim.add(new Laser(new Vec2d(200, 200), 0, 632));
+            canvas.recalc();
+        });
+        menu.add(btnLaser);
         JButton btnDemidisque = new JButton("Demi-disque");
         btnDemidisque.addActionListener(e -> {
             sim.add(new DemiDisque(new Vec2d(500, 400), 0, Constants.REFRAC_GLASS, 100));
