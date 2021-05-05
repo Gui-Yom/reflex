@@ -54,6 +54,7 @@ public class FenetreInformation extends JFrame {
 
         // Panel d'explications
         panelExplications = new JPanel();
+        panelExplications.setLayout(null);
         panelExplications.setBounds(0, 0, getWidth(), getHeight());
         panelExplications.setBackground(new Color(16, 31, 64));
 		panelExplications.setLayout(null);
@@ -62,7 +63,11 @@ public class FenetreInformation extends JFrame {
         btnCompris.setBackground(new Color(64, 76, 98));
         btnCompris.setForeground(new Color(243, 135, 37));
         btnCompris.setFont(police);
+<<<<<<< HEAD
         btnCompris.setBounds(250, 480, 100, 60);
+=======
+        btnCompris.setBounds(getWidth() / 4, 50, getWidth() / 2, 40);
+>>>>>>> 815aa3e369e8d61453f2ba8f92dfc663f400413d
 
         panelExplications.add(btnCompris);
         
