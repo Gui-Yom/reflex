@@ -68,7 +68,7 @@ public abstract class Objet implements Drawable {
      * @return le texte affiché lorsque l'objet est pointé à la souris
      */
     public String getTooltipText() {
-        return getClass().getSimpleName();
+        return String.format("%s {pos: {x: %.2f, y: %.2f}, angle: %.3f, n: %.3f}", getClass().getSimpleName(), position.x, position.y, angle, refracIndex);
     }
 
     /**

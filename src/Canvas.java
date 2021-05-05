@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Canvas extends JPanel implements KeyListener, MouseWheelListener, MouseInputListener {
 
     static {
-        ToolTipManager.sharedInstance().setDismissDelay(1000);
+        ToolTipManager.sharedInstance().setDismissDelay(2000);
         ToolTipManager.sharedInstance().setInitialDelay(100);
         ToolTipManager.sharedInstance().setReshowDelay(200);
     }
