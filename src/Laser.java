@@ -32,10 +32,7 @@ public class Laser extends Objet implements Sampler {
 
     @Override
     public void draw(Graphics2D g) {
-        if (selected) {
-            g.setStroke(STROKE_SELECTED);
-        }
-        g.setColor(color);
+        super.draw(g);
         g.draw(new Rectangle2D.Double(position.x - 5, position.y - 5, 10, 10));
     }
 
