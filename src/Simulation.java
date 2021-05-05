@@ -83,31 +83,31 @@ public class Simulation {
                 targetIndex = ENV_REFRAC_INDEX;
             }
 
-            // On calcule l'intensité du rayon réfléchi
             double reflectIntensity;
-            if (intersection.canTransmit()) {
-                reflectIntensity = state.intensity * Utils.coefReflectPower(currIndex, targetIndex);
-            } else {
-                reflectIntensity = state.intensity;
-            }
-            System.out.println("reflect: " + reflectIntensity);
-            // On lance le calcul du rayon réfléchi
-            Vec2d reflected = Utils.reflect(state.direction.normalize(), intersection.getNormal());
-
-            computeRay(state.goInDepth(intersection.getPoint(), reflected, reflectIntensity, state.currRefracIndex));
-
             // Il peut exister un rayon réfracté / transmis
             if (intersection.canTransmit()) {
                 // On calcule le rayon réfracté
                 Vec2d refracted = Utils.refract(state.direction.normalize(), intersection.getNormal(), currIndex, targetIndex);
-                System.out.println("t: " + refracted);
+                // refracted est null si il y a réflexion totale
+                // dans ce cas là, la puissance du rayon réfléchi est maximale
                 if (refracted != null) {
+                    // Intensité du rayon réfléchi
+                    reflectIntensity = state.intensity * Utils.coefReflectPower(currIndex, targetIndex);
                     // Intensité du rayon transmis
                     double refractIntensity = state.intensity * Utils.coefTransmitPower(currIndex, targetIndex);
-                    System.out.println("refract: " + refractIntensity);
                     computeRay(state.goInDepth(intersection.getPoint(), refracted, refractIntensity, targetIndex));
+                } else {
+                    // Réflexion totale dûe à l'angle du rayon incident avec la surface et des indices de réfraction
+                    reflectIntensity = state.intensity;
                 }
+            } else {
+                // Réflexion totale car l'objet ne transmet pas la lumière (ex: miroir)
+                reflectIntensity = state.intensity;
             }
+
+            // On calcule le rayon réfléchi
+            Vec2d reflected = Utils.reflect(state.direction.normalize(), intersection.getNormal());
+            computeRay(state.goInDepth(intersection.getPoint(), reflected, reflectIntensity, state.currRefracIndex));
         }
         // On ajoute le rayon actuel à la liste des rayons calculés
         rays.add(new Ray(state.origin, end, state.intensity, state.wavelength, 0));
@@ -145,27 +145,18 @@ public class Simulation {
     public void configuration1() {
         clear();
 
-        // On ajoute nos reflex.objets
         add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
-
-        Mirror m = new Mirror(new Vec2d(400, 100), 100, 0);
-        add(m);
-        Mirror m2 = new Mirror(new Vec2d(300, 400), 100, 0);
-        add(m2);
-        Mirror m3 = new Mirror(new Vec2d(200, 150), 100, -Math.PI / 4);
-        add(m3);
-        LamesP lame = new LamesP(new Vec2d(200f, 300f), 200, 100, Constants.REFRAC_GLASS);
-        add(lame);
-        //demiSphere d = new demiSphere(new Vec2f(50, 50), Constants.REFRAC_GLASS, 5f);
+        add(new Mirror(new Vec2d(400, 100), 100, 0));
+        add(new Mirror(new Vec2d(300, 400), 100, 0));
+        add(new Mirror(new Vec2d(200, 150), 100, -Math.PI / 4));
+        add(new LamesP(new Vec2d(200f, 300f), 200, 100, 0, Constants.REFRAC_GLASS));
     }
 
     public void configuration2() {
         clear();
 
         add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
-
         add(new Mirror(new Vec2d(400, 100), 100, 0));
-
         add(new DemiDisque(new Vec2d(500, 400), 0, Constants.REFRAC_GLASS, 100));
     }
 
@@ -173,8 +164,16 @@ public class Simulation {
         clear();
 
         add(new Laser(new Vec2d(100, 400), -Math.PI / 5, 632));
-
         add(new Mirror(new Vec2d(400, 100), 200, 0));
+    }
+
+    public void configuration4() {
+        clear();
+
+        add(new Laser(new Vec2d(200, 200), 0, 632));
+        add(new Mirror(new Vec2d(300, 100), 200, 0));
+        add(new Mirror(new Vec2d(500, 100), 200, Math.PI / 2));
+        add(new LamesP(new Vec2d(400, 200f), 200, 6, -Math.PI / 4, Constants.REFRAC_GLASS));
     }
 
     /**
