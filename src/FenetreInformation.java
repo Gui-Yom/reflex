@@ -63,7 +63,7 @@ public class FenetreInformation extends JFrame {
         btnCompris.setForeground(new Color(243, 135, 37));
         btnCompris.setFont(police);
         btnCompris.setBounds(250, 480, 100, 60);
-        btnCompris.setBounds(getWidth() / 4, 50, getWidth() / 2, 40);
+        
 
         panelExplications.add(btnCompris);
 
