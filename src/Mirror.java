@@ -72,12 +72,20 @@ public class Mirror extends Objet {
     }
 
     @Override
-    public double getMainDimension() {
+    public double getMainDim() {
         return width;
     }
 
     @Override
-    public void setMainDimension(double mainDimension) {
+    public void setMainDim(double mainDimension) {
         this.width = mainDimension;
     }
+
+    @Override
+    public double getSecondaryDim() {
+        return 0;
+    }
+
+    @Override
+    public void setSecondaryDim(double secondaryDim) { }
 }

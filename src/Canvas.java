@@ -127,7 +127,7 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
             case KeyEvent.VK_DELETE:
                 o = selected.get();
                 if (o != null) {
-                    sim.getObjets().remove(o);
+                    sim.remove(o);
                     recalc();
                 }
         }
@@ -166,11 +166,12 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
     public void mouseWheelMoved(MouseWheelEvent e) {
 
         // ctrl+molette pour contrôler le maximum de récursion
-        // ctrl+molette avec un objet sélectionné pour modifier sa taille
+        // ctrl+molette avec un objet sélectionné pour modifier sa taille principale
         if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0) {
+
             Objet o = selected.get();
             if (o != null) {
-                o.setMainDimension(Math.max(o.getMainDimension() - e.getWheelRotation(), 0));
+                o.setMainDim(Math.max(o.getMainDim() - e.getWheelRotation(), 0));
                 o.recalc();
                 recalc();
                 return;
@@ -182,7 +183,17 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
         }
 
         // shift+molette pour contrôler la limite d'intensité pour le dessin des rayons
+        // shift+molette avec un objet sélectionné pour modifier sa taille secondaire
         if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0) {
+
+            Objet o = selected.get();
+            if (o != null) {
+                o.setSecondaryDim(Math.max(o.getSecondaryDim() - e.getWheelRotation(), 0));
+                o.recalc();
+                recalc();
+                return;
+            }
+
             Ray.RAY_DISPLAY_TRESHOLD = Math.max(Ray.RAY_DISPLAY_TRESHOLD - e.getWheelRotation() * 0.001, 0);
             repaint();
             return;

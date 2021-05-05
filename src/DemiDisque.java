@@ -52,13 +52,21 @@ public class DemiDisque extends ObjetComplexe {
     }
 
     @Override
-    public double getMainDimension() {
+    public double getMainDim() {
         return radius;
     }
 
     @Override
-    public void setMainDimension(double mainDimension) {
+    public void setMainDim(double mainDimension) {
         this.radius = mainDimension;
     }
+
+    @Override
+    public double getSecondaryDim() {
+        return 0;
+    }
+
+    @Override
+    public void setSecondaryDim(double secondaryDim) { }
 }
 

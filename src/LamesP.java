@@ -50,13 +50,23 @@ public class LamesP extends ObjetComplexe {
     }
 
     @Override
-    public double getMainDimension() {
+    public double getMainDim() {
         return longueur;
     }
 
     @Override
-    public void setMainDimension(double mainDimension) {
+    public void setMainDim(double mainDimension) {
         this.longueur = mainDimension;
+    }
+
+    @Override
+    public double getSecondaryDim() {
+        return largeur;
+    }
+
+    @Override
+    public void setSecondaryDim(double secondaryDim) {
+        largeur = secondaryDim;
     }
 }
 

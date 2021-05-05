@@ -91,7 +91,17 @@ public abstract class Objet implements Drawable {
         this.selected = selected;
     }
 
-    public abstract double getMainDimension();
+    /**
+     * @return la valeur de la dimension principale de l'objet
+     */
+    public abstract double getMainDim();
 
-    public abstract void setMainDimension(double mainDimension);
+    /**
+     * Définit la valeur de la dimension principale de l'objet
+     */
+    public abstract void setMainDim(double mainDimension);
+
+    public abstract double getSecondaryDim();
+
+    public abstract void setSecondaryDim(double secondaryDim);
 }
