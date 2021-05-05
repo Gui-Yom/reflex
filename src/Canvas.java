@@ -75,7 +75,7 @@ public class Canvas extends JPanel implements KeyListener, MouseWheelListener, M
         }
 
         g2d.setColor(Color.BLACK);
-        g2d.drawString(String.format("%d ms", System.currentTimeMillis() - startTime), getWidth() - 31, 10);
+        g2d.drawString(String.format("rendu: %d ms", System.currentTimeMillis() - startTime), getWidth() - 70, 10);
         g2d.drawString(String.format("depth: %d", sim.getMaxDepth()), getWidth() - 52, 22);
         g2d.drawString(String.format("display treshold: %.3f", Ray.RAY_DISPLAY_TRESHOLD), getWidth() - 120, 34);
     }

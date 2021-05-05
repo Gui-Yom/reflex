@@ -8,6 +8,9 @@ import java.io.IOException;
 
 public class FenetreInformation extends JFrame {
 
+    private static final Color foregroundColor = new Color(243, 135, 37);
+    private static final Color backgroundColor = new Color(16, 31, 64);
+    private static final Color btnBackground = new Color(64, 76, 98);
     private final JPanel panelPresentation;
     private final JPanel panelExplications;
     private final JButton btnCompris;
@@ -31,8 +34,8 @@ public class FenetreInformation extends JFrame {
 
 
         btnExplications = new JButton("Informations");
-        btnExplications.setBackground(new Color(64, 76, 98));
-        btnExplications.setForeground(new Color(243, 135, 37));
+        btnExplications.setBackground(btnBackground);
+        btnExplications.setForeground(foregroundColor);
         btnExplications.setFont(police);
         btnExplications.setBounds(getWidth() / 4, 50, getWidth() / 2, 40);
 
@@ -55,40 +58,37 @@ public class FenetreInformation extends JFrame {
         panelExplications = new JPanel();
         panelExplications.setLayout(null);
         panelExplications.setBounds(0, 0, getWidth(), getHeight());
-        panelExplications.setBackground(new Color(16, 31, 64));
+        panelExplications.setBackground(backgroundColor);
         panelExplications.setLayout(null);
 
         btnCompris = new JButton("Compris !");
-        btnCompris.setBackground(new Color(64, 76, 98));
-        btnCompris.setForeground(new Color(243, 135, 37));
+        btnCompris.setBackground(btnBackground);
+        btnCompris.setForeground(foregroundColor);
         btnCompris.setFont(police);
         btnCompris.setBounds(250, 480, 100, 60);
-        
+        btnCompris.setBounds(3 * getWidth() / 8, getHeight() - 100, getWidth() / 4, 40);
 
         panelExplications.add(btnCompris);
 
         JLabel infos = new JLabel();
         infos.setFont(police);
-        infos.setForeground(new Color(243, 135, 37));
-        infos.setBackground(new Color(16, 31, 64));
+        infos.setForeground(foregroundColor);
         infos.setBounds(20, 20, 560, 140);
-        infos.setText("<html>Reflex est un simulateur de visualisation d'optique. <br>En effet, grâce à Reflex, vous allez pouvoir visualiser les phénomènes <br> de réflexion et de diffraction par différents objets couramment <br>utilisés dans ce domaine. <br> Il vous sera possible de changer totalement les configurations <br> en déplaçant les objets et en les faisant pivoter.<br>Voici les commandes à votre disposition:<html>");
+        infos.setText("<html>Reflex est un simulateur de visualisation d'optique. <br>En effet, grâce à Reflex, vous allez pouvoir visualiser les phénomènes <br> de réflexion et de diffraction par différents objets couramment <br>utilisés dans ce domaine. <br> Il vous sera possible de changer totalement les configurations<br>en déplaçant les objets et en les faisant pivoter.<br>Voici les commandes à votre disposition:</html>");
 
         panelExplications.add(infos);
 
         JLabel com1 = new JLabel();
         com1.setFont(police);
-        com1.setForeground(new Color(243, 135, 37));
-        com1.setBackground(new Color(16, 31, 64));
-        com1.setBounds(60, 170, 140, 360);
-        com1.setText("<html>-Sélectionner un objet (passe en pointillets) :<br> Click gauche sur l'objet<br><br> Commandes pour l'objet sélectionné :<br>-Déplacer: <br> Maintenir click gauche souris<br> flèches du clavier <br> -Pivoter : <br> molette souris <br> -Agrandir : <br> CTRL+Molette <br> -Supprimer : <br> touche SUPPR <html>");
+        com1.setForeground(foregroundColor);
+        com1.setBounds(20, 170, 280, 340);
+        com1.setText("<html><ul><li>Sélectionner un objet (passe en pointillets) :<br>Click gauche</li><li>Déplacer:<br>Maintenir click gauche souris & flèches du clavier</li><li>Pivoter :<br>molette souris</li><li>Agrandir :<br>CTRL+Molette</li><li>Supprimer :<br>touche SUPPR</li></ul></html>");
 
         JLabel com2 = new JLabel();
         com2.setFont(police);
-        com2.setForeground(new Color(243, 135, 37));
-        com2.setBackground(new Color(16, 31, 64));
-        com2.setBounds(400, 170, 140, 340);
-        com2.setText("<html>-Choisir une configuration prédéfinie : <br> touche 1, 2 ou 3 du clavier <br> -Rafraichir l'affichage : <br> touche R <br> - Augmenter la limite de calcul des rayons : <br> CTRL + Molette <br> -Augmenter la limite d'affichage des rayons : <br> SHIFT + Molette<html>");
+        com2.setForeground(foregroundColor);
+        com2.setBounds(300, 170, 280, 340);
+        com2.setText("<html><ul><li>Choisir une configuration prédéfinie :<br>touche 1, 2 ou 3 du clavier</li><li>Rafraichir l'affichage :<br>touche R</li><li>Augmenter la limite de calcul des rayons :<br>CTRL + Molette</li><li>Augmenter la limite d'affichage des rayons :<br>SHIFT + Molette</li></ul></html>");
 
         panelExplications.add(com1);
         panelExplications.add(com2);
